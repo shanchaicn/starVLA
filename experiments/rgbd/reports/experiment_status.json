@@ -1,0 +1,20 @@
+{
+  "results_status": "not_trained_not_evaluated",
+  "experiments": {
+    "E0_RGB": {
+      "structural_cpu_test": "passed, tiny mocked VLM and real small Action DiT",
+      "full_4B_test": "deferred; CPU cgroup 8GiB"
+    },
+    "E1_CNN": {
+      "structural_cpu_test": "passed; depth gradients and parameter updates verified",
+      "full_4B_test": "pending GPU"
+    },
+    "E2_LingBot": {
+      "structural_cpu_test": "passed with real official encoder weights, synthetic aligned plane, tiny mocked VLM, real small Action DiT; no decoder",
+      "full_4B_test": "pending GPU"
+    }
+  },
+  "robot_success_rate": null,
+  "formal_action_mse": null,
+  "geometry_ablation_results": null
+}

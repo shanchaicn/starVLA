@@ -1,0 +1,6 @@
+{
+  "status": "deferred_to_gpu",
+  "reason": "cgroup memory.max=8589934592; full Qwen3-VL-4B BF16 + trainable head exceeds budget",
+  "attempt": "terminated owned PID 17839 normally; no OOM kill",
+  "full_vlm_forward_backward_predict_verified": false
+}

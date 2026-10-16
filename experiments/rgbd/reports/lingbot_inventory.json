@@ -1,0 +1,25 @@
+{
+  "repo": "robbyant/lingbot-depth-pretrain-vitl-14-v0.5",
+  "revision": "79204ed6b837f4fdd192cf563e59481fecfa0295",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 1519,
+      "lfs": null
+    },
+    {
+      "path": "README.md",
+      "size": 3326,
+      "lfs": null
+    },
+    {
+      "path": "model.pt",
+      "size": 1284837952,
+      "lfs": {
+        "size": 1284837952,
+        "sha256": "b60cf27ddbd0e51e9b59b03475c0d39d02d2e48ecf8dbb5866f04d46802b3c23",
+        "pointer_size": 135
+      }
+    }
+  ]
+}

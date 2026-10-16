@@ -1,0 +1,8 @@
+.........                                                                [100%]
+=============================== warnings summary ===============================
+experiments/rgbd/test_rgbd.py::test_real_action_head_backward_update_predict_restore[False]
+  /root/data/projects/starVLA-rgbd/.venv/lib/python3.10/site-packages/torch/amp/autocast_mode.py:266: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+9 passed, 1 warning in 35.02s

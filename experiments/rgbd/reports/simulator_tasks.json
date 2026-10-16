@@ -1,0 +1,30 @@
+[
+  {
+    "suite": "libero_spatial",
+    "task_id": 2,
+    "name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+    "language": "pick up the black bowl from table center and place it on the plate",
+    "initial_states": 50
+  },
+  {
+    "suite": "libero_object",
+    "task_id": 0,
+    "name": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+    "language": "pick up the alphabet soup and place it in the basket",
+    "initial_states": 50
+  },
+  {
+    "suite": "libero_goal",
+    "task_id": 8,
+    "name": "put_the_bowl_on_the_plate",
+    "language": "put the bowl on the plate",
+    "initial_states": 50
+  },
+  {
+    "suite": "libero_10",
+    "task_id": 5,
+    "name": "STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy",
+    "language": "pick up the book and place it in the back compartment of the caddy",
+    "initial_states": 50
+  }
+]

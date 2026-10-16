@@ -1,0 +1,70 @@
+[
+  {
+    "experiment": "e0_rgb",
+    "real_base_weights": true,
+    "input": "synthetic aligned plane; NOT LIBERO-3D validation",
+    "device": "cuda",
+    "action_horizon": 16,
+    "sampler_steps": 10,
+    "lingbot_input_tokens": null,
+    "forward_loss": 1.4091132879257202,
+    "gradient_l1": {
+      "action_model.action_decoder.layer2.weight": 260.42529296875
+    },
+    "parameter_update": true,
+    "predict_shape": [
+      1,
+      16,
+      7
+    ],
+    "checkpoint_prediction_exact": true,
+    "seconds": 189.18013031804003
+  },
+  {
+    "experiment": "e1_cnn",
+    "real_base_weights": true,
+    "input": "synthetic aligned plane; NOT LIBERO-3D validation",
+    "device": "cuda",
+    "action_horizon": 16,
+    "sampler_steps": 10,
+    "lingbot_input_tokens": null,
+    "forward_loss": 1.362374186515808,
+    "gradient_l1": {
+      "action_model.action_decoder.layer2.weight": 214.38014221191406,
+      "depth_encoder.cnn.0.weight": 3.232846260070801,
+      "depth_fusion.gates": 0.14643257856369019,
+      "depth_fusion.projector.1.weight": 12.955703735351562
+    },
+    "parameter_update": true,
+    "predict_shape": [
+      1,
+      16,
+      7
+    ],
+    "checkpoint_prediction_exact": true,
+    "seconds": 22.861286030965857
+  },
+  {
+    "experiment": "e2_lingbot",
+    "real_base_weights": true,
+    "input": "synthetic aligned plane; NOT LIBERO-3D validation",
+    "device": "cuda",
+    "action_horizon": 16,
+    "sampler_steps": 10,
+    "lingbot_input_tokens": 1200,
+    "forward_loss": 1.361985683441162,
+    "gradient_l1": {
+      "action_model.action_decoder.layer2.weight": 215.9642333984375,
+      "depth_fusion.gates": 0.1183483749628067,
+      "depth_fusion.projector.1.weight": 98.00936889648438
+    },
+    "parameter_update": true,
+    "predict_shape": [
+      1,
+      16,
+      7
+    ],
+    "checkpoint_prediction_exact": true,
+    "seconds": 21.625515454099514
+  }
+]

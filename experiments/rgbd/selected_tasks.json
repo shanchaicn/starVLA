@@ -1,0 +1,70 @@
+{
+  "repo_id": "Ayana666888/LIBERO-3D",
+  "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f",
+  "tasks": [
+    {
+      "suite": "libero_spatial",
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "relative_dir": "libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "episodes": 50,
+      "download_bytes": 2355993825,
+      "smoke_episodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "instruction": "pick up the black bowl from table center and place it on the plate",
+      "simulator_task_id": 2
+    },
+    {
+      "suite": "libero_object",
+      "task_name": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+      "relative_dir": "libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+      "episodes": 50,
+      "download_bytes": 3135259660,
+      "smoke_episodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "simulator_task_id": 0
+    },
+    {
+      "suite": "libero_goal",
+      "task_name": "put_the_bowl_on_the_plate",
+      "relative_dir": "libero_goal/put_the_bowl_on_the_plate",
+      "episodes": 50,
+      "download_bytes": 1860695627,
+      "smoke_episodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "instruction": "put the bowl on the plate",
+      "simulator_task_id": 8
+    },
+    {
+      "suite": "libero_10",
+      "task_name": "STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy",
+      "relative_dir": "libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy",
+      "episodes": 50,
+      "download_bytes": 3714514228,
+      "smoke_episodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "instruction": "pick up the book and place it in the back compartment of the caddy",
+      "simulator_task_id": 5
+    }
+  ]
+}

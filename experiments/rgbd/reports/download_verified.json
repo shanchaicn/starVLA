@@ -1,0 +1,1352 @@
+[
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_000/data.npz",
+    "bytes": 90142948,
+    "sha256": "f958c0ca80555ebd22a931bf75dadc0d7357ea703f36232421dc165e6c321997",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_000/data.npz",
+    "bytes": 36655450,
+    "sha256": "3fd3750fd05ea0749a30fca08d2ffcc82e478d78a4d9be0f60957a2e29f19df7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_000/data.npz",
+    "bytes": 58731661,
+    "sha256": "4ce1961976e9fdb3e7b503f78c383d492070da5d64a80abcc92533700ac2594e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_000/data.npz",
+    "bytes": 40916370,
+    "sha256": "b675c402274b182531b49bef02916ddc57f00c3a06310f123af51e3cccb9e3f0",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/.gitattributes",
+    "bytes": 1519,
+    "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/README.md",
+    "bytes": 7133,
+    "sha256": "a884e5e78f7d6f7bfe237f909dbc41a126542e259dc79d8ab33cc8980580ff79",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/chat_template.json",
+    "bytes": 5502,
+    "sha256": "6f8a6a55027e3da5160105556cda5dd69f6423f1c32645f6730d32de7773d0c4",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/config.json",
+    "bytes": 1505,
+    "sha256": "edac7703329133edfc53e46ac0081835144c99d7eebf28b71c732694d435224d",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/generation_config.json",
+    "bytes": 269,
+    "sha256": "8469742d1fce0de951c8909b26a2c0c0d8490837ce476efb114da9e0cefc4d44",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/merges.txt",
+    "bytes": 1671839,
+    "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/model-00001-of-00002.safetensors",
+    "bytes": 4967229296,
+    "sha256": "30a01a0556622645a3cce87b655bbbbbc1f170c196099f1b666c93202c3339a9",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/model-00002-of-00002.safetensors",
+    "bytes": 3908490048,
+    "sha256": "046296a2a387efb43b0c997d5833c789604d168834f6e0d3064bf7bb13d002a6",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/model.safetensors.index.json",
+    "bytes": 64742,
+    "sha256": "58a7841d7bff2548dd91577d216274a83cf1b500bc6a534b809d6c1b1707cf2b",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/preprocessor_config.json",
+    "bytes": 390,
+    "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/tokenizer.json",
+    "bytes": 7032403,
+    "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/tokenizer_config.json",
+    "bytes": 10868,
+    "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/video_preprocessor_config.json",
+    "bytes": 385,
+    "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/Qwen3-VL-4B-Instruct/vocab.json",
+    "bytes": 2776833,
+    "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+    "revision": "ebb281ec70b05090aa6165b016eac8ec08e71b17"
+  },
+  {
+    "path": "/root/data/models/lingbot-depth-v0.5/.gitattributes",
+    "bytes": 1519,
+    "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "revision": "79204ed6b837f4fdd192cf563e59481fecfa0295"
+  },
+  {
+    "path": "/root/data/models/lingbot-depth-v0.5/README.md",
+    "bytes": 3326,
+    "sha256": "1569ab6ea26b31e127a17b0e55032f0ba35bcb57325ec20a31f2aebf33cbf94f",
+    "revision": "79204ed6b837f4fdd192cf563e59481fecfa0295"
+  },
+  {
+    "path": "/root/data/models/lingbot-depth-v0.5/model.pt",
+    "bytes": 1284837952,
+    "sha256": "b60cf27ddbd0e51e9b59b03475c0d39d02d2e48ecf8dbb5866f04d46802b3c23",
+    "revision": "79204ed6b837f4fdd192cf563e59481fecfa0295"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/_SUCCESS",
+    "bytes": 3,
+    "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_001/data.npz",
+    "bytes": 73116068,
+    "sha256": "16d8db7672f42048fe9b82476701773c0abf45cb2c5b5bbf2b4a11f34c068aeb",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_002/data.npz",
+    "bytes": 71179138,
+    "sha256": "165af3913d73f0e5d911acdcb08c9a810b2326d6c0139e17d5e75bb4173e9e5c",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_003/data.npz",
+    "bytes": 73343977,
+    "sha256": "fc061b271b2595008104e0458e5db09ca0e4f6ae045bb623431c7d1686959757",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_004/data.npz",
+    "bytes": 67749120,
+    "sha256": "1c4a92fb2b3dcdbee384d2a8f8f79d3dd43e3d316a8e76fbbb46c4b259987d52",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_005/data.npz",
+    "bytes": 67096530,
+    "sha256": "95d67246e5e512055dad44ee31b9e07887f8f0dcf3349f7976f93f117dce77d0",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_006/data.npz",
+    "bytes": 75507818,
+    "sha256": "61e62f5ef83b28d6c20cfb6a0fecb08dc782af89293abeae7b9b1365fcfaf175",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_007/data.npz",
+    "bytes": 79351074,
+    "sha256": "588cda4aa0705f8a9b40d21f281fbf8af3f0339e43b818d3cdd0b9ef3d952b0c",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_008/data.npz",
+    "bytes": 86927305,
+    "sha256": "c79d46a9be026b7efcd8846076e47c5cefb8666282f76e4106de0f967e432fe9",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_009/data.npz",
+    "bytes": 62594684,
+    "sha256": "4b408259ad19bdc900c8104dc124c5e82e816f6e6057ba59bf920510d89dbecb",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_010/data.npz",
+    "bytes": 67542653,
+    "sha256": "0f81b3d094225b8b3dc05132d0aaba3436644e44aea5801c280963f293666bb5",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_011/data.npz",
+    "bytes": 76767115,
+    "sha256": "78e7db03b02c3fc9c3fd1fe82e975e3b107523dade830b42143b12dda8d9c100",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_012/data.npz",
+    "bytes": 66940193,
+    "sha256": "5e2c9a88f8406eff163bdf23f1eca360ce3711a3d5ca38761d90626a4251d9e8",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_013/data.npz",
+    "bytes": 80585611,
+    "sha256": "e7221578f605af5868922e4054eb9c3052ffa2147c41ee0cd3b2024016514947",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_014/data.npz",
+    "bytes": 89304307,
+    "sha256": "1507904db80cad215613a30a48a18d502cca2b5214042c1212ad261f234b4459",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_015/data.npz",
+    "bytes": 90348871,
+    "sha256": "3d7ae2258567f15a0ccd324763f69352d7d9d9d2a9779c64ae4ef1ae2ad6f826",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_016/data.npz",
+    "bytes": 84114955,
+    "sha256": "be48c84e885bf3a869308b0ab7e948c8011649109f4e30a90928583851e06324",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_017/data.npz",
+    "bytes": 65800454,
+    "sha256": "7f258f48af06528c4575090333ce686560dffe96d77fcc1a2af0aa68feb44a6e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_018/data.npz",
+    "bytes": 76832052,
+    "sha256": "d8558c398e4e03bd3923b228c1eb7dd151f194146e1b36003d618dbcab797bf1",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_019/data.npz",
+    "bytes": 68239338,
+    "sha256": "8f7d6cbc8b2edc6c8661cc847bc620421f8629d8e2f443bf7d546453415a7d71",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_020/data.npz",
+    "bytes": 72034252,
+    "sha256": "89eb29a65168447d0747f059e82473072e86785a8e5936245396d23f64b34bbb",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_021/data.npz",
+    "bytes": 71313635,
+    "sha256": "9c48ea81d8c9aa1f14be36f8f22f78a8c1a5b86d58c70a9beeedd75fe9ca65a4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_022/data.npz",
+    "bytes": 70229628,
+    "sha256": "a220d88705849cccc2137759909ad31972ab1bd5036003d4a1a67f108e27a6f4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_023/data.npz",
+    "bytes": 78463575,
+    "sha256": "e7ea4e5ff1558baf64f65a08da9ba8c34887bbaaf201411ed4b25231280fb889",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_024/data.npz",
+    "bytes": 68143757,
+    "sha256": "6336628d32db8afd762b1333cd7b5b80df325f8400e1625ed6527dbdc768f800",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_025/data.npz",
+    "bytes": 64616748,
+    "sha256": "ca413c4c05d081d6d3ca9a013a69393277accdcd8929f2634c3266e8330d4086",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_026/data.npz",
+    "bytes": 73203791,
+    "sha256": "63ef5d481650ba23e4f9ccdb545bae524c33b819d4a7550314c2bb5fa4f4232d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_027/data.npz",
+    "bytes": 76061549,
+    "sha256": "b2f9befc51085510b8daed305b69b0d2cc57d77a0118ada1123fe2cf8d09d05c",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_028/data.npz",
+    "bytes": 70510007,
+    "sha256": "62a2871906fbbd7a41c5003c7e83f82a84698a64391b9a67015bdb9040b9448b",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_029/data.npz",
+    "bytes": 72525216,
+    "sha256": "21dc016668dae084c22a839a80088e1ef5d46af841af127f74b0767f3eba5519",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_030/data.npz",
+    "bytes": 73784616,
+    "sha256": "d6783c36f8f0974e775ba8248a7af07af98da718c35ef214e06492692ddef367",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_031/data.npz",
+    "bytes": 77669776,
+    "sha256": "b9422a0fa76f0a886c190b30750884694448740508ac5f251a6ce5fc6ea2527d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_032/data.npz",
+    "bytes": 101178355,
+    "sha256": "9eeae6ab371d5303bdb2e767e89c85766a24f0c88dea224a82c9a5291a99bbff",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_033/data.npz",
+    "bytes": 67561328,
+    "sha256": "5f6c5a2911ba5bde580fdc99ef14b9f5c9b87a7ed0384193fcb1d1c4734ce223",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_034/data.npz",
+    "bytes": 69351631,
+    "sha256": "e91a40002c7d5d17460bfa8c39eb344a39c1080ee7c465bd7aa70f1e686b27ae",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_035/data.npz",
+    "bytes": 73392223,
+    "sha256": "028a21b41ae1275d30739ed82936d0b1e824d11dbf969d01c45f4d90c7fc30cc",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_036/data.npz",
+    "bytes": 78299431,
+    "sha256": "82a9e8e444ef6069e2fd673bde55f70f7cb523e821c5282d7850f240ef611d65",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_037/data.npz",
+    "bytes": 76668055,
+    "sha256": "802c04785d693ab9013476e597211c7658e0e6a0cba5e9fcd7ec0102f0035075",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_038/data.npz",
+    "bytes": 66927451,
+    "sha256": "6f6507f6312b3121231e2eeb55433084b1cad025426b18ab5af0883b69267a63",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_039/data.npz",
+    "bytes": 81746692,
+    "sha256": "9dc6c60320bc3868f630cb040fab54d6927098f5c14054098536f5c779d0826f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_040/data.npz",
+    "bytes": 60068221,
+    "sha256": "55abb720438f8257b84f588b712e768451f44b549dd60a88d3714456e0c6a28b",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_041/data.npz",
+    "bytes": 65455899,
+    "sha256": "ee89630c17cf559c71316053f1e01478f6ffdd26c8fbe591d2e04d66a8fd1069",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_042/data.npz",
+    "bytes": 73277090,
+    "sha256": "e0fccd467e38c968307b950bd898d193d1e4ac7131c2876c6c7eb2e57565e9ea",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_043/data.npz",
+    "bytes": 96559681,
+    "sha256": "f49c80deec881e712e1f3f1d04570dba0d8e6d61fe9604609427b25a1cbcf953",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_044/data.npz",
+    "bytes": 68704040,
+    "sha256": "44a905d3b90ca99ac84f05ff8e8ff69b2c6d1fa8d9050acf731c7c86881b4ceb",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_045/data.npz",
+    "bytes": 74852642,
+    "sha256": "5d95f1b9e601f0ec44c2b039ca75a1c68de8e14e7f0e766177931115138d74a4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_046/data.npz",
+    "bytes": 63130757,
+    "sha256": "a536887fd9d17e1e2fd37bfd48e3f7cdd98c6f9a49827f6054c45b6e749f06e3",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_047/data.npz",
+    "bytes": 64520059,
+    "sha256": "7a3b7184d3566a27c581b4d80ab9714cfb57aeafe48aa9e9327538edd32e8a4c",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_048/data.npz",
+    "bytes": 77380714,
+    "sha256": "eebf6a2890b8dcedc9ad69fd64f48942326c84af8a658742925b59e3dac6b162",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/episode_049/data.npz",
+    "bytes": 73352299,
+    "sha256": "1aec4676361ea309d1e8f50ba6046e508deac155c3dade7ea5a675659a78e122",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_10/STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy/metadata.json",
+    "bytes": 46896,
+    "sha256": "55557126f0a143a6c2025fb31e5de41fd23b9d584b1f145e08aa0d591651f090",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/_SUCCESS",
+    "bytes": 3,
+    "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_001/data.npz",
+    "bytes": 34629290,
+    "sha256": "e1b14923cffd56a737a0f31b2761b0afe724129e8af7042ab3f094f37631622e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_002/data.npz",
+    "bytes": 36762105,
+    "sha256": "f1ff34f470bf45adeab8058b8f13ccb0c1a5554194a33a1d7621d0289802f2e6",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_003/data.npz",
+    "bytes": 38061466,
+    "sha256": "a890a808661aa42f389b05b6e59b2f1ab19ebbed146f77426d2f6708bf5c544d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_004/data.npz",
+    "bytes": 32226754,
+    "sha256": "bfe1ad9af549252e9a69b52d33598003d3ef098fcfa91dd7fd75227e1c9bef31",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_005/data.npz",
+    "bytes": 36042123,
+    "sha256": "6e7cf89e1abdff3f17d06bfcd8d9dccb1dc834ff17d048addcf17885f2270c25",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_006/data.npz",
+    "bytes": 41591976,
+    "sha256": "70a34bb4b983a154a514a46d86adbc92446d4e43c59b95312b97b920ca1c423e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_007/data.npz",
+    "bytes": 37157756,
+    "sha256": "d376503e5ba23ff1131f101c432f89b23180094e4dbd1462cf4699f70e89fed9",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_008/data.npz",
+    "bytes": 34087996,
+    "sha256": "870340eb0b5b4f428094005ee6ac836020172dbfdace44c46e468040e2fd3b2f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_009/data.npz",
+    "bytes": 35713040,
+    "sha256": "6d1f176a09273f5e46fa1404e801bd836f670fecc5f9c15b7b6eac10209cd296",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_010/data.npz",
+    "bytes": 45472786,
+    "sha256": "8e236994426b0faacc969d239d0bd3238052cbfa33952b83010e090b893376c4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_011/data.npz",
+    "bytes": 33768496,
+    "sha256": "d3017f07851bfe2515883ffe24f9b4f59df66c5d6dd0583334ad5e58614d6211",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_012/data.npz",
+    "bytes": 35077253,
+    "sha256": "0d9653a16eebacbc14e2d3dc5cffd69c829042ff6aa31f722b76728efb51635f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_013/data.npz",
+    "bytes": 39349023,
+    "sha256": "63e07e605c64f8d9c6361e282f8b0ad75dd8d0d58b7369bee2b99b5794796b21",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_014/data.npz",
+    "bytes": 34506737,
+    "sha256": "5f2767e3bf2ab53b87ff1a7d3c647a80d40d4db8af095773d38da85075e10f88",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_015/data.npz",
+    "bytes": 33117816,
+    "sha256": "5ee157a13d053d92c81f1f8df652650bff782b7c6bca8fec2fa0624a6b6f0b37",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_016/data.npz",
+    "bytes": 37015925,
+    "sha256": "f3501000d37ead3108708f5ff4aa40a84129ced332c7ee9ff6bd55559a312772",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_017/data.npz",
+    "bytes": 34805041,
+    "sha256": "31a1783e4786dc3130909117ff8171098ea25b268d942a38b1de735c4031c6e9",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_018/data.npz",
+    "bytes": 38027978,
+    "sha256": "9120a9deea1162f03af6967addce0ad637ad9f122911a65a6936cf614f7fb24d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_019/data.npz",
+    "bytes": 37594090,
+    "sha256": "11be811543cc69300b55edd69aac84fb89921f3dc446cffbcbffe4f52f2d0bc0",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_020/data.npz",
+    "bytes": 38691092,
+    "sha256": "afca5730c405b8106a8702301d5f39d13ce3b0da74da8795ae1fd9f1f9204e4a",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_021/data.npz",
+    "bytes": 41194750,
+    "sha256": "1655318e0553dfad718d1ad4d2ee73730d52db4d4be971d7da3533e77db586bf",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_022/data.npz",
+    "bytes": 31443939,
+    "sha256": "85827569d471b2acf57b89989b59e4e8b60adcc66a9873bb335f8e4f81627c14",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_023/data.npz",
+    "bytes": 43423569,
+    "sha256": "f3d06e496509420795bb3754ff624b79b4e092c1f90fdf9dea73da5d60a0323d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_024/data.npz",
+    "bytes": 35900599,
+    "sha256": "4b0edb8a03ed325e6e990a73d0427b16a9cffcbfeea9454cea24799da76f666e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_025/data.npz",
+    "bytes": 40515429,
+    "sha256": "c880cdc5624173671a07e325e2a09b8289ea5879b72a60ff0a63ccda1c1c78eb",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_026/data.npz",
+    "bytes": 37950216,
+    "sha256": "477a34c3f03115ecde6dfe71928a7f389a274a7d129f4cd26f671faaa72caba8",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_027/data.npz",
+    "bytes": 35668597,
+    "sha256": "d071b6ddbf6d71e1efd5d42a6781b9d222c627c82d73243ae50da4ba40391168",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_028/data.npz",
+    "bytes": 35284607,
+    "sha256": "c745be66d533bea572ed820de7412b5484ae799801dd4961f04dccdf2fab956c",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_029/data.npz",
+    "bytes": 40348245,
+    "sha256": "98a4fce10737f76000f7979000769277666641e75d853d4606ff9566924f8476",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_030/data.npz",
+    "bytes": 40352287,
+    "sha256": "eb96114fac88f94917ef5f92aad42ad8e90a76ed06152978e2ae166218380e75",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_031/data.npz",
+    "bytes": 38731867,
+    "sha256": "9e6ef527e772ec4a1f4a8c511d8bc970c2a507124d8900baefb2d3750d03f95a",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_032/data.npz",
+    "bytes": 37335333,
+    "sha256": "ed9ad67bcb7cfb09aab3dd51852604a03fd002df0972977c548c3ac12469b310",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_033/data.npz",
+    "bytes": 34476811,
+    "sha256": "6936ec1b09e0c2bcceec6675b952d38c4b6a1a68684f63084193c0dc30060310",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_034/data.npz",
+    "bytes": 35393853,
+    "sha256": "9b90741315c42b950328aec75d66e50cb1766afe8eee04d9b1034f551f304491",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_035/data.npz",
+    "bytes": 37945075,
+    "sha256": "703b1cf59ff430492b6c5ed78155388a07050c505709ee8ba5d278e1493c0f1a",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_036/data.npz",
+    "bytes": 32049138,
+    "sha256": "9fefc1f46651673d699a59670c229e2fae8799787504dc89d8883d62da8c672f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_037/data.npz",
+    "bytes": 39211082,
+    "sha256": "e03ba9e7e6a2d49ae8165831a85460670f2ecd8da8185903d4d3ed030269170c",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_038/data.npz",
+    "bytes": 41558972,
+    "sha256": "943ee8f205d07a1b535d9c2af880112f7ad75f41123166bf757846885f550b4f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_039/data.npz",
+    "bytes": 33134391,
+    "sha256": "c84b837c2bca1408f63d167d24b652f0fd66ed9c5e82b8be94547103decda5ce",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_040/data.npz",
+    "bytes": 36101314,
+    "sha256": "b082dcf6561a866747099dbceea4040de061ae831db8679b76ea99947f99c430",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_041/data.npz",
+    "bytes": 35594220,
+    "sha256": "ff10c9fe2ba15de4c28e77270e31d48bd1981908f12e17f77b73df7249f61e23",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_042/data.npz",
+    "bytes": 40563052,
+    "sha256": "6d6c02319f66a6ae612ce8ceeb1d79153a0db6d9444b62126bb8c673fa0c53f3",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_043/data.npz",
+    "bytes": 49528550,
+    "sha256": "678b690c80bcf123a573851d6314aa505e62c89960c07d4ef4a7f02f4213f875",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_044/data.npz",
+    "bytes": 35375767,
+    "sha256": "243b41118d3b5326fdb11b10c8529e98754397780f9d441713eebda0522f447f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_045/data.npz",
+    "bytes": 43087257,
+    "sha256": "4e6e7df855583a71f895736e6b8665fae2d3a85bdd90346b4e0a084c72be3b82",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_046/data.npz",
+    "bytes": 31321829,
+    "sha256": "29a2d8c4f2c370c4418d5ec69eb1569d7a13277b73c34b616d3e9cc1b497b410",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_047/data.npz",
+    "bytes": 36131424,
+    "sha256": "7e981199fc10cbc6136c3e9349027d2157288f11e9dc32a90eea100bc60d2754",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_048/data.npz",
+    "bytes": 35686949,
+    "sha256": "16c141a621ee39874b828fa601327e7128eb19e614370e09a83cc9e283e350fd",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/episode_049/data.npz",
+    "bytes": 34985908,
+    "sha256": "558059c0a066c3eccf105bb0c48be403b17e337bfd7a25b9e87455ef4894dbf6",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_goal/put_the_bowl_on_the_plate/metadata.json",
+    "bytes": 46401,
+    "sha256": "64bdc766320616659de5f8b5de02c361e1df418d7b8a2c26c56bf19eb3296a3b",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/_SUCCESS",
+    "bytes": 3,
+    "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_001/data.npz",
+    "bytes": 72969337,
+    "sha256": "97a8c614796e493e3d266ecac572adb0413d5b0add6ec19edbc59fbc1d0a5a28",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_002/data.npz",
+    "bytes": 54731682,
+    "sha256": "e6e85652bd24f69d0b2a3431cf17dd01f828b1f05f105e34650896db475dfd22",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_003/data.npz",
+    "bytes": 57366390,
+    "sha256": "9e29bb40fed33303489f74d2e808b7319188708cd46683e543d63e05d46e1975",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_004/data.npz",
+    "bytes": 57917379,
+    "sha256": "b0d86c7feab2e5a55f854a7f395aa1a2a8136c7137fb8266834afd4d7370ac8e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_005/data.npz",
+    "bytes": 60724488,
+    "sha256": "5ea8e52337f50c32006dfcbb0cda57f6d758330aec9f75aff2bbcf61f12d6a82",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_006/data.npz",
+    "bytes": 64039491,
+    "sha256": "abc1e639e4ffae2286a3af2e82e0a3dbedfec47fc4dbcf6a54a15fc28fee4aec",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_007/data.npz",
+    "bytes": 61767230,
+    "sha256": "200f144f76f35b2dfcc1f77f7f13faa90ed05c2e89d51397d8a186bda0e1be40",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_008/data.npz",
+    "bytes": 78003029,
+    "sha256": "d2667069a69f4d1318ceff6d010ae19146d4e1c1e768965a015bac0ad07a87d5",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_009/data.npz",
+    "bytes": 57742818,
+    "sha256": "19b4779d2369d0603575a0ba9597d3a125ce95d148f4f9e28400b20c41c6adb7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_010/data.npz",
+    "bytes": 61432748,
+    "sha256": "b63cb35ae826ea5239e04bd8a982b24d7e5ab8d6910f555d5d866ac4f1bebfc2",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_011/data.npz",
+    "bytes": 60979135,
+    "sha256": "35950de639fd17e395f87809fe9265181ddeb2feb7c246a4a5eb01056279ec05",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_012/data.npz",
+    "bytes": 68799557,
+    "sha256": "4e1ab6e0ebd7825529b8cd17f1a5bfbb3f4fb4db4552d5e92bd2d89444a2e986",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_013/data.npz",
+    "bytes": 57988666,
+    "sha256": "6c7a56b787b3220a2563a588790240d63c15874d0a6cbb75eb0709835e176d8d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_014/data.npz",
+    "bytes": 57614726,
+    "sha256": "ff30485f0f425d1922794723d891f047e417aabf10fc7f7b9650ae406aba0899",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_015/data.npz",
+    "bytes": 62675297,
+    "sha256": "5b88966c8a0f2427b7e35d601099506df96692dfc4fcce25638e167366922c9a",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_016/data.npz",
+    "bytes": 62784138,
+    "sha256": "dc7776e77b5f5dd732e214eadfbc2c421df0d0b7d1be3ac1a73dd4affa50efb6",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_017/data.npz",
+    "bytes": 60978565,
+    "sha256": "7f1733260af1efe8b07eddc4d02abbd75ab88cd09e3df16bc0a7881eb2f2ae6d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_018/data.npz",
+    "bytes": 62253409,
+    "sha256": "b792e1dee470569daeea34f0beecf72a7107ae8fde08255267f362e2deed4278",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_019/data.npz",
+    "bytes": 63628376,
+    "sha256": "5dc7adeeebde11f3e9f1204605c2d87d460acdc6dd26b21c26ac48e4bde76ffa",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_020/data.npz",
+    "bytes": 60986454,
+    "sha256": "54e8a99a920403df329e5d20cb26a6a3230f7b73ad8ff393c947335cca2409f5",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_021/data.npz",
+    "bytes": 63769077,
+    "sha256": "ef3c2d988a083e4d39340668f950263701248f29eacff3f24557b72dc811530d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_022/data.npz",
+    "bytes": 58354175,
+    "sha256": "a08f75106820a76676a2076c1de796db21c26829f5da08d27cbda3f45a8f4012",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_023/data.npz",
+    "bytes": 63468481,
+    "sha256": "a9fcbcc154ee5c371afbbf8e302ecabc20be0b0380a1fe05767b074e8f789135",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_024/data.npz",
+    "bytes": 72828203,
+    "sha256": "9129cb3bc211d4e74617f9f1afb7f90a985f3fd836d0b57ce2d22e4c5ed646d4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_025/data.npz",
+    "bytes": 58095808,
+    "sha256": "d3630de691fec6344d4cb59f775636afca593d061596319580ba0fdefe9fd717",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_026/data.npz",
+    "bytes": 52989501,
+    "sha256": "6e1fc3029e15af88d6384a526d89a67da2803b8335be99272474b0ca4fdfc02d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_027/data.npz",
+    "bytes": 62778160,
+    "sha256": "5d5a7c258ea2f06268335d34aefc0b9e157d1ac6d31a5b2aa954000a7788f0f8",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_028/data.npz",
+    "bytes": 55189524,
+    "sha256": "0d5b466c36fe65cd8e47d0f4624cb8ae2cd4fb14f3604e23c480c1da59758949",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_029/data.npz",
+    "bytes": 73625170,
+    "sha256": "1fb1e962e4f25c71d819e245b607568fa75ea900842ec814873af60609ad286f",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_030/data.npz",
+    "bytes": 62702010,
+    "sha256": "598cafb891284ce8679d8677ee955ec36baf4208ca6070445e6d6c3221743abc",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_031/data.npz",
+    "bytes": 71422015,
+    "sha256": "30a8bbbb09acfb9e4edad018a6ead4856291cba154bf63e883d66fb6630a38f9",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_032/data.npz",
+    "bytes": 61534318,
+    "sha256": "509e5069c9515f485230e64dc5c13a2c9bb0eb6e84581d1301d6147ec3281cb4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_033/data.npz",
+    "bytes": 62489762,
+    "sha256": "287fea7eb4734dfa0ce8b4c96967bbb2b1982757366d9af97305ee2e5ef8867d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_034/data.npz",
+    "bytes": 66877824,
+    "sha256": "c10da92066ca077920456579ab23d19a281fc62508d41c4de37b42f00f188fee",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_035/data.npz",
+    "bytes": 61961364,
+    "sha256": "b980d94394cba7ffb126b30e4e5d9a74dcc789e0c18bed32efb6147e4148fef0",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_036/data.npz",
+    "bytes": 61683641,
+    "sha256": "5f2b67529d00682f14cd26e05c5dd854b392968a0cce8566b282240be8c85bee",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_037/data.npz",
+    "bytes": 57550644,
+    "sha256": "377bd3cc9df5df50a2799ae15c88d6d5d8538bc7d027d0bc2beaec765640cde7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_038/data.npz",
+    "bytes": 64200244,
+    "sha256": "473bb14535e21bf0bb77ae85cb0787ecaa9cf784ce6fd6044abd16e73f577b8e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_039/data.npz",
+    "bytes": 67170345,
+    "sha256": "75516857f551431f8cc0741b4fa794314363e11e0fe1cf2518b5542c635406b3",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_040/data.npz",
+    "bytes": 55117119,
+    "sha256": "cb7971cd412efab2eebd3224065f1c41dc82d7884ef872b53631960c555d9f38",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_041/data.npz",
+    "bytes": 57914740,
+    "sha256": "cb693771f627448bbb95c16158de335581d020af1c71af12b79d890a10d4b742",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_042/data.npz",
+    "bytes": 64766030,
+    "sha256": "fdd2c28811c4deb430d72a4b653f4246a9449ae5c9b65f86826f9fb885fab0a7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_043/data.npz",
+    "bytes": 61122807,
+    "sha256": "9f0223cb7c9c1703c6003ece6b6f63d5c47b278c816a013cc8766d09fad2cf97",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_044/data.npz",
+    "bytes": 61333106,
+    "sha256": "2f83504ba7b7af08de711b8ab5c832df7287ab18f865e6e850adc0bcee80ba10",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_045/data.npz",
+    "bytes": 58313128,
+    "sha256": "a2402d4dec22e344d0068483e1fa5e9de409cb7c9ba43f8ae282c35e06e69f52",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_046/data.npz",
+    "bytes": 71999695,
+    "sha256": "36f5a30ab1c127d816f29aeb20ec7d20f4c8661374223cd96b6a936622f22c64",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_047/data.npz",
+    "bytes": 80692183,
+    "sha256": "78ed2e4e6191de7f332975b8d3c47eeaa73e5d55a030e1f0c5f03940f26a5a30",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_048/data.npz",
+    "bytes": 61714567,
+    "sha256": "ac047c4e0b32fa0a760579fe74a1a77a2e2486bfd4fc191d6417305302db33ed",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/episode_049/data.npz",
+    "bytes": 59434569,
+    "sha256": "55b045f74a8535096427d1dc5db89f602d5b4b09013b9c69534d1c4fd931ce82",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket/metadata.json",
+    "bytes": 46871,
+    "sha256": "906103e7fbe0342d4f3e7e2752a1f80172d8c0d1bafea2f2709579919e2be6f9",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/_SUCCESS",
+    "bytes": 3,
+    "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_001/data.npz",
+    "bytes": 49704056,
+    "sha256": "225ef577420baa9ce3caefb9af4b59c5ec0bffe8c1c8e166b10707e6aec578d0",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_002/data.npz",
+    "bytes": 49189034,
+    "sha256": "1f469e429824bc3e39b13f840b06da2185fc96939889f55caefc603cc52c7652",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_003/data.npz",
+    "bytes": 41982957,
+    "sha256": "dfba324ca2224c86575272e6d16e1c095f1c1f9ceb0d1ce40a72f8840ee9fdb4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_004/data.npz",
+    "bytes": 44797504,
+    "sha256": "f70a3b3056c05fdba5f8517640935a7e3a97437b132d99969a23ae3434721a21",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_005/data.npz",
+    "bytes": 44557199,
+    "sha256": "94388d2f9f1555be6177e5ac5fe557dffbcec50ccfb82d99073b076bf61d5953",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_006/data.npz",
+    "bytes": 44397021,
+    "sha256": "f02cf18123de2b8c45b33f7133ebbe3deacc62d481f5dc0fc8bc606005894bb5",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_007/data.npz",
+    "bytes": 48890445,
+    "sha256": "24a8e59cff2f8fdfe36fb673f40b697ea1f91588c4ce27f3d6f100bf0a53139d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_008/data.npz",
+    "bytes": 45111513,
+    "sha256": "384825b4a014bf01f7bfe291e2b8e6ec956204cef7dd67d1b249df9b1285b6f6",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_009/data.npz",
+    "bytes": 43817462,
+    "sha256": "8866fc22e019f3ccfb5cf6f3189ac245af9844088388b7da908a799798dd7399",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_010/data.npz",
+    "bytes": 42580468,
+    "sha256": "41f41f897755620f53e3e0bc3b4782f9f74cc4438d8a79afcc1f1a26ccddafa7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_011/data.npz",
+    "bytes": 39131205,
+    "sha256": "e56d73d71062b3ff4b426fcebee80f9e2bbc7a8a2ecb93ea2e634de89f6a6175",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_012/data.npz",
+    "bytes": 50450574,
+    "sha256": "f1c3960c29938b136bdb1e4903daea0e1edaa8bb95f03d1032787d1d09c48ea6",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_013/data.npz",
+    "bytes": 48691744,
+    "sha256": "83d20cd5f11fab0be77cc06f596d41a32e31f7fe3e01bd2da7295a835797ef68",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_014/data.npz",
+    "bytes": 45056343,
+    "sha256": "9ee59bb20e8f502326f9ffbb9877e656aa635055c8fcc23d19b344285807f6f1",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_015/data.npz",
+    "bytes": 54730456,
+    "sha256": "8b0c0fb0b05469e54c0c2a23596a67cfa12c48baf4331831decefb0150ecde41",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_016/data.npz",
+    "bytes": 41799900,
+    "sha256": "ccfcacc1cccbd18ddc2ba015e3ff2f333099ee2209c1c810fe1b0017ab0d2821",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_017/data.npz",
+    "bytes": 66242703,
+    "sha256": "3040433a70aa4c64f3b5dc576e791cc84c586d6ab39ba4380eed635d93f1f458",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_018/data.npz",
+    "bytes": 43729267,
+    "sha256": "04acf4743f271b4533a8724b80669eaef627f28283822b9db7a3619f509156ae",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_019/data.npz",
+    "bytes": 38729465,
+    "sha256": "0755d69e58da4bac5318669ce3c1bc0e3c9e81d617571e92fbf928b03485abd1",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_020/data.npz",
+    "bytes": 48123285,
+    "sha256": "00cdf297947f871888aa024d5bab3bca5c35193cb4ffb9f7790bad7d96964d12",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_021/data.npz",
+    "bytes": 43442224,
+    "sha256": "8e51db4b5a53c7de55da15076de9040bcb564dd55003a700db2c7ec54bbf16a7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_022/data.npz",
+    "bytes": 47825426,
+    "sha256": "ce10d815ee59b7895f9788331a44b4d2d613076d5aeeb42ac05406a8bc605b97",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_023/data.npz",
+    "bytes": 46653133,
+    "sha256": "fd865003827d4377ac62cbec4fe9ed71887420d7a418786bb804e94711b645d4",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_024/data.npz",
+    "bytes": 43273898,
+    "sha256": "2356526bd8347d35b19b75307a0fb7a6d8f0039aeb68b4faff5872d5123390c3",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_025/data.npz",
+    "bytes": 46700541,
+    "sha256": "b80f8348dfebab9f5c1e824f15b435262db73f2d64be214e0cc837669c67ff07",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_026/data.npz",
+    "bytes": 56139154,
+    "sha256": "fd0d9d7e16c9aa32c7cf79067414afa520def1db4436c06a7bb6b26d3b4ef70a",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_027/data.npz",
+    "bytes": 49764149,
+    "sha256": "0e92db42eebfbf0fa603ebbf118c41eb9980ce637d8f835aebc6f491681896bf",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_028/data.npz",
+    "bytes": 42841234,
+    "sha256": "0b5ad56fe138673303f77a5447e7bdd2470c19f886b88bd4ebe9312e87aec4a9",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_029/data.npz",
+    "bytes": 44137931,
+    "sha256": "1ed897958d0ded59eb90c75562ba4389a7d095151a470af2ac94b4235e880f25",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_030/data.npz",
+    "bytes": 46628190,
+    "sha256": "8ff322690dcd1a8ae51b1afe5c6301e028408549464c8164ca96f48ec408b3de",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_031/data.npz",
+    "bytes": 48684164,
+    "sha256": "0798a2ada98d764f79fde977949585a27b411c744e72140ecf5d37ab71ef8240",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_032/data.npz",
+    "bytes": 48252896,
+    "sha256": "8d5d670e9c6e26668484e94cecf8532cdf742fec5b0573e7e3f9a4eeba80cbdf",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_033/data.npz",
+    "bytes": 49021858,
+    "sha256": "78a493139029a73e4791d2868998c7fbb5a38621fce3c36d35ddb11ca8f3fe56",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_034/data.npz",
+    "bytes": 52370101,
+    "sha256": "e03391606e6ec55a6d8be601d844685d8ca1248b341643c0cd90fe38e6240d62",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_035/data.npz",
+    "bytes": 56670941,
+    "sha256": "e3d26213ffdd4c51c95e335a8fcdeeb3ed8b421a5702bbe3cc2b6ab55b939a4a",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_036/data.npz",
+    "bytes": 48589241,
+    "sha256": "07c43e00a335326c2c20f4c5d2e887de82c4b1ef3dfda7b3b63b9307c159981d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_037/data.npz",
+    "bytes": 52592380,
+    "sha256": "b5197c5fbe1aa3d6854e9fc00dff555f640f9abbb3565c2cf14c1aebbca5c20d",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_038/data.npz",
+    "bytes": 45385968,
+    "sha256": "53284ff8771a2cd36b728b63b00dd9faa58cdd5fce78edb5f663145e58d3c8d1",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_039/data.npz",
+    "bytes": 46564746,
+    "sha256": "e29155b90e9c7b0e02a7c0daf667219b2afa7e6faedf224aef2f72a3f9ba390e",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_040/data.npz",
+    "bytes": 43635910,
+    "sha256": "df380f2071e8fd0556a75ee4f192a1a03194774a81fd900a5f1e8ee6c0f89334",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_041/data.npz",
+    "bytes": 40755801,
+    "sha256": "9e6283d4a207b632b9174533c467ffc690cf71ee6287100578f712ba254adeba",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_042/data.npz",
+    "bytes": 56161723,
+    "sha256": "9aac94c37b255b87e4c713ddaeda88a9182823810c00c9a3b31b720058314623",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_043/data.npz",
+    "bytes": 37829740,
+    "sha256": "0240d3c62ab0b3dc226a1b73630fe3bb1e05af89686ed79970bcca515f3c9acc",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_044/data.npz",
+    "bytes": 39096629,
+    "sha256": "46581feb9e7d3a5b5be726eba22623694e7c93ae808f5cb9822a02f9b3d68bbf",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_045/data.npz",
+    "bytes": 50378650,
+    "sha256": "fca3c63b8ead9164fbb85f0741a02534354d2d701ca249f8d5b6c2cf03df5c22",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_046/data.npz",
+    "bytes": 47493346,
+    "sha256": "e6edabb3661824bfe871831e6c6786810327e4ddad65d0ca1d1bffe40d61bfc7",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_047/data.npz",
+    "bytes": 48247425,
+    "sha256": "0c8de55d2785c513ca00e5fa7f3c6b1ec8e898238c64f2a277e86e7b810f2abf",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_048/data.npz",
+    "bytes": 51747582,
+    "sha256": "144a186859968ebf90668552f107bc8d650b3e88828bc8faa7391ddc78011537",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/episode_049/data.npz",
+    "bytes": 52433011,
+    "sha256": "80215e7f362dd3e55af481a82713ad8ef8a8ad9d5015108128adba66eb18fbfb",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  },
+  {
+    "path": "/root/data/datasets/LIBERO-3D-selected/libero_spatial/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate/metadata.json",
+    "bytes": 46859,
+    "sha256": "fc3f215daf3adac8f4c88116f703cdd63f1f389025b3b4c9f4f77daf0148c410",
+    "revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+  }
+]

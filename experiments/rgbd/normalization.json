@@ -1,0 +1,35 @@
+{
+  "state": {
+    "min": [
+      -0.4813061058521271,
+      -0.2732004225254059,
+      0.04186880588531494,
+      1.7007426023483276,
+      -2.5748825073242188,
+      -0.7285407185554504,
+      0.0008922666311264038,
+      -0.04119626805186272
+    ],
+    "max": [
+      0.12234262377023697,
+      0.30057045817375183,
+      1.3241925239562988,
+      3.2684240341186523,
+      0.4655119776725769,
+      0.560667872428894,
+      0.040526192635297775,
+      0.00019922693900298327
+    ],
+    "semantics": [
+      "eef_pos_x_y_z",
+      "eef_axis_angle_x_y_z",
+      "gripper_qpos_2"
+    ]
+  },
+  "action": {
+    "normalization": "identity_native_libero_minus1_plus1",
+    "gripper": "-1 open, +1 close; requires source confirmation"
+  },
+  "fit_episodes": "0..44 in each task (180 trajectories); reused unchanged for all E0/E1/E2, smoke and full training",
+  "dataset_revision": "373fa69a3d88bd0461ece7210bdd61f10598145f"
+}

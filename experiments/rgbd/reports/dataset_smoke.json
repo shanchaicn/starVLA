@@ -1,0 +1,187 @@
+{
+  "status": "pass",
+  "real_episodes": 20,
+  "depth_encoding": "meters assumed for interface diagnostic ONLY; not a verified unit claim",
+  "samples": [
+    {
+      "episode_id": 0,
+      "task_id": 0,
+      "instruction": "pick up the black bowl from table center and place it on the plate",
+      "depth_range": [
+        0.041782673448324203,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 1,
+      "task_id": 0,
+      "instruction": "pick up the black bowl from table center and place it on the plate",
+      "depth_range": [
+        0.04178263247013092,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 2,
+      "task_id": 0,
+      "instruction": "pick up the black bowl from table center and place it on the plate",
+      "depth_range": [
+        0.04178265482187271,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 3,
+      "task_id": 0,
+      "instruction": "pick up the black bowl from table center and place it on the plate",
+      "depth_range": [
+        0.04178261384367943,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 4,
+      "task_id": 0,
+      "instruction": "pick up the black bowl from table center and place it on the plate",
+      "depth_range": [
+        0.041782692074775696,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 5,
+      "task_id": 1,
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "depth_range": [
+        0.04178270325064659,
+        2.792250394821167
+      ]
+    },
+    {
+      "episode_id": 6,
+      "task_id": 1,
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "depth_range": [
+        0.041782673448324203,
+        2.792250394821167
+      ]
+    },
+    {
+      "episode_id": 7,
+      "task_id": 1,
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "depth_range": [
+        0.041782673448324203,
+        2.792250394821167
+      ]
+    },
+    {
+      "episode_id": 8,
+      "task_id": 1,
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "depth_range": [
+        0.041782740503549576,
+        2.792250394821167
+      ]
+    },
+    {
+      "episode_id": 9,
+      "task_id": 1,
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "depth_range": [
+        0.04178270325064659,
+        2.792250394821167
+      ]
+    },
+    {
+      "episode_id": 10,
+      "task_id": 2,
+      "instruction": "put the bowl on the plate",
+      "depth_range": [
+        0.041782770305871964,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 11,
+      "task_id": 2,
+      "instruction": "put the bowl on the plate",
+      "depth_range": [
+        0.04178281128406525,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 12,
+      "task_id": 2,
+      "instruction": "put the bowl on the plate",
+      "depth_range": [
+        0.04178273305296898,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 13,
+      "task_id": 2,
+      "instruction": "put the bowl on the plate",
+      "depth_range": [
+        0.041782721877098083,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 14,
+      "task_id": 2,
+      "instruction": "put the bowl on the plate",
+      "depth_range": [
+        0.041782673448324203,
+        3.0689144134521484
+      ]
+    },
+    {
+      "episode_id": 15,
+      "task_id": 3,
+      "instruction": "pick up the book and place it in the back compartment of the caddy",
+      "depth_range": [
+        0.04178265482187271,
+        2.8689827919006348
+      ]
+    },
+    {
+      "episode_id": 16,
+      "task_id": 3,
+      "instruction": "pick up the book and place it in the back compartment of the caddy",
+      "depth_range": [
+        0.041782643646001816,
+        2.8689827919006348
+      ]
+    },
+    {
+      "episode_id": 17,
+      "task_id": 3,
+      "instruction": "pick up the book and place it in the back compartment of the caddy",
+      "depth_range": [
+        0.04178273305296898,
+        2.8689827919006348
+      ]
+    },
+    {
+      "episode_id": 18,
+      "task_id": 3,
+      "instruction": "pick up the book and place it in the back compartment of the caddy",
+      "depth_range": [
+        0.04178271442651749,
+        2.8689827919006348
+      ]
+    },
+    {
+      "episode_id": 19,
+      "task_id": 3,
+      "instruction": "pick up the book and place it in the back compartment of the caddy",
+      "depth_range": [
+        0.04178263247013092,
+        2.8689827919006348
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "data_mount": true,
+  "free_bytes": 295539081216,
+  "torch": "2.6.0+cu124",
+  "cuda_runtime": "12.4",
+  "cuda_available": true,
+  "cuda_devices": 1,
+  "cgroup_memory_max": "53687091200",
+  "cgroup_cpu_max": "300000 100000",
+  "download_manifest_present": true,
+  "download_files": 225,
+  "npz_episodes": 200,
+  "file_size_mismatches": [],
+  "qwen_weight_index_complete": true,
+  "contract": {
+    "alignment_status": "aligned",
+    "depth_encoding": "meters",
+    "depth_units_verified": true,
+    "temporal_alignment_verified": true,
+    "action_semantics_verified": true,
+    "intrinsics_verified": true,
+    "evidence": "Verified against the four official source HDF5 tasks by replaying saved MuJoCo states. RGB-D/calibration at index t are pre-action and align with action[t]; copied 8-D state[t] is post-action, so the adapter uses state[t-1] and drops frame zero. Both simulator cameras require flip_y. Official get_real_depth_map output matches stored metric depth; K/T match the replayed simulator. PandaGripper source defines -1 open and +1 closed.",
+    "source_revision": "373fa69a3d88bd0461ece7210bdd61f10598145f",
+    "intrinsics_numerically_match_simulator": true,
+    "static_extrinsics_numerically_match_simulator": true,
+    "simulation_interface_verified": true,
+    "simulation_orientation": {
+      "agentview": "flip_y",
+      "wrist": "flip_y"
+    },
+    "temporal_indexing": {
+      "rgb_depth_calibration_action": "index t at saved pre-action MuJoCo state",
+      "processed_state": "index t is post-action; use state[t-1] with visual/action index t",
+      "first_usable_visual_action_index": 1
+    },
+    "evidence_reports": [
+      "reports/data_audit_all.json",
+      "reports/simulator_cpu.json",
+      "reports/contract_verification.json",
+      "ALIGNMENT_REPORT.md"
+    ]
+  },
+  "blockers": [],
+  "starvla_commit": "985c2238627481f25476fbee478083812dd82a21",
+  "lingbot_commit": "f3a237e434ae987bc38281476d6cfb5df3e4d739",
+  "libero_commit": "8f1084e3132a39270c3a13ebe37270a43ece2a01"
+}

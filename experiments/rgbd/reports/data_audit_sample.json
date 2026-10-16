@@ -1,0 +1,534 @@
+{
+  "alignment_status": "alignment_unknown",
+  "tasks": [
+    {
+      "suite": "libero_spatial",
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "episodes": [
+        {
+          "episode": 0,
+          "fields": {
+            "state": {
+              "shape": [
+                103,
+                8
+              ],
+              "dtype": "float32",
+              "min": -0.5694326162338257,
+              "max": 3.1761739253997803,
+              "nonfinite": 0
+            },
+            "actions": {
+              "shape": [
+                103,
+                7
+              ],
+              "dtype": "float32",
+              "min": -1.0,
+              "max": 1.0,
+              "nonfinite": 0
+            },
+            "agentview_depth": {
+              "shape": [
+                103,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.6297898292541504,
+              "max": 3.0689144134521484,
+              "nonfinite": 0
+            },
+            "wrist_depth": {
+              "shape": [
+                103,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.041782427579164505,
+              "max": 0.3797036409378052,
+              "nonfinite": 0
+            },
+            "wrist_intrinsic": {
+              "shape": [
+                103,
+                3,
+                3
+              ],
+              "dtype": "float32",
+              "min": 0.0,
+              "max": 166.81285095214844,
+              "nonfinite": 0
+            },
+            "wrist_extrinsic": {
+              "shape": [
+                103,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "min": -0.9999954700469971,
+              "max": 1.2675247192382812,
+              "nonfinite": 0
+            },
+            "wrist_segmentation": {
+              "shape": [
+                103,
+                256,
+                256,
+                2
+              ],
+              "dtype": "int32",
+              "min": 5.0,
+              "max": 252.0,
+              "nonfinite": 0
+            },
+            "agentview_rgb": {
+              "shape": [
+                103,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 255.0,
+              "nonfinite": 0
+            },
+            "wrist_rgb": {
+              "shape": [
+                103,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 250.0,
+              "nonfinite": 0
+            }
+          }
+        }
+      ],
+      "diagnostics": {
+        "agentview": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9887091852303936,
+            "flip_y": 0.3170582850167836,
+            "flip_x": 0.7033872444308819,
+            "rotate_180": 0.2889838266707354
+          },
+          "zero_depth": 0
+        },
+        "wrist": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9646017699115044,
+            "flip_y": 0.2593835825450107,
+            "flip_x": 0.5523344522429051,
+            "rotate_180": 0.27189502593835824
+          },
+          "zero_depth": 0
+        }
+      }
+    },
+    {
+      "suite": "libero_object",
+      "task_name": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+      "episodes": [
+        {
+          "episode": 0,
+          "fields": {
+            "state": {
+              "shape": [
+                148,
+                8
+              ],
+              "dtype": "float32",
+              "min": -0.25066089630126953,
+              "max": 3.172713041305542,
+              "nonfinite": 0
+            },
+            "actions": {
+              "shape": [
+                148,
+                7
+              ],
+              "dtype": "float32",
+              "min": -1.0,
+              "max": 1.0,
+              "nonfinite": 0
+            },
+            "agentview_depth": {
+              "shape": [
+                148,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.7386360764503479,
+              "max": 2.792250394821167,
+              "nonfinite": 0
+            },
+            "wrist_depth": {
+              "shape": [
+                148,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.04178265482187271,
+              "max": 0.48886123299598694,
+              "nonfinite": 0
+            },
+            "wrist_intrinsic": {
+              "shape": [
+                148,
+                3,
+                3
+              ],
+              "dtype": "float32",
+              "min": 0.0,
+              "max": 166.81285095214844,
+              "nonfinite": 0
+            },
+            "wrist_extrinsic": {
+              "shape": [
+                148,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "min": -0.9999361634254456,
+              "max": 1.0,
+              "nonfinite": 0
+            },
+            "wrist_segmentation": {
+              "shape": [
+                148,
+                256,
+                256,
+                2
+              ],
+              "dtype": "int32",
+              "min": 5.0,
+              "max": 149.0,
+              "nonfinite": 0
+            },
+            "agentview_rgb": {
+              "shape": [
+                148,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 255.0,
+              "nonfinite": 0
+            },
+            "wrist_rgb": {
+              "shape": [
+                148,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 255.0,
+              "nonfinite": 0
+            }
+          }
+        }
+      ],
+      "diagnostics": {
+        "agentview": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.7440590879897239,
+            "flip_y": 0.376043673731535,
+            "flip_x": 0.45022479126525367,
+            "rotate_180": 0.2758509955041747
+          },
+          "zero_depth": 0
+        },
+        "wrist": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9215746109246262,
+            "flip_y": 0.2325297528227037,
+            "flip_x": 0.4476655477570949,
+            "rotate_180": 0.27494659749771133
+          },
+          "zero_depth": 0
+        }
+      }
+    },
+    {
+      "suite": "libero_goal",
+      "task_name": "put_the_bowl_on_the_plate",
+      "episodes": [
+        {
+          "episode": 0,
+          "fields": {
+            "state": {
+              "shape": [
+                90,
+                8
+              ],
+              "dtype": "float32",
+              "min": -0.3530794382095337,
+              "max": 3.138291120529175,
+              "nonfinite": 0
+            },
+            "actions": {
+              "shape": [
+                90,
+                7
+              ],
+              "dtype": "float32",
+              "min": -1.0,
+              "max": 1.0,
+              "nonfinite": 0
+            },
+            "agentview_depth": {
+              "shape": [
+                90,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.6302357912063599,
+              "max": 3.0689144134521484,
+              "nonfinite": 0
+            },
+            "wrist_depth": {
+              "shape": [
+                90,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.04178236797451973,
+              "max": 0.36843055486679077,
+              "nonfinite": 0
+            },
+            "wrist_intrinsic": {
+              "shape": [
+                90,
+                3,
+                3
+              ],
+              "dtype": "float32",
+              "min": 0.0,
+              "max": 166.81285095214844,
+              "nonfinite": 0
+            },
+            "wrist_extrinsic": {
+              "shape": [
+                90,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "min": -0.9999203085899353,
+              "max": 1.247637391090393,
+              "nonfinite": 0
+            },
+            "wrist_segmentation": {
+              "shape": [
+                90,
+                256,
+                256,
+                2
+              ],
+              "dtype": "int32",
+              "min": 5.0,
+              "max": 234.0,
+              "nonfinite": 0
+            },
+            "agentview_rgb": {
+              "shape": [
+                90,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 255.0,
+              "nonfinite": 0
+            },
+            "wrist_rgb": {
+              "shape": [
+                90,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 250.0,
+              "nonfinite": 0
+            }
+          }
+        }
+      ],
+      "diagnostics": {
+        "agentview": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9823008849557522,
+            "flip_y": 0.37229173024107415,
+            "flip_x": 0.5569118095819346,
+            "rotate_180": 0.3042416844675008
+          },
+          "zero_depth": 0
+        },
+        "wrist": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9261519682636558,
+            "flip_y": 0.28532194079951173,
+            "flip_x": 0.45041196216051266,
+            "rotate_180": 0.2651815685077815
+          },
+          "zero_depth": 0
+        }
+      }
+    },
+    {
+      "suite": "libero_10",
+      "task_name": "STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy",
+      "episodes": [
+        {
+          "episode": 0,
+          "fields": {
+            "state": {
+              "shape": [
+                234,
+                8
+              ],
+              "dtype": "float32",
+              "min": -2.4102976322174072,
+              "max": 3.1533901691436768,
+              "nonfinite": 0
+            },
+            "actions": {
+              "shape": [
+                234,
+                7
+              ],
+              "dtype": "float32",
+              "min": -1.0,
+              "max": 1.0,
+              "nonfinite": 0
+            },
+            "agentview_depth": {
+              "shape": [
+                234,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.5457675457000732,
+              "max": 2.8689827919006348,
+              "nonfinite": 0
+            },
+            "wrist_depth": {
+              "shape": [
+                234,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "min": 0.041782379150390625,
+              "max": 1.543036699295044,
+              "nonfinite": 0
+            },
+            "wrist_intrinsic": {
+              "shape": [
+                234,
+                3,
+                3
+              ],
+              "dtype": "float32",
+              "min": 0.0,
+              "max": 166.81285095214844,
+              "nonfinite": 0
+            },
+            "wrist_extrinsic": {
+              "shape": [
+                234,
+                4,
+                4
+              ],
+              "dtype": "float32",
+              "min": -0.9999922513961792,
+              "max": 1.4245558977127075,
+              "nonfinite": 0
+            },
+            "wrist_segmentation": {
+              "shape": [
+                234,
+                256,
+                256,
+                2
+              ],
+              "dtype": "int32",
+              "min": 0.0,
+              "max": 134.0,
+              "nonfinite": 0
+            },
+            "agentview_rgb": {
+              "shape": [
+                234,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 243.0,
+              "nonfinite": 0
+            },
+            "wrist_rgb": {
+              "shape": [
+                234,
+                256,
+                256,
+                3
+              ],
+              "dtype": "uint8",
+              "min": 0.0,
+              "max": 247.0,
+              "nonfinite": 0
+            }
+          }
+        }
+      ],
+      "diagnostics": {
+        "agentview": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9084528532194079,
+            "flip_y": 0.15440952090326518,
+            "flip_x": 0.6274031126029905,
+            "rotate_180": 0.1315227342081172
+          },
+          "zero_depth": 0
+        },
+        "wrist": {
+          "depth_edge_rgb_overlap": {
+            "identity": 0.9377479401891974,
+            "flip_y": 0.32682331400671344,
+            "flip_x": 0.588037839487336,
+            "rotate_180": 0.43698504729935916
+          },
+          "zero_depth": 0
+        }
+      }
+    }
+  ],
+  "notes": [
+    "Edge overlap is diagnostic, not proof of calibration, depth scale, or synchronization.",
+    "Public repository includes no data-generation source. Temporal and unit semantics remain unverified.",
+    "Test all RGB/depth orientation hypotheses; no automatic registration based on edge score."
+  ]
+}

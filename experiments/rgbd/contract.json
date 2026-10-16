@@ -1,0 +1,28 @@
+{
+  "alignment_status": "aligned",
+  "depth_encoding": "meters",
+  "depth_units_verified": true,
+  "temporal_alignment_verified": true,
+  "action_semantics_verified": true,
+  "intrinsics_verified": true,
+  "evidence": "Verified against the four official source HDF5 tasks by replaying saved MuJoCo states. RGB-D/calibration at index t are pre-action and align with action[t]; copied 8-D state[t] is post-action, so the adapter uses state[t-1] and drops frame zero. Both simulator cameras require flip_y. Official get_real_depth_map output matches stored metric depth; K/T match the replayed simulator. PandaGripper source defines -1 open and +1 closed.",
+  "source_revision": "373fa69a3d88bd0461ece7210bdd61f10598145f",
+  "intrinsics_numerically_match_simulator": true,
+  "static_extrinsics_numerically_match_simulator": true,
+  "simulation_interface_verified": true,
+  "simulation_orientation": {
+    "agentview": "flip_y",
+    "wrist": "flip_y"
+  },
+  "temporal_indexing": {
+    "rgb_depth_calibration_action": "index t at saved pre-action MuJoCo state",
+    "processed_state": "index t is post-action; use state[t-1] with visual/action index t",
+    "first_usable_visual_action_index": 1
+  },
+  "evidence_reports": [
+    "reports/data_audit_all.json",
+    "reports/simulator_cpu.json",
+    "reports/contract_verification.json",
+    "ALIGNMENT_REPORT.md"
+  ]
+}
