@@ -210,6 +210,7 @@ def _dedupe_paths(paths: Iterable[Path]) -> list[Path]:
 def resolve_vlm_lora_adapter_dir(
     pretrained_checkpoint: str | Path,
     adapter_dir_name: str = DEFAULT_ADAPTER_DIR_NAME,
+    adapter_name: str = "default",
 ) -> Path | None:
     """Locate the PEFT adapter folder saved alongside supported checkpoints.
 
@@ -227,7 +228,9 @@ def resolve_vlm_lora_adapter_dir(
         or ckpt.name in {adapter_dir_name, DEFAULT_ADAPTER_DIR_NAME, LEGACY_ADAPTER_DIR_NAME}
         or (ckpt / "adapter_config.json").is_file()
     ):
-        return ckpt
+        resolved = _resolve_peft_adapter_leaf(ckpt, adapter_name)
+        if resolved is not None:
+            return resolved
 
     if ckpt.is_dir():
         candidates.extend(
@@ -268,8 +271,29 @@ def resolve_vlm_lora_adapter_dir(
     )
 
     for candidate in _dedupe_paths(candidates):
-        if candidate.is_dir():
-            return candidate
+        resolved = _resolve_peft_adapter_leaf(candidate, adapter_name)
+        if resolved is not None:
+            return resolved
+    return None
+
+
+def _resolve_peft_adapter_leaf(candidate: Path, adapter_name: str) -> Path | None:
+    """Return the directory that directly contains PEFT adapter_config.json."""
+
+    if not candidate.is_dir():
+        return None
+    if (candidate / "adapter_config.json").is_file():
+        return candidate
+
+    named_candidate = candidate / adapter_name
+    if (named_candidate / "adapter_config.json").is_file():
+        return named_candidate
+
+    # Older/custom runs may have changed adapter_name after the checkpoint was
+    # written. Accept a single unambiguous PEFT child instead of the outer dir.
+    adapter_children = [path.parent for path in candidate.glob("*/adapter_config.json")]
+    if len(adapter_children) == 1:
+        return adapter_children[0]
     return None
 
 

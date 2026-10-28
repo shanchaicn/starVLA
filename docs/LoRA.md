@@ -104,7 +104,7 @@ name.
 Small Robotwin smoke example:
 
 ```bash
-cd /home/hfang/code/starvla-lora
+cd /root/data/starVLA
 export PYTHONPATH="$PWD"
 export WANDB_MODE=disabled
 
@@ -122,7 +122,7 @@ export VLM_LORA_DROPOUT=0.0
 export VLM_LORA_TARGET_MODULES=q_proj,v_proj
 export VLM_LORA_LR=2.0e-4
 
-bash examples/Robotwin/train_files/run_robotwin_train.sh
+bash examples/simBenchmarks/Robotwin/train_files/run_robotwin_train.sh
 ```
 
 The command still needs valid local model and dataset paths. On Ascend/NPU, a
@@ -159,7 +159,10 @@ also saved:
 - `final_model/model.safetensors` -> `final_model/vlm_lora_adapter/`
 
 Set `save_adapter_only: true` to skip full StarVLA model weights and write only
-the PEFT adapter directories.
+the PEFT adapter directories. This also omits the Action Head and projectors.
+For VLM LoRA + fully trainable Action Head, keep the default
+`save_adapter_only: false`; the full checkpoint is the resumable artifact and
+the sibling adapter is a convenient VLM-only export.
 
 The loader prefers `vlm_lora_adapter` and falls back to legacy
 `qwen_lora_adapter` directories.

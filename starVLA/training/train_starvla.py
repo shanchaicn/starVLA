@@ -92,7 +92,10 @@ def _strip_lora_module_from_freeze_modules(freeze_modules, module_path):
         pattern = pattern.strip()
         if not pattern:
             continue
-        if pattern == top_level_module or pattern.startswith(f"{top_level_module}."):
+        # Remove only patterns that freeze the whole interface/backbone. Keep
+        # narrower patterns (for example ``qwen_vl_interface.model.visual``)
+        # so users can still intentionally freeze a nested visual branch.
+        if pattern in {top_level_module, module_path}:
             continue
         keep_patterns.append(pattern)
     return ",".join(keep_patterns)
@@ -135,6 +138,7 @@ class VLATrainer(TrainerUtils):
         self.accelerator = accelerator
         self.lora_settings = get_lora_settings(cfg)
         self._deferred_lora_checkpoint_load = None
+        self._deferred_lora_state_dict = None
 
         self.completed_steps = 0
         self.total_batch_size = self._calculate_total_batch_size()
@@ -165,6 +169,18 @@ class VLATrainer(TrainerUtils):
             self.config,
             logger=logger,
         )
+        if self.lora_settings.enabled and self.lora_settings.save_adapter_only:
+            non_vlm_trainable = [
+                name
+                for name, param in self.model.named_parameters()
+                if param.requires_grad and not name.startswith(f"{self.lora_settings.module_path}.")
+            ]
+            if non_vlm_trainable:
+                logger.warning(
+                    "LoRA save_adapter_only=true will not save trainable non-VLM modules "
+                    f"such as the action head ({len(non_vlm_trainable)} parameter tensors). "
+                    "Use save_adapter_only=false for VLM LoRA + full Action Head training."
+                )
         self._load_deferred_lora_checkpoint()
         if self.lora_settings.enabled:
             optimizer_freeze_modules = _strip_lora_module_from_freeze_modules(
@@ -303,21 +319,61 @@ class VLATrainer(TrainerUtils):
         if not settings.enabled:
             return False
 
-        adapter_dir = resolve_vlm_lora_adapter_dir(checkpoint_path, adapter_dir_name=settings.adapter_dir_name)
-        if adapter_dir is None or settings.adapter_path:
-            return False
+        adapter_dir = resolve_vlm_lora_adapter_dir(
+            checkpoint_path,
+            adapter_dir_name=settings.adapter_dir_name,
+            adapter_name=settings.adapter_name,
+        )
+        if adapter_dir is not None:
+            # A checkpoint-local adapter must win over the original
+            # adapter_path; otherwise resume silently resets LoRA progress.
+            inject_lora_adapter_path(self.config, adapter_dir, is_trainable=True)
+            checkpoint = Path(checkpoint_path)
+            adapter_only_checkpoint = checkpoint.is_dir() and (
+                checkpoint.resolve() == adapter_dir.resolve()
+                or checkpoint.resolve() == adapter_dir.parent.resolve()
+            )
+            self._deferred_lora_checkpoint_load = (
+                None if adapter_only_checkpoint else checkpoint_path,
+                reload_modules,
+            )
+            logger.info(
+                "Detected checkpoint-local VLM LoRA adapter at "
+                f"{adapter_dir}; deferring checkpoint load until after PEFT wrapping."
+            )
+            return True
 
-        inject_lora_adapter_path(self.config, adapter_dir, is_trainable=True)
-        adapter_only_checkpoint = Path(checkpoint_path).is_dir() and Path(checkpoint_path).resolve() == adapter_dir.resolve()
-        self._deferred_lora_checkpoint_load = (
-            None if adapter_only_checkpoint else checkpoint_path,
-            reload_modules,
-        )
-        logger.info(
-            "Detected sibling VLM LoRA adapter at "
-            f"{adapter_dir}; deferring checkpoint load until after PEFT wrapping."
-        )
-        return True
+        # Full checkpoints include LoRA tensors. When the sibling adapter
+        # directory was moved or deleted, inspect and retain the state dict so
+        # PEFT is still wrapped before those tensors are loaded.
+        checkpoint = Path(checkpoint_path)
+        if checkpoint.is_file():
+            state_dict = self._read_checkpoint_state_dict(checkpoint)
+            if any("lora_" in key for key in state_dict):
+                self._deferred_lora_checkpoint_load = (checkpoint_path, reload_modules)
+                self._deferred_lora_state_dict = state_dict
+                logger.info(
+                    "Detected embedded LoRA tensors without a sibling adapter; "
+                    "deferring full checkpoint load until after PEFT wrapping."
+                )
+                return True
+            # It is a regular full checkpoint. Reuse the state dict already
+            # read for inspection and load it before PEFT wrapping.
+            self.model = self.load_pretrained_state_dict(
+                self.model,
+                state_dict,
+                reload_modules=reload_modules,
+            )
+            return True
+        return False
+
+    @staticmethod
+    def _read_checkpoint_state_dict(checkpoint_path):
+        if str(checkpoint_path).endswith(".safetensors"):
+            from safetensors.torch import load_file
+
+            return load_file(str(checkpoint_path))
+        return torch.load(checkpoint_path, map_location="cpu", weights_only=True)
 
     def _load_deferred_lora_checkpoint(self):
         if self._deferred_lora_checkpoint_load is None:
@@ -329,11 +385,19 @@ class VLATrainer(TrainerUtils):
             logger.info("Loaded deferred adapter-only LoRA checkpoint after PEFT wrapping.")
             return
 
-        self.model = self.load_pretrained_backbones(
-            self.model,
-            checkpoint_path,
-            reload_modules=reload_modules,
-        )
+        if self._deferred_lora_state_dict is not None:
+            self.model = self.load_pretrained_state_dict(
+                self.model,
+                self._deferred_lora_state_dict,
+                reload_modules=reload_modules,
+            )
+            self._deferred_lora_state_dict = None
+        else:
+            self.model = self.load_pretrained_backbones(
+                self.model,
+                checkpoint_path,
+                reload_modules=reload_modules,
+            )
         self._deferred_lora_checkpoint_load = None
         logger.info(f"Loaded deferred LoRA checkpoint after PEFT wrapping: {checkpoint_path}")
 
@@ -391,7 +455,7 @@ class VLATrainer(TrainerUtils):
     def _save_lora_adapter(self, adapter_dir):
         if not self.lora_settings.enabled:
             return
-        unwrapped_model = self.accelerator.unwrap_model(self.model)
+        unwrapped_model = _unwrap_model(self.accelerator, self.model)
         save_vlm_lora_adapter(
             unwrapped_model,
             adapter_dir,

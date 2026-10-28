@@ -275,6 +275,12 @@ class TrainerUtils:
         except Exception as e:
             raise RuntimeError(f"❌ loading checkpoint failed: {e}")
 
+        return TrainerUtils.load_pretrained_state_dict(model, checkpoint, reload_modules=reload_modules)
+
+    @staticmethod
+    def load_pretrained_state_dict(model, checkpoint, reload_modules=None):
+        """Load an already materialized checkpoint mapping into a model."""
+
         loaded_modules = []
 
         if reload_modules:  # partial load
@@ -514,7 +520,7 @@ class TrainerUtils:
         # Find all checkpoints matching the naming convention. Prefer full
         # checkpoint files over same-step adapter-only LoRA directories.
         checkpoint_pattern = r"steps_(\d+)_(?:pytorch_model\.pt|model\.safetensors)$"
-        adapter_pattern = r"steps_(\d+)_(?:vlm_lora_adapter|qwen_lora_adapter)$"
+        adapter_pattern = r"steps_(\d+)_(.+)$"
         checkpoints_with_steps = []
         for entry in os.listdir(checkpoint_dir):
             entry_path = os.path.join(checkpoint_dir, entry)
@@ -524,7 +530,16 @@ class TrainerUtils:
                 continue
 
             adapter_match = re.match(adapter_pattern, entry)
-            if adapter_match and os.path.isdir(entry_path):
+            has_adapter_config = os.path.isfile(os.path.join(entry_path, "adapter_config.json"))
+            if os.path.isdir(entry_path) and not has_adapter_config:
+                try:
+                    has_adapter_config = any(
+                        os.path.isfile(os.path.join(entry_path, child, "adapter_config.json"))
+                        for child in os.listdir(entry_path)
+                    )
+                except OSError:
+                    has_adapter_config = False
+            if adapter_match and os.path.isdir(entry_path) and has_adapter_config:
                 checkpoints_with_steps.append((entry, int(adapter_match.group(1)), 0))
 
         if not checkpoints_with_steps:

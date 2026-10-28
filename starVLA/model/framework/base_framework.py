@@ -328,7 +328,13 @@ class baseframework(PreTrainedModel):
         checkpoint_keys = set(model_state_dict.keys())
         use_strict = not lora_was_enabled
         try:
-            missing_keys, unexpected_keys = FrameworkModel.load_state_dict(model_state_dict, strict=use_strict)
+            load_result = FrameworkModel.load_state_dict(model_state_dict, strict=use_strict)
+            if load_result is None:
+                # Some framework wrappers and lightweight test doubles follow
+                # the older in-place API and do not return IncompatibleKeys.
+                missing_keys, unexpected_keys = [], []
+            else:
+                missing_keys, unexpected_keys = load_result
         except RuntimeError as e:
             # must keep all keys matched
             common_keys = model_keys.intersection(checkpoint_keys)
@@ -370,6 +376,7 @@ class baseframework(PreTrainedModel):
             return resolve_vlm_lora_adapter_dir(
                 pretrained_checkpoint,
                 adapter_dir_name=settings.adapter_dir_name,
+                adapter_name=settings.adapter_name,
             )
         except Exception:
             return resolve_vlm_lora_adapter_dir(pretrained_checkpoint)
