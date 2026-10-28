@@ -81,6 +81,14 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 logger = get_logger(__name__)
 
 
+def _as_bool(value) -> bool:
+    """Parse optional CLI/config booleans safely."""
+
+    if isinstance(value, str):
+        return value.lower() in {"1", "true", "yes", "on"}
+    return bool(value)
+
+
 def _strip_lora_module_from_freeze_modules(freeze_modules, module_path):
     """Keep LoRA adapter params trainable when the base VLM module is frozen."""
     if not isinstance(freeze_modules, str) or not freeze_modules.strip():
@@ -274,6 +282,9 @@ class VLATrainer(TrainerUtils):
 
         pretrained_checkpoint = getattr(self.config.trainer, "pretrained_checkpoint", None)
         is_resume = getattr(self.config.trainer, "is_resume", False)
+        random_init_action_model = _as_bool(
+            getattr(self.config.trainer, "random_init_action_model", False)
+        )
         self.resume_from_checkpoint = pretrained_checkpoint
 
         if is_resume:
@@ -299,11 +310,19 @@ class VLATrainer(TrainerUtils):
 
         if pretrained_checkpoint:
             reload_modules = getattr(self.config.trainer, "reload_modules", None)
-            if not self._defer_lora_checkpoint_load_if_needed(pretrained_checkpoint, reload_modules=reload_modules):
+            ignore_modules = "action_model" if random_init_action_model else None
+            if random_init_action_model:
+                logger.info("`random_init_action_model=True`, skipping `action_model` when loading checkpoint.")
+            if not self._defer_lora_checkpoint_load_if_needed(
+                pretrained_checkpoint,
+                reload_modules=reload_modules,
+                ignore_modules=ignore_modules,
+            ):
                 self.model = self.load_pretrained_backbones(
                     self.model,
                     pretrained_checkpoint,
                     reload_modules=reload_modules,
+                    ignore_modules=ignore_modules,
                 )
             self.completed_steps = 0
             self.resume_from_checkpoint = pretrained_checkpoint
@@ -312,7 +331,12 @@ class VLATrainer(TrainerUtils):
             logger.info("No pretrained checkpoint provided. Starting training from scratch.")
             self.completed_steps = 0
 
-    def _defer_lora_checkpoint_load_if_needed(self, checkpoint_path, reload_modules):
+    def _defer_lora_checkpoint_load_if_needed(
+        self,
+        checkpoint_path,
+        reload_modules,
+        ignore_modules=None,
+    ):
         """Delay LoRA checkpoint loading until PEFT has wrapped the VLM model."""
 
         settings = get_lora_settings(self.config)
@@ -363,6 +387,7 @@ class VLATrainer(TrainerUtils):
                 self.model,
                 state_dict,
                 reload_modules=reload_modules,
+                ignore_modules=ignore_modules,
             )
             return True
         return False

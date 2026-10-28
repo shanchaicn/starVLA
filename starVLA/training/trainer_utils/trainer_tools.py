@@ -252,7 +252,12 @@ class TrainerUtils:
         return num_params, num_trainable_params
 
     @staticmethod
-    def load_pretrained_backbones(model, checkpoint_path=None, reload_modules=None):
+    def load_pretrained_backbones(
+        model,
+        checkpoint_path=None,
+        reload_modules=None,
+        ignore_modules=None,
+    ):
         """
         load checkpoint:
         - if reload_modules is set, load by path part
@@ -275,11 +280,31 @@ class TrainerUtils:
         except Exception as e:
             raise RuntimeError(f"❌ loading checkpoint failed: {e}")
 
-        return TrainerUtils.load_pretrained_state_dict(model, checkpoint, reload_modules=reload_modules)
+        return TrainerUtils.load_pretrained_state_dict(
+            model,
+            checkpoint,
+            reload_modules=reload_modules,
+            ignore_modules=ignore_modules,
+        )
 
     @staticmethod
-    def load_pretrained_state_dict(model, checkpoint, reload_modules=None):
+    def load_pretrained_state_dict(
+        model,
+        checkpoint,
+        reload_modules=None,
+        ignore_modules=None,
+    ):
         """Load an already materialized checkpoint mapping into a model."""
+
+        if ignore_modules:
+            ignore_prefixes = [path.strip() for path in ignore_modules.split(",") if path.strip()]
+            checkpoint = {
+                key: value
+                for key, value in checkpoint.items()
+                if not any(key == prefix or key.startswith(prefix + ".") for prefix in ignore_prefixes)
+            }
+            if _dist_rank() == 0 and ignore_prefixes:
+                print(f"⏭️ skipped checkpoint modules: {', '.join(ignore_prefixes)}")
 
         loaded_modules = []
 

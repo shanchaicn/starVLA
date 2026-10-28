@@ -172,6 +172,28 @@ class VlmLoraActionHeadTest(unittest.TestCase):
             self.assertTrue(trainer._defer_lora_checkpoint_load_if_needed(checkpoint, None))
             self.assertIsNotNone(trainer._deferred_lora_state_dict)
 
+    def test_vlact_transfer_keeps_fresh_action_head(self):
+        source = TinyVLA()
+        target = TinyVLA()
+        with torch.no_grad():
+            source.qwen_vl_interface.model.transformer.wte.weight.fill_(0.25)
+            source.action_model.weight.fill_(9.0)
+            target.action_model.weight.fill_(1.0)
+
+        TrainerUtils.load_pretrained_state_dict(
+            target,
+            source.state_dict(),
+            ignore_modules="action_model",
+        )
+
+        self.assertTrue(
+            torch.allclose(
+                target.qwen_vl_interface.model.transformer.wte.weight,
+                source.qwen_vl_interface.model.transformer.wte.weight,
+            )
+        )
+        self.assertTrue(torch.all(target.action_model.weight == 1.0))
+
 
 if __name__ == "__main__":
     unittest.main()
