@@ -9,14 +9,14 @@ DATA=/root/data/datasets/pp_white_red
 
 usage() {
   cat <<'EOF'
-Usage: train_h50.sh {act|qwengroot|qwenpi_v3} {--check|--dry-run|--run} [--steps N] [--num-processes N]
+Usage: train_h50.sh {act|qwengroot|qwenpi_v3|qwenpi_v3_vlact_fft} {--check|--dry-run|--run} [--steps N] [--num-processes N]
   --check    Validate dataset/config and print readiness.
   --dry-run  Validate and print the exact launch command.
   --run      Validate, require the requested CUDA GPUs, then start training.
   --steps N  Override max_train_steps from the selected YAML.
   --num-processes N  Number of GPU processes (default: 2).
 
-Run one model at a time. All three configs use H=50, 8D absolute actions,
+Run one model at a time. All configs use H=50, 8D absolute actions,
 the same two camera views, and the same 251-episode dataset.
 EOF
 }
@@ -29,6 +29,7 @@ case "$model" in
   act) config="$HERE/act_h50.yaml" ;;
   qwengroot) config="$HERE/qwengroot_h50.yaml" ;;
   qwenpi_v3) config="$HERE/qwenpi_v3_h50.yaml" ;;
+  qwenpi_v3_vlact_fft) config="$HERE/qwenpi_v3_vlact_fft_h50.yaml" ;;
   *) usage; exit 2 ;;
 esac
 case "$mode" in --check|--dry-run|--run) ;; *) usage; exit 2 ;; esac
@@ -73,7 +74,7 @@ assert info['total_episodes'] == 251, info.get('total_episodes')
 assert cfg['datasets']['vla_data']['data_mix'] == 'pp_white_red_abs8_h50'
 assert cfg['datasets']['vla_data']['action_mode'] == 'abs'
 assert cfg['trainer']['gradient_accumulation_steps'] == 1
-if model in ('qwengroot', 'qwenpi_v3'):
+if model in ('qwengroot', 'qwenpi_v3', 'qwenpi_v3_vlact_fft'):
     assert cfg['trainer']['max_train_steps'] == 20000
     assert cfg['trainer']['save_interval'] == 5000
 assert cfg['framework']['action_dim'] == 8 if model == 'act' else cfg['framework']['action_model']['action_dim'] == 8
@@ -83,6 +84,16 @@ for section in ('state', 'action'):
 assert [mod['video'][k]['original_key'] for k in ('front', 'wrist')] == ['observation.images.front', 'observation.images.wrist']
 if model != 'act':
     assert pathlib.Path(cfg['framework']['qwenvl']['base_vlm']).is_dir(), 'Qwen VLM path missing'
+if model == 'qwenpi_v3_vlact_fft':
+    trainer = cfg['trainer']
+    checkpoint = pathlib.Path(trainer['pretrained_checkpoint'])
+    assert checkpoint.is_file(), f'VLAct checkpoint missing: {checkpoint}'
+    assert (checkpoint.parent.parent / 'config.yaml').is_file(), 'VLAct config.yaml missing'
+    assert (checkpoint.parent.parent / 'dataset_statistics.json').is_file(), 'VLAct dataset_statistics.json missing'
+    assert trainer['random_init_action_model'] is True
+    assert trainer['reset_steps'] is True
+    assert trainer['is_resume'] is False
+    assert trainer['freeze_modules'] == '', 'VLAct transfer recipe must remain full fine-tuning'
 print(f"PREFLIGHT_OK model={model} H=50 episodes={info['total_episodes']} tasks={tasks['task']}")
 PY
 

@@ -7,11 +7,12 @@ LOG_DIR=/root/data/outputs/starVLA/pp_white_red_h50/logs
 
 usage() {
   cat <<'EOF'
-Usage: run_h50_nohup.sh {act|qwengroot|qwenpi_v3} [train_h50.sh options]
+Usage: run_h50_nohup.sh {act|qwengroot|qwenpi_v3|qwenpi_v3_vlact_fft} [train_h50.sh options]
 
 Examples:
   CUDA_VISIBLE_DEVICES=0,1 run_h50_nohup.sh qwengroot
   CUDA_VISIBLE_DEVICES=0,1 run_h50_nohup.sh qwenpi_v3
+  CUDA_VISIBLE_DEVICES=0,1 run_h50_nohup.sh qwenpi_v3_vlact_fft
   CUDA_VISIBLE_DEVICES=0 run_h50_nohup.sh qwengroot --num-processes 1 --steps 100
 EOF
 }
@@ -20,7 +21,7 @@ EOF
 model=$1
 shift
 case "$model" in
-  act|qwengroot|qwenpi_v3) ;;
+  act|qwengroot|qwenpi_v3|qwenpi_v3_vlact_fft) ;;
   *) usage; exit 2 ;;
 esac
 

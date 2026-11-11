@@ -21,6 +21,7 @@ For a detached two-GPU run with timestamped logs:
 cd /root/data/starVLA
 CUDA_VISIBLE_DEVICES=0,1 examples/realRobots/TB6R5PPWhiteRed/train_files/run_h50_nohup.sh qwengroot
 CUDA_VISIBLE_DEVICES=0,1 examples/realRobots/TB6R5PPWhiteRed/train_files/run_h50_nohup.sh qwenpi_v3
+CUDA_VISIBLE_DEVICES=0,1 examples/realRobots/TB6R5PPWhiteRed/train_files/run_vlact_fft_h50_nohup.sh
 ```
 
 Follow the latest log with `tail -f` under
@@ -39,8 +40,14 @@ prediction baseline for the mixed red/white dataset. QwenGR00T and QwenPI_v3
 consume task text. The Qwen models use the local Qwen3-VL-4B-Instruct-Action
 weights as their visual-language base and fine-tune that VLM at 1e-5; their
 action heads begin fresh and train at 1e-4. All
-ACT and QwenGR00T use batch size 1 per GPU; QwenPI_v3 currently tests batch
-size 2 per GPU. All use accumulation 1. ACT uses 10,000 steps; QwenGR00T and
+ACT and QwenGR00T use batch size 1 per GPU; QwenPI_v3 uses batch size 4 per
+GPU. All use accumulation 1. ACT uses 10,000 steps; QwenGR00T and
 QwenPI_v3 use 20,000 steps and save every 5,000 steps.
 This is a first comparable run, not a tuned recipe. The dataset has no separate held-out
 validation split, so training loss alone cannot establish task success.
+
+`qwenpi_v3_vlact_fft_h50.yaml` is the matched VLAct-transfer experiment. It
+loads the official 100K-step `VLAct_Qwen3_Pretrain` checkpoint, deliberately
+skips its incompatible pretraining action module, initializes the TB6R5 8D
+H=50 action head from scratch, and full-fine-tunes the resulting model. Run
+`train_h50.sh qwenpi_v3_vlact_fft --check` before launching it.
