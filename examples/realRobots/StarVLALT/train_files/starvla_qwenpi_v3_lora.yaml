@@ -14,8 +14,8 @@ framework:
     num_vl_layers: 36
   action_model:
     action_model_type: LayerwiseFM
-    action_dim: 14
-    state_dim: 14
+    action_dim: 19
+    state_dim: 19
     action_horizon: 16
     repeated_diffusion_steps: 2
     num_inference_timesteps: 4

@@ -11,6 +11,10 @@ fi
 STAGE="$1"
 shift
 EXTRA_ARGS=("$@")
+case "${STAGE}" in smoke|pilot|train) ;; *) echo "Unsupported stage: ${STAGE}" >&2; exit 2 ;; esac
+for arg in "${EXTRA_ARGS[@]}"; do
+  [[ "${arg}" == "--dry-run" ]] || { echo "Unsupported argument: ${arg}" >&2; exit 2; }
+done
 TASKS=(insert push_pull snap suck place)
 
 echo "Preflighting all five datasets before starting any training..."

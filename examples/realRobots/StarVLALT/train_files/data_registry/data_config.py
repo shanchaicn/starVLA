@@ -41,8 +41,10 @@ class FiveViewLeRobotDataset(LeRobotSingleDataset):
 
 class StarVLALTCartesianConfig:
     embodiment_tag = EmbodimentTag.NEW_EMBODIMENT
-    state_keys = ["state.left_pose", "state.right_pose"]
-    action_keys = ["action.left_pose", "action.right_pose"]
+    state_keys = ["state.left_pose", "state.right_pose", "state.vacuum"]
+    action_keys = ["action.left_pose", "action.right_pose", "action.vacuum"]
+    state_key_dims = {"state.left_pose": 7, "state.right_pose": 7, "state.vacuum": 5}
+    action_key_dims = {"action.left_pose": 7, "action.right_pose": 7, "action.vacuum": 5}
     language_keys = ["annotation.human.action.task_description"]
     observation_indices = [0]
     state_indices = [0]
@@ -77,12 +79,12 @@ class StarVLALTCartesianConfig:
                 StateActionToTensor(apply_to=self.state_keys),
                 StateActionTransform(
                     apply_to=self.state_keys,
-                    normalization_modes={key: "q99" for key in self.state_keys},
+                    normalization_modes={key: ("binary" if key == "state.vacuum" else "q99") for key in self.state_keys},
                 ),
                 StateActionToTensor(apply_to=self.action_keys),
                 StateActionTransform(
                     apply_to=self.action_keys,
-                    normalization_modes={key: "q99" for key in self.action_keys},
+                    normalization_modes={key: ("binary" if key == "action.vacuum" else "q99") for key in self.action_keys},
                 ),
             ]
         )
@@ -93,25 +95,25 @@ class StarVLALTCartesianConfig:
 
 
 ROBOT_TYPE_CONFIG_MAP = {
-    "starvlalt_cartesian14_five_view": StarVLALTCartesianConfig(num_real_views=5),
-    "starvlalt_cartesian14_suck_four_plus_black": StarVLALTCartesianConfig(num_real_views=4),
+    "starvlalt_cartesian19_five_view": StarVLALTCartesianConfig(num_real_views=5),
+    "starvlalt_cartesian19_suck_four_plus_black": StarVLALTCartesianConfig(num_real_views=4),
 }
 
 
 DATASET_NAMED_MIXTURES = {
     "starvla_push_pull": [
-        ("push_pull", 1.0, "starvlalt_cartesian14_five_view"),
+        ("push_pull", 1.0, "starvlalt_cartesian19_five_view"),
     ],
     "starvla_insert": [
-        ("insert", 1.0, "starvlalt_cartesian14_five_view"),
+        ("insert", 1.0, "starvlalt_cartesian19_five_view"),
     ],
     "starvla_snap": [
-        ("snap", 1.0, "starvlalt_cartesian14_five_view"),
+        ("snap", 1.0, "starvlalt_cartesian19_five_view"),
     ],
     "starvla_suck": [
-        ("suck", 1.0, "starvlalt_cartesian14_suck_four_plus_black"),
+        ("suck", 1.0, "starvlalt_cartesian19_suck_four_plus_black"),
     ],
     "starvla_place": [
-        ("place", 1.0, "starvlalt_cartesian14_five_view"),
+        ("place", 1.0, "starvlalt_cartesian19_five_view"),
     ],
 }
