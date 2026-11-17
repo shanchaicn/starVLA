@@ -74,6 +74,7 @@ def get_frames_by_indices(
         try:
             container = av.open(video_path)
             stream = container.streams.video[0]
+            stream.thread_count = int(video_backend_kwargs.get("thread_count", 1))
             time_base = float(stream.time_base)
             fps = float(stream.average_rate) if stream.average_rate else float(stream.guessed_rate)
             
@@ -186,6 +187,7 @@ def get_frames_by_timestamps(
         try:
             container = av.open(video_path)
             stream = container.streams.video[0]
+            stream.thread_count = int(video_backend_kwargs.get("thread_count", 1))
             
             # Get video properties
             time_base = float(stream.time_base)

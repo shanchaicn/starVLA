@@ -1,4 +1,5 @@
 from omegaconf import OmegaConf, DictConfig, ListConfig
+from omegaconf.tupleconfig import TupleConfig
 from typing import Set, Any, Optional, Union
 import json
 from pathlib import Path
@@ -25,8 +26,8 @@ class AccessTrackedConfig:
             )
     
     def _is_list_config(self) -> bool:
-        """Check if underlying config is a ListConfig"""
-        return isinstance(self._cfg, ListConfig)
+        """Check if underlying config is an indexable OmegaConf sequence."""
+        return isinstance(self._cfg, (ListConfig, TupleConfig))
     
     def _is_dict_config(self) -> bool:
         """Check if underlying config is a DictConfig"""

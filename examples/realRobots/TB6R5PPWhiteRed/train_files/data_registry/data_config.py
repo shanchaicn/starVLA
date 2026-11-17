@@ -67,4 +67,5 @@ class PPWhiteRedAbs8H50Config:
 ROBOT_TYPE_CONFIG_MAP = {"pp_white_red_abs8_h50": PPWhiteRedAbs8H50Config()}
 DATASET_NAMED_MIXTURES = {
     "pp_white_red_abs8_h50": [("pp_white_red", 1.0, "pp_white_red_abs8_h50")],
+    "pp_white_red_h264_abs8_h50": [("pp_white_red_h264", 1.0, "pp_white_red_abs8_h50")],
 }

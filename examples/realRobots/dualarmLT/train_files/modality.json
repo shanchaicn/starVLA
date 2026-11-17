@@ -1,0 +1,71 @@
+{
+  "state": {
+    "arm_0_pose": {
+      "start": 0,
+      "end": 7,
+      "original_key": "observation.state.cartesian_position",
+      "rotation_type": "quaternion",
+      "absolute": true,
+      "dtype": "float32"
+    },
+    "arm_1_pose": {
+      "start": 7,
+      "end": 14,
+      "original_key": "observation.state.cartesian_position",
+      "rotation_type": "quaternion",
+      "absolute": true,
+      "dtype": "float32"
+    },
+    "digital_input": {
+      "start": 0,
+      "end": 17,
+      "original_key": "observation.state.digital_input",
+      "absolute": true,
+      "dtype": "float32",
+      "range": [0.0, 1.0]
+    },
+    "force_torque_compensated": {
+      "start": 0,
+      "end": 12,
+      "original_key": "observation.state.force_torque_compensated",
+      "absolute": true,
+      "dtype": "float32"
+    }
+  },
+  "action": {
+    "arm_0_pose": {
+      "start": 0,
+      "end": 7,
+      "original_key": "action.cartesian_position",
+      "rotation_type": "quaternion",
+      "absolute": true,
+      "dtype": "float32"
+    },
+    "arm_1_pose": {
+      "start": 7,
+      "end": 14,
+      "original_key": "action.cartesian_position",
+      "rotation_type": "quaternion",
+      "absolute": true,
+      "dtype": "float32"
+    },
+    "digital_output": {
+      "start": 2,
+      "end": 6,
+      "original_key": "action.digital_output",
+      "absolute": true,
+      "dtype": "float32",
+      "range": [0.0, 1.0]
+    }
+  },
+  "video": {
+    "left_side": {"original_key": "observation.images.left_side"},
+    "left_wrist": {"original_key": "observation.images.left_wrist"},
+    "right_wrist": {"original_key": "observation.images.right_wrist"},
+    "right_side": {"original_key": "observation.images.right_side"},
+    "base": {"original_key": "observation.images.base"}
+  },
+  "annotation": {
+    "human.action.task_description": {"original_key": "task_index"}
+  }
+}

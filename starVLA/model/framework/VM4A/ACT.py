@@ -10,7 +10,12 @@ from PIL import Image
 # succeeds in environments without LeRobot; instantiating ACT raises a clear error instead.
 try:
     from lerobot.configs.types import FeatureType, PolicyFeature
-    from lerobot.constants import ACTION, OBS_STATE
+    try:
+        # LeRobot >= 0.6
+        from lerobot.constants import ACTION, OBS_STATE
+    except ImportError:
+        # LeRobot 0.4.x (the latest series supporting Python 3.10)
+        from lerobot.utils.constants import ACTION, OBS_STATE
     from lerobot.policies.act.configuration_act import ACTConfig
     from lerobot.policies.act.modeling_act import ACTPolicy
 
@@ -97,12 +102,18 @@ class ACT(baseframework):
     def _set_identity_normalizers(self) -> None:
         # starVLA StateActionTransform/PolicyNormProcessor own normalization.
         # LeRobot ACTPolicy normalizers must be identity to avoid double normalization.
+        # LeRobot 0.4.x has no policy-level normalizer attributes, so there is
+        # nothing to override in that version.
         with torch.no_grad():
-            normalizers = (
-                self.action_model.normalize_inputs,
-                self.action_model.normalize_targets,
-                self.action_model.unnormalize_outputs,
-            )
+            normalizers = [
+                getattr(self.action_model, name)
+                for name in (
+                    "normalize_inputs",
+                    "normalize_targets",
+                    "unnormalize_outputs",
+                )
+                if hasattr(self.action_model, name)
+            ]
             for normalizer in normalizers:
                 tensors = list(normalizer.named_buffers()) + list(
                     normalizer.named_parameters()
