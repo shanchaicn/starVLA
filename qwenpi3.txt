@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0,1 examples/realRobots/dualarmLT/train_files/run_qwenpi_v3_v2_h50_nohup.sh --num-processes 2 --batch-size 4

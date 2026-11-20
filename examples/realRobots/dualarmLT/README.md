@@ -1,4 +1,45 @@
-# dualarmLT ACT 训练说明
+# dualarmLT ACT / QwenPI 训练说明
+
+## V3：不使用 DI，保留 DO（V2 继续可用）
+
+V3 是独立映射版本，不修改数据集原始字段或 V2 文件：
+
+| 内容 | V2 | V3 |
+| --- | --- | --- |
+| 状态 | arm_0 位姿 7D + DI 17D = 24D | 仅 arm_0 位姿 7D |
+| 动作 | arm_0 位姿 7D + DO 4D = 11D | 相同，仍为 11D |
+| 力觉 / 静止臂 | 不输入 | 不输入 |
+
+V3 的位姿继续使用 q99 归一化，DO 使用 binary。动作仍是绝对位姿，
+DO 仍取原始 12D 输出的索引 2:6（DO8..DO11）。真机推理时使用
+`robot_mapping_v3.py` 的 `pack_observation(cartesian_position)`，不再传 DI。
+V2 的 24D-state checkpoint 不能直接作为 V3 的完整策略恢复。
+
+ACT V3 沿用四相机、H=50、80000 steps、每卡 batch 16，缓存仍在
+`/root/data1/starvla/dualarm_lt_suck_224_mmap`。
+QwenPI v3 的 V3 映射沿用三相机（left_side、right_wrist、right_side）、
+H=50、20000 steps、每 5000 步保存、每卡默认 batch 1、VLAct 迁移全量微调。
+其图像缓存沿用 `/dev/shm/dualarm_lt_suck_224_mmap`；容器重启后需重新复制。
+去掉 DI 不改变视频帧缓存，可直接复用，不需要重新解码，也不修改数据集 modality.json。
+
+ACT V3 单卡启动：
+
+```bash
+cd /root/data/starVLA
+CUDA_VISIBLE_DEVICES=0 examples/realRobots/dualarmLT/train_files/run_act_v3_h50_nohup.sh --num-processes 1 --batch-size 16
+```
+
+QwenPI v3 使用 V3 映射双卡启动（文件名中第一个 v3 是模型版本，第二个是映射版本）：
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1 examples/realRobots/dualarmLT/train_files/run_qwenpi_v3_v3_h50_nohup.sh --num-processes 2 --batch-size 4
+```
+
+启动前可将对应 `train_act_v3_h50.sh` 或 `train_qwenpi_v3_v3_h50.sh` 加
+`--check` 做预检。新日志和 checkpoint 分别写入
+`/root/data/outputs/starVLA/dualarm_lt_suck_act_h50_v3` 和
+`/root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v3_h50`。
+V2 和 V3 的文件、data_mix、输出目录独立；同时启动训练还需分配不同 GPU 和分布式端口。
 
 数据集：[shanchai/suck_lt](https://huggingface.co/datasets/shanchai/suck_lt)
 

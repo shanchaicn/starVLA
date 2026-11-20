@@ -10,7 +10,7 @@ DATA_ROOT=${DATA_ROOT_DIR:-/root/data/datasets}
 DATASET="$DATA_ROOT/suck_lt"
 
 usage() {
-  echo "Usage: $0 {--check|--dry-run|--run} [--steps N] [--batch-size N] [--num-processes N]" >&2
+  echo "Usage: $0 {--check|--dry-run|--run} [--steps N] [--batch-size N] [--num-processes N] [--run-root-dir PATH] [--run-id ID] [--learning-rate GROUP RATE]..." >&2
 }
 
 [[ $# -ge 1 ]] || { usage; exit 2; }
@@ -21,11 +21,25 @@ case "$mode" in --check|--dry-run|--run) ;; *) usage; exit 2 ;; esac
 steps=20000
 batch_size=1
 num_processes=2
+run_root_dir=
+run_id=
+lr_overrides=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --steps) steps=$2; shift 2 ;;
     --batch-size) batch_size=$2; shift 2 ;;
     --num-processes) num_processes=$2; shift 2 ;;
+    --run-root-dir) run_root_dir=$2; shift 2 ;;
+    --run-id) run_id=$2; shift 2 ;;
+    --learning-rate)
+      [[ $# -ge 3 ]] || { usage; exit 2; }
+      case "$2" in
+        base|qwen_vl_interface|action_model|project_layers) ;;
+        *) echo "Unknown learning-rate group: $2" >&2; exit 2 ;;
+      esac
+      lr_overrides+=("--trainer.learning_rate.$2" "$3")
+      shift 3
+      ;;
     *) usage; exit 2 ;;
   esac
 done
@@ -44,8 +58,9 @@ cmp -s "$HERE/modality.json" "$DATASET/meta/modality.json" || {
   exit 1
 }
 
-"$PY" - "$CONFIG" "$DATASET" <<'PY'
+"$PY" - "$CONFIG" "$DATASET" "${lr_overrides[@]}" <<'PY'
 import json
+import math
 import pathlib
 import sys
 
@@ -54,6 +69,13 @@ import yaml
 
 config_path, dataset = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
 cfg = yaml.safe_load(config_path.read_text())
+for flag, raw_value in zip(sys.argv[3::2], sys.argv[4::2]):
+    try:
+        rate = float(raw_value)
+    except ValueError:
+        raise SystemExit(f"{flag} must be a positive finite number") from None
+    if not math.isfinite(rate) or rate <= 0:
+        raise SystemExit(f"{flag} must be a positive finite number")
 info = json.loads((dataset / "meta/info.json").read_text())
 stats = json.loads((dataset / "meta/stats.json").read_text())
 tasks = pq.read_table(dataset / "meta/tasks.parquet").to_pydict()
@@ -120,7 +142,14 @@ cmd=("$ACCELERATE" launch
   --config_yaml "$CONFIG"
   --datasets.vla_data.data_root_dir "$DATA_ROOT"
   --datasets.vla_data.per_device_batch_size "$batch_size"
-  --trainer.max_train_steps "$steps")
+  --trainer.max_train_steps "$steps"
+  "${lr_overrides[@]}")
+if [[ -n $run_root_dir ]]; then
+  cmd+=(--run_root_dir "$run_root_dir")
+fi
+if [[ -n $run_id ]]; then
+  cmd+=(--run_id "$run_id")
+fi
 printf 'Command:'
 printf ' %q' "${cmd[@]}"
 printf '\n'

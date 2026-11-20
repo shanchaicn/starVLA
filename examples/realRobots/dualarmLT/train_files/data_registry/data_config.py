@@ -264,12 +264,44 @@ class DualArmLTV2H50ThreeCameraConfig(DualArmLTV2H50Config):
     ]
 
 
+class DualArmLTV3H50Config(DualArmLTV2H50Config):
+    """V3：状态只保留运动臂位姿，动作仍保留位姿和 DO。"""
+
+    state_keys = ["state.arm_0_pose"]
+    state_key_dims = {"state.arm_0_pose": 7}
+
+    def transform(self):
+        return ComposedModalityTransform(transforms=[
+            StateActionToTensor(apply_to=self.state_keys),
+            StateActionTransform(
+                apply_to=self.state_keys,
+                normalization_modes={"state.arm_0_pose": "q99"},
+            ),
+            StateActionToTensor(apply_to=self.action_keys),
+            StateActionTransform(
+                apply_to=self.action_keys,
+                normalization_modes={
+                    "action.arm_0_pose": "q99",
+                    "action.digital_output": "binary",
+                },
+            ),
+        ])
+
+
+class DualArmLTV3H50ThreeCameraConfig(DualArmLTV3H50Config):
+    """V3 QwenPI：保留三相机顺序，排除 left_wrist。"""
+
+    video_keys = list(DualArmLTV2H50ThreeCameraConfig.video_keys)
+
+
 ROBOT_TYPE_CONFIG_MAP = {
     "dualarm_lt_v1_h100": DualArmLTV1H100Config(),
     "dualarm_lt_v1_h50": DualArmLTV1H50Config(),
     "dualarm_lt_v2_h100": DualArmLTV2H100Config(),
     "dualarm_lt_v2_h50": DualArmLTV2H50Config(),
     "dualarm_lt_v2_h50_3cam": DualArmLTV2H50ThreeCameraConfig(),
+    "dualarm_lt_v3_h50": DualArmLTV3H50Config(),
+    "dualarm_lt_v3_h50_3cam": DualArmLTV3H50ThreeCameraConfig(),
 }
 
 DATASET_NAMED_MIXTURES = {
@@ -278,4 +310,6 @@ DATASET_NAMED_MIXTURES = {
     "dualarm_lt_suck_v2_h100": [("suck_lt", 1.0, "dualarm_lt_v2_h100")],
     "dualarm_lt_suck_v2_h50": [("suck_lt", 1.0, "dualarm_lt_v2_h50")],
     "dualarm_lt_suck_v2_h50_3cam": [("suck_lt", 1.0, "dualarm_lt_v2_h50_3cam")],
+    "dualarm_lt_suck_v3_h50": [("suck_lt", 1.0, "dualarm_lt_v3_h50")],
+    "dualarm_lt_suck_v3_h50_3cam": [("suck_lt", 1.0, "dualarm_lt_v3_h50_3cam")],
 }
