@@ -1,0 +1,51 @@
+{
+  "checked_date": "2026-11-23",
+  "scope": "CPU data validation, actual loader samples, and command dry-runs; no training launched",
+  "checks": [
+    {
+      "name": "place_act",
+      "sample_status": "passed",
+      "sample_result": "DATALOADER_SAMPLE_OK state=(1,24) action=(50,11) cameras=2 lang=Lower the robot's left arm to place the charger into the charger box drawer.",
+      "dry_run_status": "passed",
+      "dry_run_command": "Command: /root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 1 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTPlace/train_files/act_place_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 16 --trainer.max_train_steps 80000 --run_id dualarm_lt_place_act_h50_v2_repro --run_root_dir /root/data/outputs/starVLA/dualarm_lt_place_act_h50_v2_repro --wandb_project dualarm_lt_place_act_h50_v2_repro",
+      "sample_log": "/root/data/tmp/lt_training_docs_checks_20261123/place_act_sample.log",
+      "dry_run_log": "/root/data/tmp/lt_training_docs_checks_20261123/place_act_dryrun.log"
+    },
+    {
+      "name": "place_qwenpi",
+      "sample_status": "passed",
+      "sample_result": "DATALOADER_SAMPLE_OK state=(1,24) action=(50,11) cameras=2 lang=Lower the robot's left arm to place the charger into the charger box drawer.",
+      "dry_run_status": "passed",
+      "dry_run_command": "Command: /root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 2 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTPlace/train_files/qwenpi_v3_place_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 8 --trainer.max_train_steps 20000 --run_id dualarm_lt_place_qwenpi_v3_v2_h50_repro --run_root_dir /root/data/outputs/starVLA/dualarm_lt_place_qwenpi_v3_v2_h50_repro --wandb_project dualarm_lt_place_qwenpi_v3_v2_h50_repro",
+      "sample_log": "/root/data/tmp/lt_training_docs_checks_20261123/place_qwenpi_sample.log",
+      "dry_run_log": "/root/data/tmp/lt_training_docs_checks_20261123/place_qwenpi_dryrun.log"
+    },
+    {
+      "name": "snap_act",
+      "sample_status": "passed",
+      "sample_result": "DATALOADER_SAMPLE_OK state=(1,24) action=(50,11) cameras=2 lang=Snap",
+      "dry_run_status": "passed",
+      "dry_run_command": "Command: /root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 1 --main_process_port 29603 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTSnapInsert/train_files/act_snap_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 16 --trainer.max_train_steps 80000 --run_id dualarm_lt_snap_act_h50_v2_bs16_80k_20261123_154834_2639 --run_root_dir /root/data/outputs/starVLA/dualarm_lt_snap_act_h50_v2_bs16_80k_20261123_154834_2639 --wandb_project dualarm_lt_snap_act_h50_v2_bs16_80k_20261123_154834_2639",
+      "sample_log": "/root/data/tmp/lt_training_docs_checks_20261123/snap_act_sample.log",
+      "dry_run_log": "/root/data/tmp/lt_training_docs_checks_20261123/snap_act_dryrun.log"
+    },
+    {
+      "name": "insert_act",
+      "sample_status": "passed",
+      "sample_result": "DATALOADER_SAMPLE_OK state=(1,24) action=(50,11) cameras=2 lang=Insert",
+      "dry_run_status": "passed",
+      "dry_run_command": "Command: /root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 1 --main_process_port 29604 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTSnapInsert/train_files/act_insert_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 16 --trainer.max_train_steps 80000 --run_id dualarm_lt_insert_act_h50_v2_bs16_80k_20261123_154839_2726 --run_root_dir /root/data/outputs/starVLA/dualarm_lt_insert_act_h50_v2_bs16_80k_20261123_154839_2726 --wandb_project dualarm_lt_insert_act_h50_v2_bs16_80k_20261123_154839_2726",
+      "sample_log": "/root/data/tmp/lt_training_docs_checks_20261123/insert_act_sample.log",
+      "dry_run_log": "/root/data/tmp/lt_training_docs_checks_20261123/insert_act_dryrun.log"
+    },
+    {
+      "name": "push_pull_qwenpi",
+      "sample_status": "passed",
+      "sample_result": "DATALOADER_SAMPLE_OK state=(1,24) action=(50,9) cameras=2 lang=Use the robot's left arm to slowly pull out the charger box drawer.",
+      "dry_run_status": "passed",
+      "dry_run_command": "Command: /root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 2 --main_process_port 29605 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTPushPull/train_files/qwenpi_v3_push_pull_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 8 --trainer.max_train_steps 20000 --run_id dualarm_lt_push_pull_qwenpi_v3_v2_h50_repro --run_root_dir /root/data/outputs/starVLA/dualarm_lt_push_pull_qwenpi_v3_v2_h50_repro --wandb_project dualarm_lt_push_pull_qwenpi_v3_v2_h50_repro",
+      "sample_log": "/root/data/tmp/lt_training_docs_checks_20261123/push_pull_qwenpi_sample.log",
+      "dry_run_log": "/root/data/tmp/lt_training_docs_checks_20261123/push_pull_qwenpi_dryrun.log"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "state": {
+    "arm_1_pose": {
+      "start": 7,
+      "end": 14,
+      "original_key": "observation.state.cartesian_position",
+      "rotation_type": "quaternion",
+      "absolute": true,
+      "dtype": "float32"
+    },
+    "digital_input": {
+      "start": 0,
+      "end": 17,
+      "original_key": "observation.state.digital_input",
+      "absolute": true,
+      "dtype": "float32",
+      "range": [
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "action": {
+    "arm_1_pose": {
+      "start": 7,
+      "end": 14,
+      "original_key": "action.cartesian_position",
+      "rotation_type": "quaternion",
+      "absolute": true,
+      "dtype": "float32"
+    },
+    "left_middle_suction_do": {
+      "start": 8,
+      "end": 9,
+      "original_key": "action.digital_output",
+      "absolute": true,
+      "dtype": "float32",
+      "range": [
+        0.0,
+        1.0
+      ]
+    },
+    "left_middle_cylinder_do": {
+      "start": 11,
+      "end": 12,
+      "original_key": "action.digital_output",
+      "absolute": true,
+      "dtype": "float32",
+      "range": [
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "video": {
+    "left_wrist": {
+      "original_key": "observation.images.left_wrist"
+    },
+    "left_side": {
+      "original_key": "observation.images.left_side"
+    }
+  },
+  "annotation": {
+    "human.action.task_description": {
+      "original_key": "task_index"
+    }
+  }
+}
