@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""RTC and full-chunk RPC executor for the dual-arm LT right suction task."""
+"""RTC and full-chunk RPC executor for configured dual-arm LT task profiles."""
 from __future__ import annotations
 
 import argparse
@@ -70,8 +70,9 @@ def slerp_limited(current, target, max_angle):
 
 def guarded_action(action, live_state, cfg):
     action = np.asarray(action, dtype=np.float64)
-    if action.shape != (11,) or not np.isfinite(action).all():
-        raise base.ClientError("action is not finite 11D")
+    action_dim = int(cfg["inference"]["active_profile"]["action_dim"])
+    if action.shape != (action_dim,) or not np.isfinite(action).all():
+        raise base.ClientError(f"action is not finite {action_dim}D")
     live_pose = np.asarray(live_state[:7], dtype=np.float64)
     target = action[:7].copy()
     target[3:] /= np.linalg.norm(target[3:])
@@ -111,21 +112,36 @@ def robot_commands(controller_pose, do_values, cfg):
     pose = ",".join(f"{float(value):.10g}" for value in controller_pose)
     jog = cfg["execution"]["joganyc"]
     vec = lambda values: "{" + ",".join(f"{float(v):.10g}" for v in values) + "}"
-    result.append(
-        "{NotRunExecute||JogAnyC "
+    jog_command = (
+        "JogAnyC "
         f"--robottarget_value={{{pose}}} "
         f"--cartesian_vel={vec(jog['cartesian_vel'])} "
         f"--cartesian_acc={vec(jog['cartesian_acc'])} "
         f"--cartesian_dec={vec(jog['cartesian_dec'])} "
-        f"--last_count={int(jog['last_count'])}||NotRunExecute}}"
+        f"--last_count={int(jog['last_count'])}"
     )
+    slots = ["NotRunExecute", "NotRunExecute", "NotRunExecute"]
+    slots[int(cfg["execution"]["joganyc_slot"])] = jog_command
+    result.append("{" + "||".join(slots) + "}")
     return result
+
+
+def ensure_real_profile_authorized(cfg):
+    profile = cfg["inference"]["active_profile"]
+    real = profile.get("real", {})
+    required = ("enabled", "wobj_dataset_frame_verified", "workspace_verified")
+    failed = [name for name in required if real.get(name) is not True]
+    if failed:
+        reason = real.get("block_reason", "on-site verification is incomplete")
+        raise base.ClientError(
+            f"profile {profile['name']} real RPC is fail-closed; false flags={failed}; {reason}"
+        )
 
 
 def temporal_ensemble_action(plans, global_step, cfg):
     """Blend all ACT chunks that predict the same global control step.
 
-    Plans are (global_start_step, 50x11 chunk) pairs. Newer chunks receive
+    Plans are (global_start_step, 50xD chunk) pairs. Newer chunks receive
     higher exponential weight. Quaternion signs are aligned before averaging.
     """
     profile = cfg["inference"]["active_profile"]
@@ -174,7 +190,8 @@ def print_observation(mode, phase, state, status, cfg):
         )
     print(
         f"[{mode}][STATE][{phase}] running={status['system_running_state']} "
-        f"right_joints_enabled={status['all_moving_joints_enabled']}\n"
+        f"arm={status.get('arm_label')} moving_model={status.get('moving_model')} "
+        f"selected_joints_enabled={status['all_moving_joints_enabled']}\n"
         f"[{mode}][STATE][{phase}] topic_pose_frame={status['topic_pose_frame']} "
         f"topic_pose_xyzw={[float(v) for v in status['topic_pose_xyzw']]}\n"
         f"[{mode}][STATE][{phase}] dataset_pose_xyzw={state[:7].tolist()}\n"
@@ -201,7 +218,7 @@ def prepare_action(action, cfg, dry_run):
     if not dry_run and (
         not status["system_running_state"] or not status["all_moving_joints_enabled"]
     ):
-        raise base.ClientError("robot is not running with all right-arm joints enabled")
+        raise base.ClientError("robot is not running with all selected-arm joints enabled")
     if dry_run and (
         not status["system_running_state"] or not status["all_moving_joints_enabled"]
     ):
@@ -296,6 +313,7 @@ def run(cfg, dry_run, max_actions, actions_per_inference):
     )
     rpc = None
     if not dry_run:
+        ensure_real_profile_authorized(cfg)
         direct = cfg["execution"]["direct_rpc"]
         rpc = DirectRobotRpc(
             direct["host"], int(direct["port"]), int(direct["connect_timeout_ms"]),
@@ -310,7 +328,7 @@ def run(cfg, dry_run, max_actions, actions_per_inference):
     log_dir = Path(cfg["logging"]["directory"])
     log_dir.mkdir(parents=True, exist_ok=True)
     log_path = log_dir / f"dualarm_lt_rtc_{mode.lower()}_{datetime.now().strftime('%Y%m%dT%H%M%S')}.jsonl"
-    print(f"[EXEC] mode={mode} task={cfg['inference']['instruction']}")
+    print(f"[EXEC] mode={mode} task={profile['instruction']}")
     print(
         f"[EXEC] initial={actions.shape} model={initial['inference_elapsed_s']:.3f}s "
         f"hz={hz} max_actions={max_actions} min_actions_per_plan={actions_per_inference} "
@@ -374,7 +392,8 @@ def run(cfg, dry_run, max_actions, actions_per_inference):
             next_sent = sent + 1
             print_observation(mode, f"PRE-RPC step={next_sent}", live_state, status, cfg)
             print(
-                f"[{mode}] step={next_sent} chunk={index + 1}/50 DO8..11={dos} guards={guards}"
+                f"[{mode}] step={next_sent} chunk={index + 1}/50 "
+                f"DO={dict(zip(cfg['execution']['action_do_names'], dos))} guards={guards}"
                 f"\n[{mode}] dataset_target={target_dataset.tolist()}"
                 f"\n[{mode}] command_target_frame="
                 f"{cfg['frames']['command_pose_frame_with_setwobj']} "
@@ -401,7 +420,8 @@ def run(cfg, dry_run, max_actions, actions_per_inference):
                 "cycle": cycle, "chunk_index": index, "dataset_target": target_dataset.tolist(),
                 "command_target": command_pose.tolist(),
                 "command_target_frame": cfg["frames"]["command_pose_frame_with_setwobj"],
-                "do8_do11": dos, "guards": guards,
+                "do_values": dict(zip(cfg["execution"]["action_do_names"], dos)),
+                "guards": guards,
                 "current_dataset_pose": live_state[:7].tolist(),
                 "current_topic_pose": [float(v) for v in status["topic_pose_xyzw"]],
                 "current_topic_pose_frame": status["topic_pose_frame"],
@@ -520,6 +540,7 @@ def run_nonrtc(cfg, dry_run, max_actions):
     )
     rpc = None
     if not dry_run:
+        ensure_real_profile_authorized(cfg)
         direct = cfg["execution"]["direct_rpc"]
         rpc = DirectRobotRpc(
             direct["host"], int(direct["port"]), int(direct["connect_timeout_ms"]),
@@ -560,7 +581,8 @@ def run_nonrtc(cfg, dry_run, max_actions):
                 print_observation(mode, f"PRE-RPC step={next_sent}", live_state, status, cfg)
                 print(
                     f"[NONRTC][{mode}] step={next_sent} cycle={cycle + 1} "
-                    f"chunk={index + 1}/50 DO8..11={dos} guards={guards}"
+                    f"chunk={index + 1}/50 "
+                    f"DO={dict(zip(cfg['execution']['action_do_names'], dos))} guards={guards}"
                     f"\n[NONRTC][{mode}] dataset_target={target_dataset.tolist()}"
                     f"\n[NONRTC][{mode}] command_target_xyzw={command_pose.tolist()}",
                     flush=True,
@@ -587,7 +609,8 @@ def run_nonrtc(cfg, dry_run, max_actions):
                     "dataset_target": target_dataset.tolist(),
                     "command_target": command_pose.tolist(),
                     "command_target_frame": cfg["frames"]["command_pose_frame_with_setwobj"],
-                    "do8_do11": dos, "guards": guards,
+                    "do_values": dict(zip(cfg["execution"]["action_do_names"], dos)),
+                    "guards": guards,
                     "current_dataset_pose": live_state[:7].tolist(),
                     "current_topic_pose": [float(v) for v in status["topic_pose_xyzw"]],
                     "current_topic_pose_frame": status["topic_pose_frame"],
@@ -628,19 +651,29 @@ def run_nonrtc(cfg, dry_run, max_actions):
 
 
 def self_test(cfg):
-    live = np.asarray([0.23952933, -0.62075734, -0.25309893, 0.63933945, -0.41043657, -0.44729048, 0.47193021] + [0] * 17)
-    action = np.r_[live[:7], [1, 0, 1, 0]]
+    profile = cfg["inference"]["active_profile"]
+    safety = cfg["execution"]["safety"]
+    xyz = (np.asarray(safety["dataset_xyz_min"]) + np.asarray(safety["dataset_xyz_max"])) / 2
+    live = np.asarray([*xyz, 0, 0, 0, 1] + [0] * 17)
+    expected_dos = [i % 2 for i in range(len(cfg["execution"]["action_do_nums"]))]
+    action = np.r_[live[:7], expected_dos]
     guarded, dos, _ = guarded_action(action, live, cfg)
     command_pose = dataset_to_command_pose(guarded, cfg)
     assert np.allclose(command_pose, guarded, atol=1e-9)
-    assert dos == [1, 0, 1, 0]
+    assert dos == expected_dos
     commands = robot_commands(command_pose, dos, cfg)
-    assert "--do_num=8" in commands[0] and "--do_num=11" in commands[3]
-    assert "--robottarget_value={" in commands[4] and "robottarget_pa_value" not in commands[4]
+    for command, do_num in zip(commands, cfg["execution"]["action_do_nums"]):
+        assert f"--do_num={do_num}" in command
+    pose_command = commands[-1]
+    assert "--robottarget_value={" in pose_command and "robottarget_pa_value" not in pose_command
+    slots = pose_command[1:-1].split("||")
+    assert slots[int(cfg["execution"]["joganyc_slot"])].startswith("JogAnyC ")
+    assert sum(slot.startswith("JogAnyC ") for slot in slots) == 1
     assert cfg["execution"]["inference_preflight_wobj"] == "wobj0"
-    if cfg["inference"]["active_profile"]["name"] == "act_v2":
-        older = np.zeros((50, 11), dtype=np.float32)
-        newer = np.zeros((50, 11), dtype=np.float32)
+    if profile.get("temporal_ensemble", {}).get("enabled", False):
+        action_dim = int(profile["action_dim"])
+        older = np.zeros((50, action_dim), dtype=np.float32)
+        newer = np.zeros((50, action_dim), dtype=np.float32)
         older[:, 6] = newer[:, 6] = 1.0
         newer[:, 0] = 1.0
         blended, count = temporal_ensemble_action([(0, older), (0, newer)], 3, cfg)
@@ -652,7 +685,8 @@ def self_test(cfg):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default=str(Path(__file__).with_name("dualarm_lt_rtc_16.yaml")))
-    parser.add_argument("--profile", choices=("qwenpi_v3_v2", "qwenpi_v3_v3", "act_v2"))
+    parser.add_argument("--profile")
+    parser.add_argument("--instruction", help="Override an instruction-conditioned profile task")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--dry-run", action="store_true")
     mode.add_argument("--real", action="store_true")
@@ -667,6 +701,13 @@ def main():
     )
     args = parser.parse_args()
     cfg = base.load_config(args.config, args.profile)
+    if args.instruction is not None:
+        profile = cfg["inference"]["active_profile"]
+        if not profile.get("instruction_conditioned", False):
+            parser.error("--instruction requires an instruction-conditioned profile")
+        if not args.instruction.strip():
+            parser.error("--instruction must not be empty")
+        profile["instruction"] = args.instruction.strip()
     if args.topic_pose_frame_for_dry_run is not None:
         if not args.dry_run:
             parser.error("--topic-pose-frame-for-dry-run requires --dry-run")
@@ -678,6 +719,8 @@ def main():
         )
     if args.self_test:
         return self_test(cfg)
+    if args.real:
+        ensure_real_profile_authorized(cfg)
     max_actions = args.max_actions
     if max_actions is None:
         max_actions = int(cfg["execution"]["default_max_actions"])

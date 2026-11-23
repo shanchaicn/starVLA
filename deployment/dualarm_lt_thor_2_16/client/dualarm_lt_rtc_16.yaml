@@ -3,33 +3,16 @@ version: dualarm-lt-rtc-v1
 robot:
   topic_ip: 192.168.2.16
   topic_port: 19091
-  # One persistent StatusReader is shared by the control loop and inference
-  # worker. Any transport loss remains fail-closed until the client restarts.
   topic:
     initial_timeout_s: 4.0
     rt_stale_s: 0.20
     nrt_stale_s: 0.30
     frame_stale_s: 1.0
     max_rt_nrt_rx_skew_s: 0.30
-  moving_model: HRC-dh-R2-fix-tool
+  # The global IO is published on this model for both arms.
   io_model: HRC-dh-L-tool
   digital_inputs: [DI4, DI6, DI8, DI9, DI10, DI11, DI12, DI13, DI14, DI15, DI16, DI17, DI18, DI19, DI20, DI21, DI22]
 
-# Calibration from the matched first frame in shanchai/suck_lt. Quaternion order is xyzw.
-frames:
-  # SetWobj(wobj0) changes Topic robottarget into the same wobj0 frame used by
-  # the training dataset. JogAnyC robottarget_value is interpreted in wobj0 too.
-  # SetWobj may remain active after an RPC session closes, so both paths detect
-  # whether the raw Topic pose or its calibrated transform is in the dataset workspace.
-  topic_pose_frame_without_setwobj: auto
-  topic_pose_frame_after_setwobj: auto
-  command_pose_frame_with_setwobj: dataset
-  dataset_from_controller:
-    translation_m: [0.11193867415485362, -0.47926710205246703, -0.20341395009452984]
-    quaternion_xyzw: [-0.5242465118463747, 0.3707491517186816, -0.49148424278267977, 0.5883484515260688]
-
-# Physical mapping supplied for the five ObCameraSensor streams on 192.168.2.16.
-# QwenPI profiles use three cameras. ACT V2 additionally uses left_wrist.
 cameras:
   mapping_verified: true
   width: 640
@@ -44,43 +27,259 @@ cameras:
 inference:
   default_profile: qwenpi_v3_v2
   timeout_s: 30.0
-  instruction: Use the suction cup on the robot's right arm to pick up the phone support plate.
   profiles:
     qwenpi_v3_v2:
       url: http://127.0.0.1:10199
       model_identity: dualarm_lt_suck_qwenpi_v3_v2_h50-RTC-DEV
+      instruction: "Use the suction cup on the robot's right arm to pick up the phone support plate."
+      instruction_conditioned: true
       upload_image_size: [224, 224]
       upload_jpeg_quality: 90
       state_dim: 24
+      action_dim: 11
       camera_order: [left_side, right_wrist, right_side]
       rtc_mode: guided
-      instruction_conditioned: true
+      moving_model: HRC-dh-R2-fix-tool
+      arm_label: right_arm0
+      joganyc_slot: 1
+      action_do_names: [DO8, DO9, DO10, DO11]
+      action_do_nums: [8, 9, 10, 11]
+      frames:
+        topic_pose_frame_without_setwobj: auto
+        topic_pose_frame_after_setwobj: auto
+        command_pose_frame_with_setwobj: dataset
+        dataset_from_controller:
+          translation_m: [0.11193867415485362, -0.47926710205246703, -0.20341395009452984]
+          quaternion_xyzw: [-0.5242465118463747, 0.3707491517186816, -0.49148424278267977, 0.5883484515260688]
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [0.170, -0.670, -0.297]
+        dataset_xyz_max: [0.306, -0.532, -0.180]
+        clip_translation_and_rotation: true
+        workspace_source: site_verified_suck_v2
+      real:
+        enabled: true
+        wobj_dataset_frame_verified: true
+        workspace_verified: true
+
     qwenpi_v3_v3:
       url: http://127.0.0.1:10200
       model_identity: dualarm_lt_suck_qwenpi_v3_v3_h50-RTC-DEV
+      instruction: "Use the suction cup on the robot's right arm to pick up the phone support plate."
+      instruction_conditioned: true
       command_hz: 8.0
       expected_guided_latency_s: 1.6
       upload_image_size: [224, 224]
       upload_jpeg_quality: 90
       state_dim: 7
+      action_dim: 11
       camera_order: [left_side, right_wrist, right_side]
       rtc_mode: guided
-      instruction_conditioned: true
+      moving_model: HRC-dh-R2-fix-tool
+      arm_label: right_arm0
+      joganyc_slot: 1
+      action_do_names: [DO8, DO9, DO10, DO11]
+      action_do_nums: [8, 9, 10, 11]
+      frames:
+        topic_pose_frame_without_setwobj: auto
+        topic_pose_frame_after_setwobj: auto
+        command_pose_frame_with_setwobj: dataset
+        dataset_from_controller:
+          translation_m: [0.11193867415485362, -0.47926710205246703, -0.20341395009452984]
+          quaternion_xyzw: [-0.5242465118463747, 0.3707491517186816, -0.49148424278267977, 0.5883484515260688]
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [0.170, -0.670, -0.297]
+        dataset_xyz_max: [0.306, -0.532, -0.180]
+        clip_translation_and_rotation: true
+        workspace_source: site_verified_suck_v2
+      real:
+        enabled: true
+        wobj_dataset_frame_verified: true
+        workspace_verified: true
+
     act_v2:
       url: http://127.0.0.1:10201
       model_identity: dualarm_lt_suck_act_h50_v2-RTC-FRESH-REPLAN-DEV
+      instruction: "Use the suction cup on the robot's right arm to pick up the phone support plate."
+      instruction_conditioned: false
       upload_image_size: [224, 224]
       upload_jpeg_quality: 90
       state_dim: 24
+      action_dim: 11
       camera_order: [left_side, left_wrist, right_wrist, right_side]
       rtc_mode: fresh_replan
-      instruction_conditioned: false
+      moving_model: HRC-dh-R2-fix-tool
+      arm_label: right_arm0
+      joganyc_slot: 1
+      action_do_names: [DO8, DO9, DO10, DO11]
+      action_do_nums: [8, 9, 10, 11]
       temporal_ensemble:
         enabled: true
-        # Newest overlapping chunk has weight 1.0; each older chunk is
-        # multiplied by exp(-decay_per_plan * age_rank).
         decay_per_plan: 0.35
         max_plans: 4
+      frames:
+        topic_pose_frame_without_setwobj: auto
+        topic_pose_frame_after_setwobj: auto
+        command_pose_frame_with_setwobj: dataset
+        dataset_from_controller:
+          translation_m: [0.11193867415485362, -0.47926710205246703, -0.20341395009452984]
+          quaternion_xyzw: [-0.5242465118463747, 0.3707491517186816, -0.49148424278267977, 0.5883484515260688]
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [0.170, -0.670, -0.297]
+        dataset_xyz_max: [0.306, -0.532, -0.180]
+        clip_translation_and_rotation: true
+        workspace_source: site_verified_suck_v2
+      real:
+        enabled: true
+        wobj_dataset_frame_verified: true
+        workspace_verified: true
+
+    place_qwenpi_v3_v2:
+      url: http://127.0.0.1:10202
+      model_identity: dualarm_lt_place_qwenpi_v3_v2_h50-RTC-DEV
+      instruction: "Use the robot's left arm to slowly push in the charger box drawer."
+      instruction_conditioned: true
+      upload_image_size: [224, 224]
+      upload_jpeg_quality: 90
+      state_dim: 24
+      action_dim: 11
+      camera_order: [left_wrist, right_side]
+      rtc_mode: guided
+      moving_model: HRC-dh-L-tool
+      arm_label: left_arm1
+      joganyc_slot: 0
+      action_do_names: [DO12, DO13, DO15, DO16]
+      action_do_nums: [12, 13, 15, 16]
+      frames:
+        # Dry-run assumes wobj0 is already active. Real mode sends SetWobj first.
+        topic_pose_frame_without_setwobj: dataset
+        topic_pose_frame_after_setwobj: dataset
+        command_pose_frame_with_setwobj: dataset
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [0.021, 0.288, -0.279]
+        dataset_xyz_max: [0.114, 0.369, -0.215]
+        clip_translation_and_rotation: true
+        workspace_source: dataset_minmax_plus_10mm_unverified
+      real:
+        enabled: false
+        wobj_dataset_frame_verified: false
+        workspace_verified: false
+        block_reason: Verify left-arm wobj0 Topic/command frame and site workspace before enabling real RPC.
+
+    snap_act_v2:
+      url: http://127.0.0.1:10203
+      model_identity: dualarm_lt_snap_act_h50_v2-RTC-FRESH-REPLAN-DEV
+      instruction: Snap
+      instruction_conditioned: false
+      upload_image_size: [224, 224]
+      upload_jpeg_quality: 90
+      state_dim: 24
+      action_dim: 11
+      camera_order: [left_wrist, right_side]
+      rtc_mode: fresh_replan
+      moving_model: HRC-dh-L-tool
+      arm_label: left_arm1
+      joganyc_slot: 0
+      action_do_names: [DO12, DO13, DO15, DO16]
+      action_do_nums: [12, 13, 15, 16]
+      temporal_ensemble:
+        enabled: true
+        decay_per_plan: 0.35
+        max_plans: 4
+      frames:
+        topic_pose_frame_without_setwobj: dataset
+        topic_pose_frame_after_setwobj: dataset
+        command_pose_frame_with_setwobj: dataset
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [0.248, 0.514, -0.348]
+        dataset_xyz_max: [0.373, 0.606, -0.296]
+        clip_translation_and_rotation: true
+        workspace_source: dataset_minmax_plus_10mm_unverified
+      real:
+        enabled: false
+        wobj_dataset_frame_verified: false
+        workspace_verified: false
+        block_reason: Verify left-arm wobj0 frame, site workspace, and constant-high DO demonstrations before enabling real RPC.
+
+    insert_act_v2:
+      url: http://127.0.0.1:10204
+      model_identity: dualarm_lt_insert_act_h50_v2-RTC-FRESH-REPLAN-DEV
+      instruction: Insert
+      instruction_conditioned: false
+      upload_image_size: [224, 224]
+      upload_jpeg_quality: 90
+      state_dim: 24
+      action_dim: 11
+      camera_order: [left_wrist, right_side]
+      rtc_mode: fresh_replan
+      moving_model: HRC-dh-L-tool
+      arm_label: left_arm1
+      joganyc_slot: 0
+      action_do_names: [DO12, DO13, DO15, DO16]
+      action_do_nums: [12, 13, 15, 16]
+      temporal_ensemble:
+        enabled: true
+        decay_per_plan: 0.35
+        max_plans: 4
+      frames:
+        topic_pose_frame_without_setwobj: dataset
+        topic_pose_frame_after_setwobj: dataset
+        command_pose_frame_with_setwobj: dataset
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [0.226, 0.497, -0.377]
+        dataset_xyz_max: [0.353, 0.572, -0.312]
+        clip_translation_and_rotation: true
+        workspace_source: dataset_minmax_plus_10mm_unverified
+      real:
+        enabled: false
+        wobj_dataset_frame_verified: false
+        workspace_verified: false
+        block_reason: Verify left-arm wobj0 frame, site workspace, and constant-high DO demonstrations before enabling real RPC.
+
+    push_pull_qwenpi_v3_v2:
+      url: http://127.0.0.1:10205
+      model_identity: dualarm_lt_push_pull_qwenpi_v3_v2_h50-RTC-DEV
+      instruction: "Use the robot's left arm to slowly pull out the charger box drawer."
+      alternative_instruction: "Use the robot's left arm to slowly push in the charger box drawer."
+      instruction_conditioned: true
+      upload_image_size: [224, 224]
+      upload_jpeg_quality: 90
+      state_dim: 24
+      action_dim: 9
+      camera_order: [left_wrist, left_side]
+      rtc_mode: guided
+      moving_model: HRC-dh-L-tool
+      arm_label: left_arm1
+      joganyc_slot: 0
+      action_do_names: [DO14, DO17]
+      action_do_nums: [14, 17]
+      frames:
+        topic_pose_frame_without_setwobj: dataset
+        topic_pose_frame_after_setwobj: dataset
+        command_pose_frame_with_setwobj: dataset
+      safety:
+        max_live_translation_m: 0.020
+        max_live_rotation_rad: 0.20
+        dataset_xyz_min: [-0.148, 0.357, -0.159]
+        dataset_xyz_max: [-0.042, 0.486, 0.061]
+        clip_translation_and_rotation: true
+        workspace_source: dataset_minmax_plus_10mm_unverified
+      real:
+        enabled: false
+        wobj_dataset_frame_verified: false
+        workspace_verified: false
+        block_reason: Verify left-arm wobj0 Topic/command frame and site workspace before enabling real RPC.
 
 rtc:
   shadow_hz: 10.0
@@ -94,9 +293,6 @@ logging:
   directory: /home/test/Public/cs/starvla_lt/logs
 
 execution:
-  # Real mode uses the same direct send_commend_py command channel as the
-  # validated 151 client. The HTTP :5001 event translator is intentionally not
-  # used because it rewrites robottarget_value to a zero PA default.
   direct_rpc:
     host: 192.168.2.16
     port: 5868
@@ -104,9 +300,6 @@ execution:
     sync_timeout_ms: 10000
     async_timeout_ms: 6000000
   inference_preflight_wobj: wobj0
-  # Model action[7:11] is DO8..DO11 in this exact order.
-  action_do_names: [DO8, DO9, DO10, DO11]
-  action_do_nums: [8, 9, 10, 11]
   do_threshold: 0.5
   command_hz: 10.0
   max_buffer_wait_s: 2.0
@@ -117,11 +310,3 @@ execution:
     cartesian_acc: [0.20, 0.20, 0.20, 1.00, 1.00, 1.00]
     cartesian_dec: [0.20, 0.20, 0.20, 1.00, 1.00, 1.00]
     last_count: 500
-  safety:
-    max_live_translation_m: 0.020
-    max_live_rotation_rad: 0.20
-    # Dataset-frame envelope: observed training min/max with a small margin.
-    dataset_xyz_min: [0.170, -0.670, -0.297]
-    dataset_xyz_max: [0.306, -0.532, -0.180]
-    clip_translation_and_rotation: true
-

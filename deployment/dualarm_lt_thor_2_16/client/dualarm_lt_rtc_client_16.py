@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""2.16 dual-arm LT RTC observation/inference client.
+"""2.16 dual-arm LT observation/inference support for all Docker profiles.
 
-This development client is deliberately shadow-only: it reads Topic/cameras,
-calls the 2.252 model, and logs candidate actions. It imports no command SDK.
+This module reads Topic/cameras and calls a loopback Docker model service. The
+separate executor owns dry-run/real RPC behavior and imports the command SDK.
 """
 from __future__ import annotations
 
@@ -26,7 +26,6 @@ import yaml
 KNOWN_CAMERAS = ("left_side", "left_wrist", "right_wrist", "right_side")
 HORIZON = 50
 FULL_STATE_DIM = 24
-ACTION_DIM = 11
 FT_COMPONENTS = ("fx", "fy", "fz", "mx", "my", "mz")
 NO_PROXY_OPENER = build_opener(ProxyHandler({}))
 
@@ -258,6 +257,21 @@ def load_config(path: str, profile_name: str | None = None) -> dict:
     profile["name"] = selected
     if int(profile.get("state_dim", 0)) not in (7, 24):
         raise ClientError("inference profile state_dim must be 7 or 24")
+    action_dim = int(profile.get("action_dim", 0))
+    do_names = list(profile.get("action_do_names", []))
+    do_nums = list(profile.get("action_do_nums", []))
+    if action_dim not in (9, 11) or action_dim != 7 + len(do_nums):
+        raise ClientError("profile action_dim must equal pose 7D plus configured DO outputs")
+    if len(do_names) != len(do_nums) or len(set(do_names)) != len(do_names):
+        raise ClientError("profile action DO names/numbers are inconsistent")
+    if any(name != f"DO{number}" for name, number in zip(do_names, do_nums)):
+        raise ClientError("profile action DO name does not match its number")
+    if profile.get("moving_model") not in ("HRC-dh-L-tool", "HRC-dh-R2-fix-tool"):
+        raise ClientError("profile moving_model is not a supported arm")
+    if int(profile.get("joganyc_slot", -1)) not in (0, 1):
+        raise ClientError("profile joganyc_slot must be 0 for left or 1 for right")
+    if not str(profile.get("instruction", "")).strip():
+        raise ClientError("profile instruction is empty")
     camera_order = tuple(profile.get("camera_order", []))
     if not camera_order or len(set(camera_order)) != len(camera_order):
         raise ClientError("inference profile camera_order is empty or duplicated")
@@ -267,34 +281,62 @@ def load_config(path: str, profile_name: str | None = None) -> dict:
         raise ClientError("inference profile rtc_mode must be guided or fresh_replan")
     upload_size = profile.get("upload_image_size")
     if upload_size is not None:
-        if selected not in ("qwenpi_v3_v2", "qwenpi_v3_v3", "act_v2") or upload_size != [224, 224]:
+        if upload_size != [224, 224]:
             raise ClientError("selected profile does not support 224x224 image upload")
         quality = profile.get("upload_jpeg_quality", 90)
         if isinstance(quality, bool) or not isinstance(quality, int) or not 80 <= quality <= 100:
             raise ClientError("upload_jpeg_quality must be an integer in [80,100]")
     te = profile.get("temporal_ensemble", {})
     if te.get("enabled", False):
-        if selected != "act_v2":
-            raise ClientError("temporal ensemble is only supported for act_v2")
+        if profile.get("rtc_mode") != "fresh_replan":
+            raise ClientError("temporal ensemble requires fresh_replan RTC mode")
         if not 0 < float(te.get("decay_per_plan", 0)) <= 5:
             raise ClientError("temporal_ensemble.decay_per_plan must be in (0,5]")
         if not 2 <= int(te.get("max_plans", 0)) <= 20:
             raise ClientError("temporal_ensemble.max_plans must be in [2,20]")
     if not str(profile.get("url", "")).startswith("http://127.0.0.1:"):
-        raise ClientError("inference URL must use the local SSH tunnel")
+        raise ClientError("inference URL must use a loopback Docker service")
+    frames = profile.get("frames", {})
+    for key in ("topic_pose_frame_without_setwobj", "topic_pose_frame_after_setwobj"):
+        if frames.get(key) not in ("auto", "dataset", "controller"):
+            raise ClientError(f"profile.frames.{key} must be auto, dataset or controller")
+    if frames.get("command_pose_frame_with_setwobj") not in ("dataset", "controller"):
+        raise ClientError("profile command pose frame must be dataset or controller")
+    needs_transform = any(frames.get(key) in ("auto", "controller") for key in (
+        "topic_pose_frame_without_setwobj", "topic_pose_frame_after_setwobj",
+    )) or frames.get("command_pose_frame_with_setwobj") == "controller"
+    frame = frames.get("dataset_from_controller", {})
+    if needs_transform and (
+        len(frame.get("translation_m", [])) != 3
+        or len(frame.get("quaternion_xyzw", [])) != 4
+    ):
+        raise ClientError("selected profile requires dataset_from_controller transform")
+    safety = profile.get("safety", {})
+    xyz_min = np.asarray(safety.get("dataset_xyz_min", []), dtype=np.float64)
+    xyz_max = np.asarray(safety.get("dataset_xyz_max", []), dtype=np.float64)
+    if xyz_min.shape != (3,) or xyz_max.shape != (3,) or not np.all(xyz_min < xyz_max):
+        raise ClientError("profile safety workspace must contain finite ordered XYZ bounds")
+    for key in ("max_live_translation_m", "max_live_rotation_rad"):
+        value = float(safety.get(key, 0))
+        if not math.isfinite(value) or value <= 0:
+            raise ClientError(f"profile safety {key} must be positive")
+    real = profile.get("real", {})
+    if any(not isinstance(real.get(key), bool) for key in (
+        "enabled", "wobj_dataset_frame_verified", "workspace_verified",
+    )):
+        raise ClientError("profile real authorization flags must be explicit booleans")
+    robot["moving_model"] = profile["moving_model"]
+    cfg["frames"] = frames
+    execution = cfg.get("execution", {})
+    execution["action_do_names"] = do_names
+    execution["action_do_nums"] = do_nums
+    execution["joganyc_slot"] = int(profile["joganyc_slot"])
+    execution["safety"] = safety
+    cfg["execution"] = execution
     cfg["inference"]["active_profile"] = profile
     hz = float(rtc.get("shadow_hz", 0))
     if not 0 < hz <= 10:
         raise ClientError("rtc.shadow_hz must be in (0,10]")
-    frame = cfg.get("frames", {}).get("dataset_from_controller", {})
-    if len(frame.get("translation_m", [])) != 3 or len(frame.get("quaternion_xyzw", [])) != 4:
-        raise ClientError("dataset_from_controller must be a rigid transform")
-    frames = cfg.get("frames", {})
-    for key in ("topic_pose_frame_without_setwobj", "topic_pose_frame_after_setwobj"):
-        if frames.get(key) not in ("auto", "dataset", "controller"):
-            raise ClientError(f"frames.{key} must be auto, dataset or controller")
-    if frames.get("command_pose_frame_with_setwobj") not in ("dataset", "controller"):
-        raise ClientError("frames.command_pose_frame_with_setwobj must be dataset or controller")
     return cfg
 
 
@@ -320,7 +362,9 @@ def controller_to_dataset(pose, cfg):
     pose = np.asarray(pose, dtype=np.float64)
     if pose.shape != (7,) or not np.isfinite(pose).all():
         raise ClientError("controller pose is not finite 7D xyzw")
-    tf = cfg["frames"]["dataset_from_controller"]
+    tf = cfg.get("frames", {}).get("dataset_from_controller")
+    if not isinstance(tf, dict):
+        raise ClientError("selected profile has no controller-to-dataset calibration")
     t = np.asarray(tf["translation_m"], dtype=np.float64)
     q = np.asarray(tf["quaternion_xyzw"], dtype=np.float64)
     q /= np.linalg.norm(q)
@@ -383,7 +427,9 @@ def capture_state(
     topic_frame = str(topic_pose_frame)
     if topic_frame not in ("auto", "dataset", "controller"):
         raise ClientError("topic_pose_frame override must be auto, dataset or controller")
-    transformed_pose = controller_to_dataset(topic_pose, cfg)
+    transformed_pose = None
+    if topic_frame in ("auto", "controller"):
+        transformed_pose = controller_to_dataset(topic_pose, cfg)
     if topic_frame == "auto":
         safety = cfg.get("execution", {}).get("safety", {})
         xyz_min = np.asarray(safety.get("dataset_xyz_min", []), dtype=np.float64)
@@ -409,6 +455,8 @@ def capture_state(
         raise ClientError("packed state is not finite 24D")
     if return_metadata:
         return state, {
+            "arm_label": cfg["inference"]["active_profile"].get("arm_label"),
+            "moving_model": robot["moving_model"],
             "system_running_state": bool(rt.system_running_state),
             "all_moving_joints_enabled": all(bool(joint.is_enabled) for joint in moving.joint),
             "topic_pose_xyzw": topic_pose.tolist(),
@@ -482,7 +530,7 @@ def check_server_health(cfg):
     expected = {
         "status": "DEV_SHADOW_ONLY",
         "model": profile["model_identity"],
-        "action_shape": [HORIZON, ACTION_DIM],
+        "action_shape": [HORIZON, int(profile["action_dim"])],
         "state_dim": int(profile["state_dim"]),
         "camera_order": list(profile["camera_order"]),
         "rtc_mode": profile["rtc_mode"],
@@ -511,7 +559,7 @@ def make_request(cfg, previous=None, executed=None, delay=None, state=None):
     images_ready = time.monotonic()
     body = {
         "protocol": "dualarm-lt-rtc-v1",
-        "instruction": cfg["inference"]["instruction"],
+        "instruction": profile["instruction"],
         "state": model_state.tolist(),
         "images": images,
         "rtc": {"num_steps": int(cfg["rtc"]["num_inference_steps"])},
@@ -526,8 +574,9 @@ def make_request(cfg, previous=None, executed=None, delay=None, state=None):
     result = post_json(profile["url"], "/predict", body, float(cfg["inference"]["timeout_s"]))
     response_ready = time.monotonic()
     actions = np.asarray(result.get("candidate_actions"), dtype=np.float32)
-    if actions.shape != (HORIZON, ACTION_DIM) or not np.isfinite(actions).all():
-        raise ClientError("server returned invalid 50x11 actions")
+    action_dim = int(profile["action_dim"])
+    if actions.shape != (HORIZON, action_dim) or not np.isfinite(actions).all():
+        raise ClientError(f"server returned invalid 50x{action_dim} actions")
     if result.get("motion_authorized") is not False or result.get("actions_executed") != 0:
         raise ClientError("server shadow-only contract violated")
     if result.get("model_identity") != profile["model_identity"]:
@@ -635,7 +684,8 @@ def self_test():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default=str(Path(__file__).with_name("dualarm_lt_rtc_16.yaml")))
-    parser.add_argument("--profile", choices=("qwenpi_v3_v2", "qwenpi_v3_v3", "act_v2"))
+    parser.add_argument("--profile")
+    parser.add_argument("--instruction", help="Override an instruction-conditioned profile task")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--self-test", action="store_true")
     group.add_argument("--check-config", action="store_true")
@@ -645,11 +695,20 @@ def main():
     if args.self_test:
         return self_test()
     cfg = load_config(args.config, args.profile)
+    if args.instruction is not None:
+        profile = cfg["inference"]["active_profile"]
+        if not profile.get("instruction_conditioned", False):
+            parser.error("--instruction requires an instruction-conditioned profile")
+        if not args.instruction.strip():
+            parser.error("--instruction must not be empty")
+        profile["instruction"] = args.instruction.strip()
     if args.check_config:
         delay, request_at = schedule(cfg)
         profile = cfg["inference"]["active_profile"]
         print(f"CONFIG_OK profile={profile['name']} rtc_mode={profile['rtc_mode']} "
-              f"state_dim={profile['state_dim']} cameras={profile['camera_order']} "
+              f"state_dim={profile['state_dim']} action_dim={profile['action_dim']} "
+              f"arm={profile['arm_label']} DO={profile['action_do_names']} "
+              f"cameras={profile['camera_order']} real_enabled={profile['real']['enabled']} "
               f"shadow_only=True camera_mapping_verified={cfg['cameras']['mapping_verified']} "
               f"delay={delay} request_at={request_at}")
         return

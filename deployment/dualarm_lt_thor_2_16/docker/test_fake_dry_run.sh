@@ -54,9 +54,7 @@ trap 'exit 130' INT
 trap 'exit 143' TERM
 
 echo "[FAKE DRY-RUN] profile=$PROFILE port=$PORT; synthetic state/images only; NO Topic, NO robot RPC"
-if [[ "$PROFILE" == act_v2 || "$PROFILE" == qwenpi_v3_v2 || "$PROFILE" == qwenpi_v3_v3 ]]; then
-  "${COMPOSE[@]}" run --rm -T --no-deps client --profile "$PROFILE" --self-test
-fi
+"${COMPOSE[@]}" run --rm -T --no-deps client --profile "$PROFILE" --self-test
 "${COMPOSE[@]}" run --rm -T --no-deps act --profile "$PROFILE" --self-test
 "${COMPOSE[@]}" run -d --no-deps --name "$NAME" act \
   --profile "$PROFILE" --port "$PORT" >/dev/null

@@ -30,11 +30,19 @@ python3 refresh_context.py
 ./test_fake_dry_run.sh insert_act_v2
 ./test_fake_dry_run.sh push_pull_qwenpi_v3_v2
 
-# 当前真实 Topic/相机 client 只适配 Suck；只打印 WOULD_SEND，不发送机器人 RPC
+# 五动作真实 Topic/相机 RTC dry-run；只打印 WOULD_SEND，不发送机器人 RPC
 ./run_client.sh qwenpi_v3_v2 --dry-run --max-actions 50
+./run_client.sh place_qwenpi_v3_v2 --dry-run --max-actions 50
+./run_client.sh snap_act_v2 --dry-run --max-actions 50
+./run_client.sh insert_act_v2 --dry-run --max-actions 50
+./run_client.sh push_pull_qwenpi_v3_v2 --dry-run --max-actions 50
 
-# 当前真机 client 只适配 Suck；仅在前两级通过且现场安全条件满足后使用
+# 非 RTC dry-run：完整消费每个新 50 步 chunk
+./run_client.sh place_qwenpi_v3_v2 --dry-run --no-rtc --max-actions 50
+
+# 真机执行：左臂 Profile 默认 fail-closed，需先完成 YAML 中三项现场核验
 ./run_client.sh qwenpi_v3_v2 --real --max-actions 1
+./run_client.sh qwenpi_v3_v2 --real --no-rtc --max-actions 1
 ```
 
-Place、Snap、Insert、Push/Pull 已支持 Docker 服务和合成推理；尚未提供左臂真机 client Profile，不能套用 Suck 的 dry-run/real 命令。
+五个动作均已配置 RTC 和非 RTC client。Place、Snap、Insert、Push/Pull 的左臂真机 RPC 默认关闭，必须先验证 wobj0 坐标、现场工作空间和 DO，再在对应 Profile 中开启三项 `real` 布尔安全门。

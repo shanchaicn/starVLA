@@ -25,10 +25,15 @@ class SchedulerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             cfg = {
                 "inference": {
-                    "active_profile": {"name": "test", "rtc_mode": mode},
-                    "instruction": "offline timing test",
+                    "active_profile": {
+                        "name": "test", "rtc_mode": mode,
+                        "instruction": "offline timing test", "action_dim": 11,
+                    },
                 },
-                "execution": {"command_hz": 100.0, "max_buffer_wait_s": buffer_wait_s},
+                "execution": {
+                    "command_hz": 100.0, "max_buffer_wait_s": buffer_wait_s,
+                    "action_do_names": ["DO8", "DO9", "DO10", "DO11"],
+                },
                 "logging": {"directory": directory},
                 "robot": {"digital_inputs": []},
                 "frames": {"command_pose_frame_with_setwobj": "dataset"},
@@ -155,10 +160,15 @@ class SchedulerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             cfg = {
                 "inference": {
-                    "active_profile": {"name": "test", "rtc_mode": "guided"},
-                    "instruction": "offline timing test",
+                    "active_profile": {
+                        "name": "test", "rtc_mode": "guided",
+                        "instruction": "offline timing test", "action_dim": 11,
+                    },
                 },
-                "execution": {"command_hz": 10.0},
+                "execution": {
+                    "command_hz": 10.0,
+                    "action_do_names": ["DO8", "DO9", "DO10", "DO11"],
+                },
                 "logging": {"directory": directory},
                 "robot": {"digital_inputs": []},
                 "frames": {"command_pose_frame_with_setwobj": "dataset"},
@@ -200,6 +210,51 @@ class SchedulerTests(unittest.TestCase):
             self.assertEqual([row["chunk_index"] for row in rows],
                              list(range(50)) + list(range(50)) + list(range(5)))
             self.assertEqual(calls, [(None, None, None)] * 3)
+
+    def test_all_deployed_profiles_load_and_pass_offline_executor_self_test(self):
+        path = Path(__file__).with_name("dualarm_lt_rtc_16.yaml")
+        expected = {
+            "qwenpi_v3_v2": (11, 1, [8, 9, 10, 11]),
+            "qwenpi_v3_v3": (11, 1, [8, 9, 10, 11]),
+            "act_v2": (11, 1, [8, 9, 10, 11]),
+            "place_qwenpi_v3_v2": (11, 0, [12, 13, 15, 16]),
+            "snap_act_v2": (11, 0, [12, 13, 15, 16]),
+            "insert_act_v2": (11, 0, [12, 13, 15, 16]),
+            "push_pull_qwenpi_v3_v2": (9, 0, [14, 17]),
+        }
+        for name, (action_dim, slot, do_nums) in expected.items():
+            with self.subTest(profile=name):
+                cfg = executor.base.load_config(str(path), name)
+                profile = cfg["inference"]["active_profile"]
+                self.assertEqual(profile["action_dim"], action_dim)
+                self.assertEqual(cfg["execution"]["joganyc_slot"], slot)
+                self.assertEqual(cfg["execution"]["action_do_nums"], do_nums)
+                with redirect_stdout(io.StringIO()):
+                    executor.self_test(cfg)
+
+    def test_unverified_left_profiles_are_blocked_before_real_rpc(self):
+        path = Path(__file__).with_name("dualarm_lt_rtc_16.yaml")
+        right = executor.base.load_config(str(path), "qwenpi_v3_v2")
+        executor.ensure_real_profile_authorized(right)
+        for name in (
+            "place_qwenpi_v3_v2", "snap_act_v2", "insert_act_v2",
+            "push_pull_qwenpi_v3_v2",
+        ):
+            with self.subTest(profile=name):
+                cfg = executor.base.load_config(str(path), name)
+                with self.assertRaisesRegex(executor.base.ClientError, "fail-closed"):
+                    executor.ensure_real_profile_authorized(cfg)
+
+    def test_left_and_right_joganyc_use_different_command_slots(self):
+        path = Path(__file__).with_name("dualarm_lt_rtc_16.yaml")
+        for name, slot in (("qwenpi_v3_v2", 1), ("place_qwenpi_v3_v2", 0)):
+            cfg = executor.base.load_config(str(path), name)
+            pose = [0, 0, 0, 0, 0, 0, 1]
+            dos = [0] * len(cfg["execution"]["action_do_nums"])
+            command = executor.robot_commands(pose, dos, cfg)[-1]
+            slots = command[1:-1].split("||")
+            self.assertTrue(slots[slot].startswith("JogAnyC "))
+            self.assertEqual(sum(item.startswith("JogAnyC ") for item in slots), 1)
 
     def test_real_entry_does_not_ask_for_keyboard_confirmation(self):
         with (

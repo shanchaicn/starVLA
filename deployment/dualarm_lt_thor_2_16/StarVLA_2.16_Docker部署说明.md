@@ -2,7 +2,7 @@
 
 ## 1. 文档范围
 
-本文用于汇报和复现 StarVLA LT 在 `192.168.2.16`（ARM64 NVIDIA Thor）上的 Docker 部署，内容包括 Suck、Place、Snap、Insert、Push/Pull 五个任务模型的服务端启动与合成推理、Suck Docker client，以及 `fake-dry-run`、`dry-run`、真机测试的步骤和验收标准。
+本文用于汇报和复现 StarVLA LT 在 `192.168.2.16`（ARM64 NVIDIA Thor）上的 Docker 部署，内容包括 Suck、Place、Snap、Insert、Push/Pull 五个任务模型的服务端、RTC/非 RTC client，以及 `fake-dry-run`、真实数据 `dry-run`、真机测试的步骤和验收标准。
 
 本文不包含宿主机 Python 虚拟环境启动方式，不将模型权重、运行日志或现场密码纳入代码仓库。
 
@@ -357,9 +357,15 @@ cd /home/codeit/Public/zpf/StarVLA/inference/packages/dualarm_lt_rtc_20261118/se
 
 Thor 与 5090D 记录来自不同运行环境和服务封装，只能证明各自链路能够连续完成 initial/guided 推理；不能仅凭这些数字得出硬件性能排名。严格性能比较还需要统一模型权重、软件版本、输入、预热轮数和计时口径。
 
-## 7. Suck dry-run：真实数据闭环测试（不发指令）
+## 7. 五动作 client dry-run：真实数据闭环测试（不发指令）
 
-> **当前 client 适配范围：仅 Suck。** `client/dualarm_lt_rtc_16.yaml`、右臂 Pose frame、工作空间和 DO8–DO11 映射只覆盖 Suck 的 `qwenpi_v3_v2`、`qwenpi_v3_v3`、`act_v2`。Place、Snap、Insert、Push/Pull 已支持服务启动与合成推理，但尚未加入左臂 client Profile、DO 映射和对应安全空间，因此不能使用本节的 `run_client.sh --dry-run`，更不能进入 `--real`。
+`client/dualarm_lt_rtc_16.yaml` 已包含全部五个动作及 Suck 两个对照版本。client 会按 Profile 动态选择：
+
+- 右臂 `HRC-dh-R2-fix-tool` 或左臂 `HRC-dh-L-tool`；
+- 右臂 JogAnyC 子命令槽 1 或左臂槽 0；
+- `50×11` 或 `50×9` Action；
+- DO8–11、DO12/13/15/16 或 DO14/17；
+- Profile 对应相机、任务文本、RTC 模式和工作空间。
 
 ### 7.1 测试目的
 
@@ -380,17 +386,45 @@ curl --max-time 5 -I http://192.168.2.16:6888/ObCameraSensor/3/0/color
 
 ### 7.3 操作命令
 
-先启动对应模型服务，再运行同一 Profile 的 client：
+先启动对应模型服务，再运行同一 Profile 的 RTC client：
 
 ```bash
 cd /home/test/Public/cs/starvla_lt/docker
 
 ./run_server.sh qwenpi_v3_v2
 ./run_client.sh qwenpi_v3_v2 --dry-run --max-actions 1
-./run_client.sh qwenpi_v3_v2 --dry-run --max-actions 50
+
+./run_server.sh place_qwenpi_v3_v2
+./run_client.sh place_qwenpi_v3_v2 --dry-run --max-actions 1
+
+./run_server.sh snap_act_v2
+./run_client.sh snap_act_v2 --dry-run --max-actions 1
+
+./run_server.sh insert_act_v2
+./run_client.sh insert_act_v2 --dry-run --max-actions 1
+
+./run_server.sh push_pull_qwenpi_v3_v2
+./run_client.sh push_pull_qwenpi_v3_v2 --dry-run --max-actions 1
 ```
 
-Suck 的其余两个 Profile：
+Push/Pull 默认使用 Pull 指令。测试 Push：
+
+```bash
+./run_client.sh push_pull_qwenpi_v3_v2 --dry-run --max-actions 1 \
+  --instruction "Use the robot's left arm to slowly push in the charger box drawer."
+```
+
+不使用 RTC、每轮完整消费新预测的 50 步时，增加 `--no-rtc`。五个动作都使用相同入口：
+
+```bash
+./run_client.sh qwenpi_v3_v2 --dry-run --no-rtc --max-actions 50
+./run_client.sh place_qwenpi_v3_v2 --dry-run --no-rtc --max-actions 50
+./run_client.sh snap_act_v2 --dry-run --no-rtc --max-actions 50
+./run_client.sh insert_act_v2 --dry-run --no-rtc --max-actions 50
+./run_client.sh push_pull_qwenpi_v3_v2 --dry-run --no-rtc --max-actions 50
+```
+
+Suck 的其余两个对照 Profile：
 
 ```bash
 ./run_server.sh qwenpi_v3_v3
@@ -400,7 +434,7 @@ Suck 的其余两个 Profile：
 ./run_client.sh act_v2 --dry-run --max-actions 50
 ```
 
-仅在排查 dry-run 坐标系自动识别时，可显式指定 Topic Pose frame：
+仅在排查 Suck dry-run 坐标系自动识别时，可显式指定 Topic Pose frame：
 
 ```bash
 ./run_client.sh qwenpi_v3_v2 --dry-run --max-actions 1 \
@@ -412,14 +446,23 @@ Suck 的其余两个 Profile：
 ### 7.4 通过判据
 
 - RT/NRT Topic、Pose、DI/DO 和要求的相机均被读取；
-- 模型返回 `50×11` Action，调度完成指定 `max-actions`；
+- Suck、Place、Snap、Insert 返回 `50×11`，Push/Pull 返回 `50×9`，调度完成指定 `max-actions`；
 - 待执行命令以 `WOULD_SEND` 打印，输出包含对应 Pose 和 DO 数值；
 - 日志写入宿主机 `logs/`，无 `FAIL_CLOSED`、Topic timeout、camera read failure 或模型 HTTP 错误；
 - 机器人 RPC 未建立、未发送，机械臂没有动作。
 
-## 8. Suck 真机测试：真实数据与 RPC 执行
+## 8. 五动作真机 client：RTC 与非 RTC
 
-> 本节真机 client 命令只适用于 Suck。Place、Snap、Insert、Push/Pull 在完成左臂状态打包、坐标标定、DO 映射、安全工作空间和 client Profile 适配前，不得套用 Suck 命令发送真机 RPC。
+代码已经适配五个动作的左右臂选择、JogAnyC 槽位、DO 和 Action 维度。Suck 的现场标定与工作空间沿用已验证配置，默认允许 `--real`。四个左臂 Profile 默认保持 fail-closed：
+
+```yaml
+real:
+  enabled: false
+  wobj_dataset_frame_verified: false
+  workspace_verified: false
+```
+
+这是有意的安全门，不是 client 缺少 Profile。左臂 YAML 中的 XYZ 范围来自训练集 action min/max 外扩 10 mm，只能用于 dry-run 诊断，不能自动视为现场批准工作空间。Snap/Insert 训练数据中的 DO12、DO13、DO15、DO16 还是全程高电平，启用真机前必须单独确认其气路含义和期望行为。
 
 ### 8.1 测试目的和边界
 
@@ -434,34 +477,64 @@ Suck 的其余两个 Profile：
 - YAML 中执行频率、工作空间和单步平移/旋转限制已审核；
 - 机器人处于可控初始位，路径清空，现场人员和独立急停已就位。
 
-### 8.2 分阶段操作命令
+### 8.2 真机启用条件
+
+对 Place、Snap、Insert、Push/Pull，每个 Profile 必须分别完成以下现场确认：
+
+1. `SetWobj wobj0` 后，所选左臂 Topic Pose 与训练数据坐标一致；
+2. 左臂 JogAnyC 必须位于复合 RPC 的第 0 个子命令槽；
+3. 当前起点和完整预测轨迹位于现场批准工作空间；
+4. DO 映射和吸嘴/气缸方向经过单路测试；
+5. 独立急停、速度限制和清空路径符合现场规范。
+
+完成后，在对应 Profile 下把 `real.enabled`、`wobj_dataset_frame_verified`、`workspace_verified` 三项改为 `true`，并将 `dataset_xyz_min/max` 改成现场批准值。缺少任一项时，client 会在建立运动 RPC 前报 `real RPC is fail-closed`。
+
+### 8.3 分阶段操作命令
 
 先用最小动作数验证单条链路：
 
 ```bash
 cd /home/test/Public/cs/starvla_lt/docker
 
-./run_server.sh act_v2
-./run_client.sh act_v2 --real --max-actions 1
+./run_server.sh qwenpi_v3_v2
+./run_client.sh qwenpi_v3_v2 --real --max-actions 1
 ```
 
 确认 Pose、DO、RPC ACK 和机械臂响应一致后，再增加到 5 步：
 
 ```bash
-./run_client.sh act_v2 --real --max-actions 5
-```
-
-Qwen Profile 使用相同的递增方法：
-
-```bash
-./run_server.sh qwenpi_v3_v2
-./run_client.sh qwenpi_v3_v2 --real --max-actions 1
 ./run_client.sh qwenpi_v3_v2 --real --max-actions 5
 ```
 
-只有在 1 步和 5 步测试、现场轨迹复核均通过后，才按批准的测试方案继续增加 `--max-actions`。不要直接从未验证配置启动长序列。
+左臂 Profile 只有在上一节三项 YAML 安全门均完成现场核验后，才使用相同的 1 步起始方法：
 
-### 8.3 通过判据
+```bash
+./run_server.sh place_qwenpi_v3_v2
+./run_client.sh place_qwenpi_v3_v2 --real --max-actions 1
+
+./run_server.sh snap_act_v2
+./run_client.sh snap_act_v2 --real --max-actions 1
+
+./run_server.sh insert_act_v2
+./run_client.sh insert_act_v2 --real --max-actions 1
+
+./run_server.sh push_pull_qwenpi_v3_v2
+./run_client.sh push_pull_qwenpi_v3_v2 --real --max-actions 1
+```
+
+非 RTC 真机入口在相同命令上增加 `--no-rtc`：
+
+```bash
+./run_client.sh qwenpi_v3_v2 --real --no-rtc --max-actions 1
+./run_client.sh place_qwenpi_v3_v2 --real --no-rtc --max-actions 1
+./run_client.sh snap_act_v2 --real --no-rtc --max-actions 1
+./run_client.sh insert_act_v2 --real --no-rtc --max-actions 1
+./run_client.sh push_pull_qwenpi_v3_v2 --real --no-rtc --max-actions 1
+```
+
+`--no-rtc` 表示每次推理得到新的 50 步 chunk，并顺序消费，直到达到 `max-actions`；它不是关闭安全保护。只有在 1 步和 5 步测试、现场轨迹复核均通过后，才按批准方案继续增加 `--max-actions`。
+
+### 8.4 通过判据
 
 - client 明确进入 `REAL`，并打印每次采集的 Pose、IO、模型 Action 和实际 RPC 指令；
 - 指令提交数与批准的 `max-actions` 一致，RPC 通信无断开或超时；
@@ -480,13 +553,13 @@ Qwen Profile 使用相同的递增方法：
 /home/test/Public/cs/starvla_lt/server/server_16.yaml
 ```
 
-现有 Suck client 的 RTC 调度、控制频率、DO 阈值、工作空间和单步限制：
+五动作 client 的 RTC/非 RTC 调度、机械臂、JogAnyC 槽位、DO、任务指令、工作空间和真机安全门：
 
 ```text
 /home/test/Public/cs/starvla_lt/client/dualarm_lt_rtc_16.yaml
 ```
 
-修改 YAML 后应依次重跑 fake-dry-run、dry-run 和小步数真机测试。安全参数变更需要现场复核，不应以关闭保护来代替数据映射或坐标系问题排查。
+修改 YAML 后应依次重跑 `--self-test`、fake-dry-run、真实数据 dry-run 和小步数真机测试。安全参数变更需要现场复核，不应以关闭保护来代替数据映射或坐标系问题排查。
 
 ## 10. 停止与清理
 
