@@ -1,29 +1,43 @@
-# CS 服务器 LT 五个模型训练说明
+# CS 服务器 LT 五个动作训练说明
 
 核验日期：2026-11-23。依据是 CS 服务器上的启动脚本、完成训练时保存的 `config.full.yaml`、日志中的 `Command` / `PREFLIGHT_OK`、`summary.jsonl` 和最终权重。
 
-本文的“五个模型”指已上传 ModelScope 的 **Place ACT、Place QwenPI、Snap ACT、Insert ACT、Push/Pull QwenPI**，来自四个数据集。Suck 是另一个动作数据集，其三个已完成模型见 [Suck 说明](README.md)，不计入本文这五个。
+本文按 **Suck、Place、Snap、Insert、Push/Pull 五个动作／数据集**组织，不把同一动作的不同模型重复计数。**Place 使用 QwenPI v3 V2**。Suck 主示例使用 QwenPI v3 V2，同一动作已有的 ACT V2 和 QwenPI V3 作为版本附表列出；Snap、Insert 使用 ACT V2，Push/Pull 使用 QwenPI v3 V2。
 
-## 1. 五个模型实际是怎样训练的
+## 1. 五个动作分别怎样训练
 
-五个模型均使用左臂 `arm_1`、绝对目标位姿、H50、224×224 图像。数据格式为 LeRobot v3.0，原始采样频率 30 FPS。没有使用 FT 力／力矩输入。
+Suck 使用右臂 `arm_0`，另外四个动作使用左臂 `arm_1`。全部使用绝对目标位姿、H50、224×224 图像。数据格式为 LeRobot v3.0，原始采样频率 30 FPS。没有使用 FT 力／力矩输入。
 
-| 最终模型 | 数据集 | 每卡 BS | GPU 进程数 | 有效总 BS | 完成步数 | Warmup | 保存间隔 |
-|---|---|---:|---:|---:|---:|---:|---:|
-| Place ACT V2 | `place_lt` | 16 | 1 | 16 | 80,000 | 5,000 | 10,000 |
-| Place QwenPI v3 V2 | `place_lt` | 8 | 2 | 16 | 20,000 | 500 | 5,000 |
-| Snap ACT V2，新版 | `snap_lt` | 16 | 1 | 16 | 80,000 | 5,000 | 10,000 |
-| Insert ACT V2，新版 | `insert_lt` | 16 | 1 | 16 | 80,000 | 5,000 | 10,000 |
-| Push/Pull QwenPI v3 V2 | `push_pull_lt` | 8 | 2 | 16 | 20,000 | 500 | 5,000 |
+| 动作 | 本说明主模型 | 每卡 BS | 完成步数 | Warmup | 保存间隔 |
+|---|---|---:|---:|---:|---:|
+| Suck | QwenPI v3 V2 | 4 | 20,000 | 500 | 5,000 |
+| Place | QwenPI v3 V2 | 8 | 20,000 | 500 | 5,000 |
+| Snap | ACT V2，新版 | 16 | 80,000 | 5,000 | 10,000 |
+| Insert | ACT V2，新版 | 16 | 80,000 | 5,000 | 10,000 |
+| Push/Pull | QwenPI v3 V2 | 8 | 20,000 | 500 | 5,000 |
 
-有效总 BS = 每卡 BS × GPU 进程数 × 梯度累积；这五次训练的梯度累积均为 1。`--steps` 是优化器更新次数，不是 episode 数，也不是机器人运动步数。H50 表示每个训练样本监督未来 50 个动作，不能再把 BS 乘以 50。
+有效总 BS = 每卡 BS × GPU 进程数 × 梯度累积；这些配方的梯度累积均为 1。Place 和 Push/Pull 的完成日志确认使用 2 个进程，有效总 BS16；Snap、Insert 各用 1 个进程。Suck 的旧启动日志目前未保留，因此只依据最终配置记录每卡 BS，不推断其历史进程数。
 
-**启动脚本默认值与实际完成的实验参数有区别**：两个 QwenPI 启动脚本默认每卡 BS1，最终这两个模型在命令行显式改成了 BS8。Snap / Insert 曾用 BS2 试训、续训，但本文对应的是之后从头训练完成的 BS16 / 80k 新版。
+`--steps` 是优化器更新次数，不是 episode 数或机器人运动步数。H50 表示每个样本监督未来 50 个动作，不能再把 BS 乘以 50。
 
-实际配置快照和训练记录随本文保存：
+### Suck 同一动作的已有版本
 
-- [五次运行的命令、训练时 task、当前 task、日志与产物路径](training_records/runs_20261123.json)
-- [Place ACT 实际配置](training_records/dualarm_lt_place_act_h50_v2.yaml)
+| 版本 | 每卡 BS | 完成步数 | State | 相机顺序 |
+|---|---:|---:|---|---|
+| QwenPI v3 V2，本文主示例 | 4 | 20,000 | 右臂 pose 7 + DI 17 = 24 | left_side、right_wrist、right_side |
+| QwenPI v3 V3 | 2 | 20,000 | 只有右臂 pose 7，不输入 DI | left_side、right_wrist、right_side |
+| ACT V2 | 16 | 80,000 | 右臂 pose 7 + DI 17 = 24 | left_side、left_wrist、right_wrist、right_side |
+
+三个版本的 Action 均为右臂目标 pose 7 + DO8、9、10、11，共 11 维；它们属于一个 Suck 动作，不额外算三个动作。V2/V3 表示数据输入映射版本。
+
+**启动脚本默认值与实际完成的实验参数有区别**：QwenPI 启动脚本默认每卡 BS1；实际 Suck V2 使用 BS4，Place 和 Push/Pull 使用 BS8。Snap / Insert 曾用 BS2 试训、续训，但本文对应的是之后从头训练完成的 BS16 / 80k 新版。
+
+实际配置快照和动作训练记录随本文保存：
+
+- [五个动作及 Suck 版本的配置依据、命令、日志与产物路径](training_records/runs_20261123.json)
+- [Suck QwenPI V2 实际配置](training_records/dualarm_lt_suck_qwenpi_v3_v2_h50.yaml)
+- [Suck QwenPI V3 实际配置](training_records/dualarm_lt_suck_qwenpi_v3_v3_h50.yaml)
+- [Suck ACT V2 实际配置](training_records/dualarm_lt_suck_act_h50_v2.yaml)
 - [Place QwenPI 实际配置](training_records/dualarm_lt_place_qwenpi_v3_v2_h50.yaml)
 - [Snap ACT 新版实际配置](training_records/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701.yaml)
 - [Insert ACT 新版实际配置](training_records/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779.yaml)
@@ -60,7 +74,7 @@ QwenPI 是 4B VLM 加动作头的全参数训练，显存需求显著高于 ACT�
 
 ```mermaid
 flowchart LR
-    A[LeRobot 原始数据] --> B[prepare 创建训练视图]
+    A[LeRobot 原始数据] --> B[准备映射或训练视图]
     B --> C[modality 与 data_registry 选择字段]
     C --> D[check / sample 检查并实际加载样本]
     D --> E[ACT 或 QwenPI 训练]
@@ -71,12 +85,13 @@ flowchart LR
 
 | 原始数据 | 训练视图 | 示教条数 | 帧数 | 相机顺序 |
 |---|---|---:|---:|---|
+| `suck_lt` | 直接使用 `suck_lt` | 196 | 82,827 | QwenPI：`left_side`, `right_wrist`, `right_side` |
 | `place_lt` | `place_lt_v2` | 203 | 46,102 | `left_wrist`, `right_side` |
 | `snap_lt` | `snap_lt_v2` | 111 | 15,188 | `left_wrist`, `right_side` |
 | `insert_lt` | `insert_lt_v2` | 106 | 14,254 | `left_wrist`, `right_side` |
 | `push_pull_lt` | `push_pull_lt_v2` | 377 | 128,271 | `left_wrist`, `left_side` |
 
-`prepare_*.py` 不修改原始数据；它创建带独立 `meta/modality.json` 的训练视图，通过软链接复用原始数据和视频。原始目录必须保留。
+Suck 的既有 `modality.json` 与对应 `data_registry` 选择右臂字段；训练前由 Suck 启动脚本校验。其他四个动作的 `prepare_*.py` 不修改原始数据；它创建带独立 `meta/modality.json` 的训练视图，通过软链接复用原始数据和视频。原始目录必须保留。
 
 Snap / Insert 使用 ModelScope 数据集 `chaishan/huashu` 中的：
 
@@ -98,26 +113,32 @@ examples/realRobots/dualarmLTSnapInsert/train_files/download_snap_insert.sh
 
 ```text
 pose = [x, y, z, qx, qy, qz, qw]
+右臂原始 pose 切片 = cartesian_position[0:7]
 左臂原始 pose 切片 = cartesian_position[7:14]
 
-State 24维 = [左臂当前 pose 7维,
+State 24维 = [所选机械臂当前 pose 7维,
  DI4, DI6, DI8, DI9, DI10, DI11, DI12, DI13, DI14, DI15, DI16, DI17,
  DI18, DI19, DI20, DI21, DI22]
 
+Suck Action 11维 = [右臂绝对目标 pose 7维, DO8, DO9, DO10, DO11]
 Place / Snap / Insert Action 11维 = [左臂绝对目标 pose 7维, DO12, DO13, DO15, DO16]
 Push/Pull Action 9维 = [左臂绝对目标 pose 7维, DO14, DO17]
 ```
+
+Suck QwenPI V3 是例外，其 State 仅包含右臂 pose 7 维，不输入下面的 17 个 DI。
 
 DI 是两臂的全局反馈；不是只保留动作对应的几个 DI。所有位姿动作都是 `abs`，不表示单步位置增量。
 
 | 动作输出 | 硬件 |
 |---|---|
+| DO8、DO9 | 右臂左、右吸嘴 |
+| DO10、DO11 | 右臂左、右升降气缸 |
 | DO12、DO13 | 左臂左、右吸嘴 |
 | DO15、DO16 | 左臂左、右升降气缸 |
 | DO14 | 左臂中间吸嘴 |
 | DO17 | 左臂中间升降气缸 |
 
-DI20、DI21、DI22 分别为左臂左、右、中间吸嘴的真空反馈；DI12–DI17 是左臂三组气缸的上下到位反馈。
+DI18、DI19 是右臂左、右吸嘴真空反馈。DI20、DI21、DI22 分别为左臂左、右、中间吸嘴的真空反馈；DI12–DI17 是左臂三组气缸的上下到位反馈。
 
 原始 DO 顺序为：
 
@@ -125,9 +146,15 @@ DI20、DI21、DI22 分别为左臂左、右、中间吸嘴的真空反馈；DI12
 [DO4, DO6, DO8, DO9, DO10, DO11, DO12, DO13, DO14, DO15, DO16, DO17]
 ```
 
-Place / Snap / Insert 选索引 `[6,7,9,10]`，**不能使用连续切片 `[6:10]`**；Push/Pull 选 `[8,11]`。位姿采用 q99 归一化，DI/DO 使用 binary 映射。训练产生的 `dataset_statistics.json` 需要随权重一起用于推理。
+Suck 选索引 `[2,3,4,5]`；Place / Snap / Insert 选索引 `[6,7,9,10]`，**不能使用连续切片 `[6:10]`**；Push/Pull 选 `[8,11]`。位姿采用 q99 归一化，DI/DO 使用 binary 映射。训练产生的 `dataset_statistics.json` 需要随权重一起用于推理。
 
 ### 语言与数据版本的实际差异
+
+Suck 的任务是：
+
+```text
+Use the suction cup on the robot's right arm to pick up the phone support plate.
+```
 
 Snap 的原始 task 是 `Snap`，Insert 是 `Insert`。Push/Pull 同一个模型同时保留两条指令：
 
@@ -136,7 +163,7 @@ Use the robot's left arm to slowly pull out the charger box drawer.
 Use the robot's left arm to slowly push in the charger box drawer.
 ```
 
-**Place 需要区分训练时标签和当前标签。** 两次已完成 Place 训练的 `PREFLIGHT_OK` 记录的是：
+**Place 需要区分训练时标签和当前标签。** 已完成 Place QwenPI 训练的 `PREFLIGHT_OK` 记录的是：
 
 ```text
 Use the robot's left arm to slowly push in the charger box drawer.
@@ -148,7 +175,7 @@ Use the robot's left arm to slowly push in the charger box drawer.
 Lower the robot's left arm to place the charger into the charger box drawer.
 ```
 
-两者均原样记入运行记录。QwenPI 使用语言条件，因此下面命令复现架构和超参数时，若直接读取当前数据，会使用当前标签；精确复现旧训练还需要训练当时的数据与任务标签版本。ACT 本配方不以任务语言作为模型条件。
+两种文本均原样记入运行记录。QwenPI 使用语言条件，因此下面命令复现架构和超参数时，若直接读取当前数据，会使用当前标签；精确复现旧训练还需要训练当时的数据与任务标签版本。ACT 本配方不以任务语言作为模型条件。
 
 Snap / Insert 的 DO12、DO13、DO15、DO16 在所有训练帧均为 1，没有这四路 DO 开关切换的示教。Push/Pull 的 DO14、DO17 则同时包含 0 和 1。
 
@@ -156,11 +183,12 @@ Snap / Insert 的 DO12、DO13、DO15、DO16 在所有训练帧均为 1，没有�
 
 | 目录 | 内容 |
 |---|---|
-| [dualarmLTPlace](../dualarmLTPlace/README.md) | Place 的 ACT、QwenPI 配置、左臂映射和启动脚本 |
+| [dualarmLT](README.md) | Suck 的右臂映射、QwenPI V2/V3 与 ACT 既有版本 |
+| [dualarmLTPlace](../dualarmLTPlace/README.md) | 本说明只选择 Place QwenPI，使用左臂映射 |
 | [dualarmLTSnapInsert](../dualarmLTSnapInsert/README.md) | 两份数据下载、ACT 配置、从头训练与早期续训脚本 |
 | [dualarmLTPushPull](../dualarmLTPushPull/README.md) | Push/Pull QwenPI 配置和中间吸嘴、气缸映射 |
 
-每套 `train_files` 的处理顺序是：
+Place / Snap / Insert / Push/Pull 的 `train_files` 处理顺序是：
 
 1. `prepare_*.py` 创建训练视图。
 2. `check_*.py` 扫描 Parquet、字段、位姿四元数、二值 IO、非连续 DO 索引与相机文件。
@@ -168,7 +196,7 @@ Snap / Insert 的 DO12、DO13、DO15、DO16 在所有训练帧均为 1，没有�
 4. `train_*.sh` 组装 `accelerate launch` 命令。
 5. `run_*_nohup.sh` 在后台启动，记录 PID，维护 `*_latest.log`。
 
-共同入口模式：
+这四个动作的入口模式如下。Suck 的现有入口只支持 `--check`、`--dry-run`、`--run`，不支持 `--sample`。
 
 | 模式 | 行为 |
 |---|---|
@@ -181,7 +209,7 @@ Snap / Insert 的 DO12、DO13、DO15、DO16 在所有训练帧均为 1，没有�
 
 ```bash
 cd /root/data/starVLA
-examples/realRobots/dualarmLTPlace/train_files/train_act_place_v2_h50.sh --sample
+examples/realRobots/dualarmLT/train_files/train_qwenpi_v3_v2_h50.sh --check
 examples/realRobots/dualarmLTPlace/train_files/train_qwenpi_v3_place_v2_h50.sh --sample
 examples/realRobots/dualarmLTSnapInsert/train_files/train_act_snap_v2_h50.sh --sample
 examples/realRobots/dualarmLTSnapInsert/train_files/train_act_insert_v2_h50.sh --sample
@@ -190,21 +218,24 @@ examples/realRobots/dualarmLTPushPull/train_files/train_qwenpi_v3_push_pull_v2_h
 
 Place / Snap / Insert 应得到 `state=(1,24)`、`action=(50,11)`、两张图片；Push/Pull 应得到 `state=(1,24)`、`action=(50,9)`、两张图片。
 
-## 5. 五个模型的训练命令
+## 5. 五个动作的主配方训练命令
 
-以下使用已完成实验的超参数，但为新实验指定新 `run_id`，保留既有输出。每段是独立任务；两个 QwenPI 例子各占两张卡。Snap 和 Insert 可按例各用一张空闲卡并行训练。
+以下使用已完成实验的超参数，但为新实验指定新 `run_id`，保留既有输出。每段是独立任务；QwenPI 复现例子各使用两张卡。Snap 和 Insert 可按例各用一张空闲卡并行训练。
 
-### Place ACT：单卡 BS16，80k
+### Suck QwenPI V2：每卡 BS4，20k
+
+先执行上一节的 `--check`。下面是两张空闲卡的复现示例；旧日志缺失，示例中的 2 进程不作为历史实际进程数的证明：
 
 ```bash
 cd /root/data/starVLA
-CUDA_VISIBLE_DEVICES=0 \
-  examples/realRobots/dualarmLTPlace/train_files/run_act_place_v2_h50_nohup.sh \
-  --num-processes 1 --batch-size 16 --steps 80000 \
-  --run-id dualarm_lt_place_act_h50_v2_repro
+CUDA_VISIBLE_DEVICES=0,1 \
+  examples/realRobots/dualarmLT/train_files/run_qwenpi_v3_v2_h50_nohup.sh \
+  --num-processes 2 --batch-size 4 --steps 20000 \
+  --run-root-dir /root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v2_h50_repro \
+  --run-id dualarm_lt_suck_qwenpi_v3_v2_h50_repro
 ```
 
-ACT 新建动作模型，ResNet18 视觉骨干使用 ImageNet 预训练；学习率 `1e-4`，Warmup 5,000，最低学习率 `1e-6`。
+Suck 的 ACT 和 QwenPI V3 也有已完成权重，但不替换本节的主示例；具体 State 与相机差异见第一节。
 
 ### Place QwenPI：两卡，每卡 BS8，20k
 
@@ -244,7 +275,7 @@ CUDA_VISIBLE_DEVICES=0,1 \
   --run-id dualarm_lt_push_pull_qwenpi_v3_v2_h50_repro
 ```
 
-两个 QwenPI 模型都使用：
+三个动作的 QwenPI 主配方都使用：
 
 ```yaml
 framework:
@@ -280,7 +311,7 @@ CUDA_VISIBLE_DEVICES=1 \
 
 | 入口 | 通信端口 | 是否支持 `--main-process-port` |
 |---|---:|---|
-| Place ACT / QwenPI | Accelerate 默认 29500 | 当前包装脚本不支持；这两个例子分开运行 |
+| Suck QwenPI / Place QwenPI | Accelerate 默认 29500 | 当前包装脚本不支持端口参数；这两个动作分开运行 |
 | Snap ACT | 29603 | 支持，也支持 `--main_process_port` |
 | Insert ACT | 29604 | 支持，也支持 `--main_process_port` |
 | Push/Pull QwenPI | 29605 | 支持，也支持 `--main_process_port` |
@@ -289,7 +320,7 @@ CUDA_VISIBLE_DEVICES=1 \
 
 `--steps` 是新的总目标步数。修改磁盘 YAML 不会热更新已经运行的训练进程；实际每次参数以输出目录中的 `config.full.yaml` 和启动日志为准。CLI 会覆盖脚本中的默认 BS / 步数，不能只看源 YAML 判断已完成模型的参数。
 
-图像缓存均设置 `load_all_data_for_training: true`。两路 224×224 uint8 RGB 的缓存估计：Place 约 12.9 GiB，Snap 与 Insert 合计约 8.3 GiB，Push/Pull 约 36 GiB。实际还需要 metadata 和运行内存；缓存目录在对应 YAML 的 `video_cache_dir`。需要按需解码时，改为 `load_all_data_for_training: false`。
+这些配方均设置 `load_all_data_for_training: true`。Suck 的保存配置曾使用 `/dev/shm`（QwenPI）或 `/root/data1`（ACT）缓存，复现前要确认目录和空间。两路 224×224 uint8 RGB 的缓存估计：Place 约 12.9 GiB，Snap 与 Insert 合计约 8.3 GiB，Push/Pull 约 36 GiB。实际还需要 metadata 和运行内存；缓存目录在对应 YAML 的 `video_cache_dir`。需要按需解码时，改为 `load_all_data_for_training: false`。
 
 ## 7. 从头训练与早期续训的区别
 
@@ -306,14 +337,15 @@ Snap / Insert 的实际过程：
 ## 8. 日志、输出、模型发布
 
 ```bash
-tail -F /root/data/logs/starvla/place_lt_v2/act_latest.log
 tail -F /root/data/logs/starvla/place_lt_v2/qwenpi_latest.log
 tail -F /root/data/logs/starvla/snap_lt_v2/act_latest.log
 tail -F /root/data/logs/starvla/insert_lt_v2/act_latest.log
 tail -F /root/data/logs/starvla/push_pull_lt_v2/qwenpi_latest.log
 ```
 
-后台入口打印 `TRAINING_LAUNCH_REQUESTED` 只表示已创建后台进程；检查日志里的实际进度、错误以及最终保存结果。`tail -F` 会等待后续日志，即使训练已经退出，看起来也可能“没有动”。按 Ctrl+C 退出日志查看不会停止后台训练。
+Suck 包装脚本约定将日志写入 `/root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v2_h50/logs/`，历史日志目前未保留。
+
+后台入口打印 `TRAINING_LAUNCH_REQUESTED`（Suck 为 `TRAINING_STARTED`） 只表示已创建后台进程；检查日志里的实际进度、错误以及最终保存结果。`tail -F` 会等待后续日志，即使训练已经退出，看起来也可能“没有动”。按 Ctrl+C 退出日志查看不会停止后台训练。
 
 输出目录会重复包含一次 run_id：
 
@@ -333,7 +365,7 @@ tail -F /root/data/logs/starvla/push_pull_lt_v2/qwenpi_latest.log
 
 | 模型 | 最终 RUN_ID / ModelScope 仓库名 |
 |---|---|
-| Place ACT | [dualarm_lt_place_act_h50_v2](https://modelscope.cn/models/chaishan/dualarm_lt_place_act_h50_v2) |
+| Suck QwenPI V2 | [dualarm_lt_suck_qwenpi_v3_v2_h50](https://modelscope.cn/models/chaishan/dualarm_lt_suck_qwenpi_v3_v2_h50) |
 | Place QwenPI | [dualarm_lt_place_qwenpi_v3_v2_h50](https://modelscope.cn/models/chaishan/dualarm_lt_place_qwenpi_v3_v2_h50) |
 | Snap ACT | [dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701](https://modelscope.cn/models/chaishan/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701) |
 | Insert ACT | [dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779](https://modelscope.cn/models/chaishan/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779) |
@@ -343,8 +375,8 @@ tail -F /root/data/logs/starvla/push_pull_lt_v2/qwenpi_latest.log
 
 ## 9. 这份说明如何核验
 
-[本次五组真实样本加载与 dry-run 检查记录](training_records/validation_20261123.json)。
+[五个动作的检查依据](training_records/validation_20261123.json)。Suck 使用数据预检查与 dry-run，另外四个动作使用真实样本加载与 dry-run。
 
-五次运行均已核对 `Command` 的 BS / 进程数、保存配置、完成步数和最终文件。运行记录也保存了各次 `PREFLIGHT_OK` 的字段和 DO 统计。CS 训练基线为提交 `c39ce56dd4e684ca0a566aa37e51f39df5723bd4`，任务目录另外包含本次同步的配置和脚本。
+Suck 三种版本已核对完成时保存的配置、步数记录和最终文件；由于原始启动日志缺失，不补造历史命令和进程数。其他四个动作还核对了 `Command` 的 BS / 进程数，以及 `PREFLIGHT_OK` 的字段和 DO 统计。CS 训练基线为提交 `c39ce56dd4e684ca0a566aa37e51f39df5723bd4`，任务目录另外包含本次同步的配置和脚本。
 
-本次同步检查 Python / Shell 语法、YAML 与映射、文档链接和命令参数，并使用 CS 数据执行检查／样本加载／dry-run；不会因为整理说明重新启动训练。训练完成不等于已经测得真机成功率，真机表现需按对应客户端、相机顺序、坐标转换和数据统计实际评估。
+本次只整理五个动作的训练说明、对应配置与训练必要内容，不纳入通用训练 API 及其 smoke 测试配置。已检查文档链接、配置和命令参数，并使用 CS 数据执行预检查／样本加载／dry-run；不会因为整理说明重新启动训练。训练完成不等于已经测得真机成功率，真机表现需按对应客户端、相机顺序、坐标转换和数据统计实际评估。

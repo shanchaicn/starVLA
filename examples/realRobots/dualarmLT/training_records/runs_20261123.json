@@ -9,96 +9,6 @@
   "runs": [
     {
       "task": "place",
-      "model": "act",
-      "run_id": "dualarm_lt_place_act_h50_v2",
-      "launch_command": "/root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 1 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTPlace/train_files/act_place_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 16 --trainer.max_train_steps 80000",
-      "num_processes": 1,
-      "batch_per_gpu": 16,
-      "effective_batch": 16,
-      "max_train_steps": 80000,
-      "preflight": {
-        "episodes": 203,
-        "frames": 46102,
-        "fps": 30,
-        "tasks": {
-          "task_index": [
-            0
-          ],
-          "task": [
-            "Use the robot's left arm to slowly push in the charger box drawer."
-          ]
-        },
-        "state_dim": 24,
-        "action_dim": 11,
-        "horizon": 50,
-        "camera_order": [
-          "left_wrist",
-          "right_side"
-        ],
-        "do_order": [
-          "DO12",
-          "DO13",
-          "DO15",
-          "DO16"
-        ],
-        "do_high_samples": {
-          "DO4": 0,
-          "DO6": 0,
-          "DO8": 0,
-          "DO9": 0,
-          "DO10": 0,
-          "DO11": 0,
-          "DO12": 35762,
-          "DO13": 35794,
-          "DO14": 12423,
-          "DO15": 40934,
-          "DO16": 40974,
-          "DO17": 14887
-        },
-        "excluded_active_do": [
-          "DO14",
-          "DO17"
-        ]
-      },
-      "current_dataset_tasks": [
-        {
-          "task_index": 0,
-          "task": "Lower the robot's left arm to place the charger into the charger box drawer."
-        }
-      ],
-      "summary": [
-        {
-          "steps": 10000
-        },
-        {
-          "steps": 20000
-        },
-        {
-          "steps": 30000
-        },
-        {
-          "steps": 40000
-        },
-        {
-          "steps": 50000
-        },
-        {
-          "steps": 60000
-        },
-        {
-          "steps": 70000
-        },
-        {
-          "steps": 80000
-        }
-      ],
-      "log": "/root/data/logs/starvla/place_lt_v2/act_20261120_203143.log",
-      "output": "/root/data/outputs/starVLA/dualarm_lt_place_act_h50_v2/dualarm_lt_place_act_h50_v2",
-      "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_place_act_h50_v2",
-      "config_snapshot": "dualarm_lt_place_act_h50_v2.yaml"
-    },
-    {
-      "task": "place",
       "model": "qwenpi",
       "run_id": "dualarm_lt_place_qwenpi_v3_v2_h50",
       "launch_command": "/root/data/starVLA/.venv/bin/accelerate launch --config_file /root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml --num_processes 2 /root/data/starVLA/starVLA/training/train_starvla.py --config_yaml /root/data/starVLA/examples/realRobots/dualarmLTPlace/train_files/qwenpi_v3_place_v2_h50.yaml --datasets.vla_data.data_root_dir /root/data/datasets --datasets.vla_data.per_device_batch_size 8 --trainer.max_train_steps 20000",
@@ -173,7 +83,8 @@
       "log": "/root/data/logs/starvla/place_lt_v2/qwenpi_20261120_120140.log",
       "output": "/root/data/outputs/starVLA/dualarm_lt_place_qwenpi_v3_v2_h50/dualarm_lt_place_qwenpi_v3_v2_h50",
       "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_place_qwenpi_v3_v2_h50",
-      "config_snapshot": "dualarm_lt_place_qwenpi_v3_v2_h50.yaml"
+      "config_snapshot": "dualarm_lt_place_qwenpi_v3_v2_h50.yaml",
+      "role": "primary"
     },
     {
       "task": "snap",
@@ -260,7 +171,8 @@
       "log": "/root/data/logs/starvla/snap_lt_v2/act_20261122_065931.log",
       "output": "/root/data/outputs/starVLA/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701",
       "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701",
-      "config_snapshot": "dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701.yaml"
+      "config_snapshot": "dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701.yaml",
+      "role": "primary"
     },
     {
       "task": "insert",
@@ -347,7 +259,8 @@
       "log": "/root/data/logs/starvla/insert_lt_v2/act_20261122_065934.log",
       "output": "/root/data/outputs/starVLA/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779",
       "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779",
-      "config_snapshot": "dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779.yaml"
+      "config_snapshot": "dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779.yaml",
+      "role": "primary"
     },
     {
       "task": "push_pull",
@@ -426,7 +339,118 @@
       "log": "/root/data/logs/starvla/push_pull_lt_v2/qwenpi_20261122_144642.log",
       "output": "/root/data/outputs/starVLA/dualarm_lt_push_pull_qwenpi_v3_v2_h50/dualarm_lt_push_pull_qwenpi_v3_v2_h50",
       "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_push_pull_qwenpi_v3_v2_h50",
-      "config_snapshot": "dualarm_lt_push_pull_qwenpi_v3_v2_h50.yaml"
+      "config_snapshot": "dualarm_lt_push_pull_qwenpi_v3_v2_h50.yaml",
+      "role": "primary"
+    },
+    {
+      "task": "suck",
+      "model": "QwenPI_v3",
+      "run_id": "dualarm_lt_suck_qwenpi_v3_v2_h50",
+      "role": "primary",
+      "num_processes": null,
+      "effective_batch": null,
+      "batch_per_gpu": 4,
+      "max_train_steps": 20000,
+      "summary": [
+        {
+          "steps": 5000
+        },
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 15000
+        },
+        {
+          "steps": 20000
+        }
+      ],
+      "output": "/root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v2_h50/dualarm_lt_suck_qwenpi_v3_v2_h50",
+      "log": null,
+      "launch_command": null,
+      "evidence_note": "原始训练启动日志未保留，参数依据完成训练时保存的配置和步数记录，不推断历史 GPU 进程数。",
+      "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_suck_qwenpi_v3_v2_h50",
+      "config_snapshot": "dualarm_lt_suck_qwenpi_v3_v2_h50.yaml"
+    },
+    {
+      "task": "suck",
+      "model": "QwenPI_v3",
+      "run_id": "dualarm_lt_suck_qwenpi_v3_v3_h50",
+      "role": "suck_variant",
+      "num_processes": null,
+      "effective_batch": null,
+      "batch_per_gpu": 2,
+      "max_train_steps": 20000,
+      "summary": [
+        {
+          "steps": 5000
+        },
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 15000
+        },
+        {
+          "steps": 20000
+        }
+      ],
+      "output": "/root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v3_h50/dualarm_lt_suck_qwenpi_v3_v3_h50",
+      "log": null,
+      "launch_command": null,
+      "evidence_note": "原始训练启动日志未保留，参数依据完成训练时保存的配置和步数记录，不推断历史 GPU 进程数。",
+      "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_suck_qwenpi_v3_v3_h50",
+      "config_snapshot": "dualarm_lt_suck_qwenpi_v3_v3_h50.yaml"
+    },
+    {
+      "task": "suck",
+      "model": "ACT",
+      "run_id": "dualarm_lt_suck_act_h50_v2",
+      "role": "suck_variant",
+      "num_processes": null,
+      "effective_batch": null,
+      "batch_per_gpu": 16,
+      "max_train_steps": 80000,
+      "summary": [
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 20000
+        },
+        {
+          "steps": 30000
+        },
+        {
+          "steps": 40000
+        },
+        {
+          "steps": 50000
+        },
+        {
+          "steps": 60000
+        },
+        {
+          "steps": 70000
+        },
+        {
+          "steps": 80000
+        }
+      ],
+      "output": "/root/data/outputs/starVLA/dualarm_lt_suck_act_h50_v2/dualarm_lt_suck_act_h50_v2",
+      "log": null,
+      "launch_command": null,
+      "evidence_note": "原始训练启动日志未保留，参数依据完成训练时保存的配置和步数记录，不推断历史 GPU 进程数。",
+      "modelscope_url": "https://modelscope.cn/models/chaishan/dualarm_lt_suck_act_h50_v2",
+      "config_snapshot": "dualarm_lt_suck_act_h50_v2.yaml"
     }
-  ]
+  ],
+  "scope": [
+    "suck",
+    "place",
+    "snap",
+    "insert",
+    "push_pull"
+  ],
+  "place_model": "QwenPI_v3 V2"
 }

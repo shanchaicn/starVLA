@@ -1,6 +1,0 @@
-batch_size: 4
-config_name: qwenpi_v3_v2_h50
-cuda_visible_devices: 0,1
-exp_name: a800-smoke-mwnib1yz-live
-num_processes: 2
-num_train_steps: 50

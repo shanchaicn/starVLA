@@ -1,6 +1,6 @@
 # dualarmLT ACT / QwenPI 训练说明
 
-> **CS 已完成的五个 LT 模型训练说明**：见 [TRAINING_CS_LT.md](TRAINING_CS_LT.md)。包含 Place ACT / QwenPI、Snap ACT、Insert ACT、Push/Pull QwenPI 的实际参数、数据映射、启动命令、日志、权重与配置快照。
+> **CS 五个 LT 动作训练说明**：见 [TRAINING_CS_LT.md](TRAINING_CS_LT.md)。包含 Suck、Place QwenPI、Snap ACT、Insert ACT、Push/Pull QwenPI 的实际参数、数据映射、启动命令、日志、权重与配置快照。
 
 ## V3：不使用 DI，保留 DO（V2 继续可用）
 
