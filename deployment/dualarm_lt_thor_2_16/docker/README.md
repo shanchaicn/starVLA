@@ -16,12 +16,25 @@ python3 refresh_context.py
 三级测试入口：
 
 ```bash
-# 合成数据，不连接 Topic、相机或机器人 RPC
-./test_fake_dry_run.sh qwenpi_v3_v2
+# 五个任务模型：启动服务
+./run_server.sh qwenpi_v3_v2
+./run_server.sh place_qwenpi_v3_v2
+./run_server.sh snap_act_v2
+./run_server.sh insert_act_v2
+./run_server.sh push_pull_qwenpi_v3_v2
 
-# 真实 Topic/相机，只打印 WOULD_SEND，不发送机器人 RPC
+# 五个任务模型：合成数据推理，不连接 Topic、相机或机器人 RPC
+./test_fake_dry_run.sh qwenpi_v3_v2
+./test_fake_dry_run.sh place_qwenpi_v3_v2
+./test_fake_dry_run.sh snap_act_v2
+./test_fake_dry_run.sh insert_act_v2
+./test_fake_dry_run.sh push_pull_qwenpi_v3_v2
+
+# 当前真实 Topic/相机 client 只适配 Suck；只打印 WOULD_SEND，不发送机器人 RPC
 ./run_client.sh qwenpi_v3_v2 --dry-run --max-actions 50
 
-# 真机执行：仅在前两级通过且现场安全条件满足后使用
+# 当前真机 client 只适配 Suck；仅在前两级通过且现场安全条件满足后使用
 ./run_client.sh qwenpi_v3_v2 --real --max-actions 1
 ```
+
+Place、Snap、Insert、Push/Pull 已支持 Docker 服务和合成推理；尚未提供左臂真机 client Profile，不能套用 Suck 的 dry-run/real 命令。

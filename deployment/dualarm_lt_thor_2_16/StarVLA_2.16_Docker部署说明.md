@@ -2,7 +2,7 @@
 
 ## 1. 文档范围
 
-本文用于汇报和复现 StarVLA LT 在 `192.168.2.16`（ARM64 NVIDIA Thor）上的 Docker 部署，内容包括模型服务、Docker client、三种推理 Profile，以及 `fake-dry-run`、`dry-run`、真机测试的步骤和验收标准。
+本文用于汇报和复现 StarVLA LT 在 `192.168.2.16`（ARM64 NVIDIA Thor）上的 Docker 部署，内容包括 Suck、Place、Snap、Insert、Push/Pull 五个任务模型的服务端启动与合成推理、Suck Docker client，以及 `fake-dry-run`、`dry-run`、真机测试的步骤和验收标准。
 
 本文不包含宿主机 Python 虚拟环境启动方式，不将模型权重、运行日志或现场密码纳入代码仓库。
 
@@ -34,13 +34,35 @@ starvla-lt-client:arm64-20261120
 
 镜像面向 ARM64 NVIDIA Thor，不能直接用于 x86_64 主机。模型权重通过只读卷挂载，不打入镜像，也不提交到 GitHub。
 
-### 2.1 服务与端口
+### 2.1 五个任务主模型
 
-| Profile | Compose 服务 | HTTP 端口 | RTC 方式 | 模型输入相机 |
-|---|---|---:|---|---|
-| `qwenpi_v3_v2` | `qwen-v2` | 10199 | guided | left_side、right_wrist、right_side |
-| `qwenpi_v3_v3` | `qwen-v3` | 10200 | guided | left_side、right_wrist、right_side |
-| `act_v2` | `act` | 10201 | fresh-replan + Temporal Ensemble | left_side、left_wrist、right_wrist、right_side |
+| 任务 | Profile | Compose 服务 | 端口 | State / Action | RTC | 相机 | DO 输出 |
+|---|---|---|---:|---|---|---|---|
+| Suck | `qwenpi_v3_v2` | `qwen-v2` | 10199 | 24 / `50×11` | guided | left_side、right_wrist、right_side | DO8、9、10、11 |
+| Place | `place_qwenpi_v3_v2` | `place-qwen-v2` | 10202 | 24 / `50×11` | guided | left_wrist、right_side | DO12、13、15、16 |
+| Snap | `snap_act_v2` | `snap-act` | 10203 | 24 / `50×11` | fresh-replan | left_wrist、right_side | DO12、13、15、16 |
+| Insert | `insert_act_v2` | `insert-act` | 10204 | 24 / `50×11` | fresh-replan | left_wrist、right_side | DO12、13、15、16 |
+| Push/Pull | `push_pull_qwenpi_v3_v2` | `push-pull-qwen-v2` | 10205 | 24 / `50×9` | guided | left_wrist、left_side | DO14、17 |
+
+五个任务按任务数统计；Push 和 Pull 共用一个语言条件 QwenPI 模型。Suck 另外保留两个对照版本，不额外计入五个任务：
+
+| Suck 对照版本 | Compose 服务 | 端口 | State / Action | RTC | 相机 |
+|---|---|---:|---|---|---|
+| `qwenpi_v3_v3` | `qwen-v3` | 10200 | 7 / `50×11` | guided | left_side、right_wrist、right_side |
+| `act_v2` | `act` | 10201 | 24 / `50×11` | fresh-replan | left_side、left_wrist、right_wrist、right_side |
+
+服务端 Profile 中记录的任务指令如下。ACT 的 Snap/Insert 不使用语言作为模型条件，但仍用任务名标识 Profile：
+
+| 任务 | 推理指令 |
+|---|---|
+| Suck | `Use the suction cup on the robot's right arm to pick up the phone support plate.` |
+| Place | `Use the robot's left arm to slowly push in the charger box drawer.` |
+| Snap | `Snap` |
+| Insert | `Insert` |
+| Push | `Use the robot's left arm to slowly push in the charger box drawer.` |
+| Pull | `Use the robot's left arm to slowly pull out the charger box drawer.` |
+
+Place 的名称和现有训练标签语义并不完全一致，部署时以该模型训练保存的任务文本为准，不应擅自替换为新的自然语言描述。
 
 模型服务只负责预测 Action，不直接连接机器人运动 RPC。健康接口中的以下字段是正常设计：
 
@@ -63,7 +85,29 @@ starvla-lt-client:arm64-20261120
 - 真实数据测试需要 Topic `19091` 和相机 HTTP `6888`；
 - 真机测试还需要机器人 RPC `5868`。
 
-### 3.2 基础检查
+### 3.2 五个动作模型目录
+
+五个动作模型均属于本次 Docker 部署范围，应分别放在以下目录：
+
+```text
+models/dualarm_lt_suck_qwenpi_v3_v2_h50/
+models/dualarm_lt_place_qwenpi_v3_v2_h50/
+models/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701/
+models/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779/
+models/dualarm_lt_push_pull_qwenpi_v3_v2_h50/
+```
+
+每个目录至少应包含与 `server/server_16.yaml` 对应的：
+
+```text
+config.full.yaml
+dataset_statistics.json
+final_model/pytorch_model.pt
+```
+
+模型权重不打入 Docker 镜像。Compose 将宿主机整个 `models/` 目录只读挂载为容器内 `/app/models`，因此复制或更新权重后无需重新构建镜像，但需要重启对应服务进程。
+
+### 3.3 基础检查
 
 ```bash
 ssh test@192.168.2.16
@@ -75,16 +119,36 @@ sudo docker image ls | grep starvla-lt
 find ../models -path '*/final_model/pytorch_model.pt' -printf '%p %s\n' | sort
 ```
 
+上述 `find` 至少应列出五个任务主模型的最终权重。模型目录名、checkpoint 大小、State/Action 维度必须与 `server/server_16.yaml` 一致；任一模型缺失都表示五动作部署不完整。
+
 `test` 用户如无权直接访问 `/var/run/docker.sock`，`compose.sh` 会在交互终端调用 `sudo`。密码只在终端输入，不写入脚本、YAML 或代码仓库。
 
 ## 4. 启动模型服务
 
-进入 Docker 部署目录，每次选择一个 Profile：
+进入 Docker 部署目录。五个任务主模型的启动命令如下；每条命令会启动对应容器并等待健康检查通过：
 
 ```bash
 cd /home/test/Public/cs/starvla_lt/docker
 
+# Suck
 ./run_server.sh qwenpi_v3_v2
+
+# Place
+./run_server.sh place_qwenpi_v3_v2
+
+# Snap
+./run_server.sh snap_act_v2
+
+# Insert
+./run_server.sh insert_act_v2
+
+# Push/Pull
+./run_server.sh push_pull_qwenpi_v3_v2
+```
+
+Suck 的两个对照版本按需启动：
+
+```bash
 ./run_server.sh qwenpi_v3_v3
 ./run_server.sh act_v2
 ```
@@ -95,6 +159,12 @@ cd /home/test/Public/cs/starvla_lt/docker
 
 ```bash
 curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10199/health
+curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10202/health
+curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10203/health
+curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10204/health
+curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10205/health
+
+# Suck 对照版本
 curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10200/health
 curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10201/health
 ```
@@ -104,11 +174,68 @@ curl --noproxy '*' --max-time 5 -fsS http://127.0.0.1:10201/health
 ```bash
 ./compose.sh ps
 ./compose.sh logs --tail 100 qwen-v2
+./compose.sh logs --tail 100 place-qwen-v2
+./compose.sh logs --tail 100 snap-act
+./compose.sh logs --tail 100 insert-act
+./compose.sh logs --tail 100 push-pull-qwen-v2
+
+# Suck 对照版本
 ./compose.sh logs --tail 100 qwen-v3
 ./compose.sh logs --tail 100 act
 ```
 
-Qwen 模型占用显存/统一内存较多，部署测试时宜只保留当前使用的 Qwen Profile；ACT 是否并行保留由可用资源决定。
+Qwen 模型占用显存/统一内存较多。默认按“启动一个、验证一个、停止后再换下一个”的顺序测试，不应假定五个模型可以同时常驻。ACT 是否与一个 Qwen 同时保留由实际可用资源决定。
+
+### 4.1 五动作部署验收
+
+五动作部署完成的判据不是“五个容器同时运行”，而是五个 Profile 均能独立完成以下检查：
+
+1. `run_server.sh <profile>` 输出对应的 `MODEL_READY`；
+2. 对应端口 `/health` 返回正确的模型身份、State/Action 维度和 RTC 模式；
+3. `test_running_model.sh <profile>` 返回两次有限 Action；
+4. 输出始终为 `motion_authorized=false`、`actions_executed=0`；
+5. 停止当前服务后能够切换到下一个动作模型。
+
+建议按 Suck → Place → Snap → Insert → Push/Pull 的顺序逐个验收。这样既覆盖全部五个动作模型，也避免多个 Qwen 同时加载造成统一内存不足。
+
+### 4.2 五动作逐个启动与推理
+
+下面是一套可直接执行的顺序验收命令。每个模型启动后做两次合成输入推理，再停止该服务并切换到下一个模型：
+
+```bash
+cd /home/test/Public/cs/starvla_lt/docker
+
+# 1. Suck：50×11，guided
+./run_server.sh qwenpi_v3_v2
+./test_running_model.sh qwenpi_v3_v2
+./compose.sh stop qwen-v2
+
+# 2. Place：50×11，guided
+./run_server.sh place_qwenpi_v3_v2
+./test_running_model.sh place_qwenpi_v3_v2
+./compose.sh stop place-qwen-v2
+
+# 3. Snap：50×11，fresh-replan
+./run_server.sh snap_act_v2
+./test_running_model.sh snap_act_v2
+./compose.sh stop snap-act
+
+# 4. Insert：50×11，fresh-replan
+./run_server.sh insert_act_v2
+./test_running_model.sh insert_act_v2
+./compose.sh stop insert-act
+
+# 5. Push/Pull：50×9，guided；默认测试 Pull 指令
+./run_server.sh push_pull_qwenpi_v3_v2
+./test_running_model.sh push_pull_qwenpi_v3_v2
+
+# 同一模型改测 Push 指令
+./test_running_model.sh push_pull_qwenpi_v3_v2 \
+  --instruction "Use the robot's left arm to slowly push in the charger box drawer."
+./compose.sh stop push-pull-qwen-v2
+```
+
+这组命令只做模型 HTTP 推理，不读取机器人 Topic/相机，也不打开机器人 RPC。若希望脚本自动创建并清理临时容器，使用第 6 节的 `test_fake_dry_run.sh`。
 
 ## 5. 测试分级与安全边界
 
@@ -130,7 +257,7 @@ Qwen 模型占用显存/统一内存较多，部署测试时宜只保留当前�
 - checkpoint 与 Profile 配置能够加载；
 - HTTP 请求和响应格式正确；
 - Qwen 的 initial/guided 或 ACT 的 fresh-replan 推理可执行；
-- 返回 Action 为有限数值且形状为 `50×11`。
+- 返回 Action 为有限数值；Suck、Place、Snap、Insert 为 `50×11`，Push/Pull 为 `50×9`。
 
 ### 6.2 操作命令
 
@@ -140,6 +267,15 @@ Qwen 模型占用显存/统一内存较多，部署测试时宜只保留当前�
 cd /home/test/Public/cs/starvla_lt/docker
 
 ./test_fake_dry_run.sh qwenpi_v3_v2
+./test_fake_dry_run.sh place_qwenpi_v3_v2
+./test_fake_dry_run.sh snap_act_v2
+./test_fake_dry_run.sh insert_act_v2
+./test_fake_dry_run.sh push_pull_qwenpi_v3_v2
+```
+
+上述 Push/Pull 临时测试使用 Profile 中默认的 Pull 指令。Suck 对照版本可另外执行：
+
+```bash
 ./test_fake_dry_run.sh qwenpi_v3_v3
 ./test_fake_dry_run.sh act_v2
 ```
@@ -148,8 +284,18 @@ cd /home/test/Public/cs/starvla_lt/docker
 
 ```bash
 ./test_running_model.sh qwenpi_v3_v2
-./test_running_model.sh qwenpi_v3_v3
-./test_running_model.sh act_v2
+./test_running_model.sh place_qwenpi_v3_v2
+./test_running_model.sh snap_act_v2
+./test_running_model.sh insert_act_v2
+./test_running_model.sh push_pull_qwenpi_v3_v2
+```
+
+Push/Pull 的默认指令是 Pull。测试同一个模型的 Push 语言条件时，先启动服务，再覆盖测试指令：
+
+```bash
+./run_server.sh push_pull_qwenpi_v3_v2
+./test_running_model.sh push_pull_qwenpi_v3_v2 \
+  --instruction "Use the robot's left arm to slowly push in the charger box drawer."
 ```
 
 Docker client 本身的无网络自检：
@@ -161,9 +307,9 @@ sudo docker compose -f compose.yaml run --rm -T --no-deps client \
 
 ### 6.3 通过判据
 
-- 两次推理均返回 `50×11` Action；
+- Suck、Place、Snap、Insert 两次推理均返回 `50×11` Action，Push/Pull 返回 `50×9`；
 - Action 不包含 `NaN` 或 `Inf`；
-- 输出包含 `PASS: two 50x11 inference responses; no robot commands`；
+- 输出包含 `PASS: two inference responses; no robot commands`；
 - client 自检输出 `DUALARM_LT_RTC_EXECUTOR_SELF_TEST_PASS; NO NETWORK/ROBOT`；
 - 测试过程没有连接 Topic、相机和机器人 RPC，没有产生机器人动作。
 
@@ -211,7 +357,9 @@ cd /home/codeit/Public/zpf/StarVLA/inference/packages/dualarm_lt_rtc_20261118/se
 
 Thor 与 5090D 记录来自不同运行环境和服务封装，只能证明各自链路能够连续完成 initial/guided 推理；不能仅凭这些数字得出硬件性能排名。严格性能比较还需要统一模型权重、软件版本、输入、预热轮数和计时口径。
 
-## 7. dry-run：真实数据闭环测试（不发指令）
+## 7. Suck dry-run：真实数据闭环测试（不发指令）
+
+> **当前 client 适配范围：仅 Suck。** `client/dualarm_lt_rtc_16.yaml`、右臂 Pose frame、工作空间和 DO8–DO11 映射只覆盖 Suck 的 `qwenpi_v3_v2`、`qwenpi_v3_v3`、`act_v2`。Place、Snap、Insert、Push/Pull 已支持服务启动与合成推理，但尚未加入左臂 client Profile、DO 映射和对应安全空间，因此不能使用本节的 `run_client.sh --dry-run`，更不能进入 `--real`。
 
 ### 7.1 测试目的
 
@@ -242,7 +390,7 @@ cd /home/test/Public/cs/starvla_lt/docker
 ./run_client.sh qwenpi_v3_v2 --dry-run --max-actions 50
 ```
 
-其余 Profile：
+Suck 的其余两个 Profile：
 
 ```bash
 ./run_server.sh qwenpi_v3_v3
@@ -269,7 +417,9 @@ cd /home/test/Public/cs/starvla_lt/docker
 - 日志写入宿主机 `logs/`，无 `FAIL_CLOSED`、Topic timeout、camera read failure 或模型 HTTP 错误；
 - 机器人 RPC 未建立、未发送，机械臂没有动作。
 
-## 8. 真机测试：真实数据与 RPC 执行
+## 8. Suck 真机测试：真实数据与 RPC 执行
+
+> 本节真机 client 命令只适用于 Suck。Place、Snap、Insert、Push/Pull 在完成左臂状态打包、坐标标定、DO 映射、安全工作空间和 client Profile 适配前，不得套用 Suck 命令发送真机 RPC。
 
 ### 8.1 测试目的和边界
 
@@ -330,7 +480,7 @@ Qwen Profile 使用相同的递增方法：
 /home/test/Public/cs/starvla_lt/server/server_16.yaml
 ```
 
-RTC 调度、控制频率、DO 阈值、工作空间和单步限制：
+现有 Suck client 的 RTC 调度、控制频率、DO 阈值、工作空间和单步限制：
 
 ```text
 /home/test/Public/cs/starvla_lt/client/dualarm_lt_rtc_16.yaml
@@ -344,8 +494,13 @@ RTC 调度、控制频率、DO 阈值、工作空间和单步限制：
 
 ```bash
 ./compose.sh stop qwen-v2
-./compose.sh stop qwen-v3
-./compose.sh stop act
+./compose.sh stop place-qwen-v2
+./compose.sh stop snap-act
+./compose.sh stop insert-act
+./compose.sh stop push-pull-qwen-v2
+
+# Suck 对照版本
+./compose.sh stop qwen-v3 act
 ```
 
 关闭本项目全部 Compose 服务：
