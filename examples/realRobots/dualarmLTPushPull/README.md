@@ -44,3 +44,44 @@ tail -F /root/data/logs/starvla/push_pull_lt_v2/qwenpi_latest.log
 ```
 
 最终模型：`/root/data/outputs/starVLA/dualarm_lt_push_pull_qwenpi_v3_v2_h50/dualarm_lt_push_pull_qwenpi_v3_v2_h50/final_model/pytorch_model.pt`。新实验用新 run_id，保存的 `config.full.yaml` 是实际超参数依据。总说明附有完成实验的配置快照、启动命令和日志记录。
+
+## Push / Pull 分别训练 ACT V2
+
+ACT 不以语言作为模型条件，因此 Push 和 Pull 必须按 episode 的任务标签拆成两个训练视图，不能直接混合训练。派生视图只链接所选任务的 Parquet 并复用原视频，不修改或复制原始数据：
+
+| ACT | 派生视图 | Episode | State / Action | 相机 |
+|---|---|---:|---|---|
+| Push | `push_lt_v2` | 193 | 24 / `50×9` | `left_wrist`, `left_side` |
+| Pull | `pull_lt_v2` | 184 | 24 / `50×9` | `left_wrist`, `left_side` |
+
+Push、Pull 分别生成自己的 `stats_gr00t.json` 和图像缓存，避免使用混合任务的归一化统计。先做真实样本检查：
+
+```bash
+cd /root/data/starVLA
+examples/realRobots/dualarmLTPushPull/train_files/train_act_push_v2_h50.sh --sample
+examples/realRobots/dualarmLTPushPull/train_files/train_act_pull_v2_h50.sh --sample
+```
+
+默认单卡 BS16、80,000 steps。使用两张不同的空闲 GPU 同时启动：
+
+```bash
+cd /root/data/starVLA
+
+CUDA_VISIBLE_DEVICES=0 \
+  examples/realRobots/dualarmLTPushPull/train_files/run_act_push_v2_h50_nohup.sh \
+  --num-processes 1 --batch-size 16 --steps 80000
+
+CUDA_VISIBLE_DEVICES=1 \
+  examples/realRobots/dualarmLTPushPull/train_files/run_act_pull_v2_h50_nohup.sh \
+  --num-processes 1 --batch-size 16 --steps 80000
+```
+
+日志与默认输出：
+
+```text
+/root/data/logs/starvla/push_lt_v2/act_latest.log
+/root/data/logs/starvla/pull_lt_v2/act_latest.log
+
+/root/data/outputs/starVLA/dualarm_lt_push_act_h50_v2
+/root/data/outputs/starVLA/dualarm_lt_pull_act_h50_v2
+```
