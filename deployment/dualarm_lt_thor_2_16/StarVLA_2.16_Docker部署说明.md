@@ -167,6 +167,50 @@ sudo docker compose -f compose.yaml run --rm -T --no-deps client \
 - client 自检输出 `DUALARM_LT_RTC_EXECUTOR_SELF_TEST_PASS; NO NETWORK/ROBOT`；
 - 测试过程没有连接 Topic、相机和机器人 RPC，没有产生机器人动作。
 
+### 6.4 QwenPI V3 V2 连续测试记录
+
+#### Thor Docker
+
+连续测试命令：
+
+```bash
+cd /home/test/Public/cs/starvla_lt/docker
+./test_fake_dry_run.sh qwenpi_v3_v2 --continuous --interval-s 1
+```
+
+2026-11-20 的测试输出显示，循环持续返回 `action_shape=[50,11]`，每轮依次完成 initial 和 guided replacement，且 `actions_executed=0`。日志片段中第 35–45 轮均出现 PASS；其中第 36、37、38、39、41、43 轮包含完整的两次延迟记录，可用于统计：
+
+| 阶段 | 完整样本数 | 平均值 | 中位数 | 最小值 | 最大值 | 标准差 |
+|---|---:|---:|---:|---:|---:|---:|
+| initial，`rtc_guided=false` | 6 | 0.2435 s | 0.2428 s | 0.2347 s | 0.2512 s | 0.0056 s |
+| guided replacement，`rtc_guided=true` | 6 | 0.2938 s | 0.2974 s | 0.2759 s | 0.3050 s | 0.0108 s |
+
+代表性完整循环：
+
+```text
+[FAKE DRY-RUN] cycle=39 started=2026-11-20T17:30:25+08:00
+{"action_shape":[50,11],"rtc_mode":"guided","rtc_guided":false,
+ "inference_elapsed_s":0.24261945601028856,"actions_executed":0}
+{"action_shape":[50,11],"rtc_mode":"guided","rtc_guided":true,
+ "inference_elapsed_s":0.30500593400211073,"actions_executed":0}
+[FAKE DRY-RUN] cycle=39 PASS: two 50x11 inference responses; no robot commands
+```
+
+日志中的 `Ctrl+C` 是人工终止连续测试。第 40、42、44、45 轮的控制台片段不完整，因此不计入延迟统计；已完整输出的循环结果不受影响。
+
+#### RTX 5090D 对照测试
+
+5090D 使用原生 252 服务包执行相同的合成输入 initial/replacement 测试：
+
+```bash
+cd /home/codeit/Public/zpf/StarVLA/inference/packages/dualarm_lt_rtc_20261118/server
+./run_fake_test_252.sh v2 --continuous --interval-s 0
+```
+
+截图中的第 175 轮返回两次 `50×11` Action，`actions_executed=0`：initial 的 client round-trip / server inference 约为 `1.0169 / 0.9990 s`，replacement 约为 `1.3095 / 1.2941 s`，两者差值分别约为 17.9 ms 和 15.4 ms。该差值包含本机序列化、HTTP 和客户端处理开销。
+
+Thor 与 5090D 记录来自不同运行环境和服务封装，只能证明各自链路能够连续完成 initial/guided 推理；不能仅凭这些数字得出硬件性能排名。严格性能比较还需要统一模型权重、软件版本、输入、预热轮数和计时口径。
+
 ## 7. dry-run：真实数据闭环测试（不发指令）
 
 ### 7.1 测试目的

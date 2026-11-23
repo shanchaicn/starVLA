@@ -380,3 +380,23 @@ Suck 包装脚本约定将日志写入 `/root/data/outputs/starVLA/dualarm_lt_su
 Suck 三种版本已核对完成时保存的配置、步数记录和最终文件；由于原始启动日志缺失，不补造历史命令和进程数。其他四个动作还核对了 `Command` 的 BS / 进程数，以及 `PREFLIGHT_OK` 的字段和 DO 统计。CS 训练基线为提交 `c39ce56dd4e684ca0a566aa37e51f39df5723bd4`，任务目录另外包含本次同步的配置和脚本。
 
 本次只整理五个动作的训练说明、对应配置与训练必要内容，不纳入通用训练 API 及其 smoke 测试配置。已检查文档链接、配置和命令参数，并使用 CS 数据执行预检查／样本加载／dry-run；不会因为整理说明重新启动训练。训练完成不等于已经测得真机成功率，真机表现需按对应客户端、相机顺序、坐标转换和数据统计实际评估。
+
+## 10. 训练后 QwenPI V3 V2 合成输入验证
+
+完成训练和模型打包后，在 5090D 推理机上使用合成状态与图像对 Suck QwenPI V3 V2 执行连续 fake-dry-run。该测试不读取机器人 Topic、相机或 RPC，不产生机械臂动作，目的是核对 checkpoint、initial/guided 协议和 `50×11` Action 输出。
+
+```bash
+cd /home/codeit/Public/zpf/StarVLA/inference/packages/dualarm_lt_rtc_20261118/server
+./run_fake_test_252.sh v2 --continuous --interval-s 0
+```
+
+记录中的第 175 轮结果为：
+
+| 阶段 | Action | RTC | client round-trip | server inference | 动作执行数 |
+|---|---|---|---:|---:|---:|
+| initial | `50×11` | guided=false | 约 1.0169 s | 约 0.9990 s | 0 |
+| replacement | `50×11` | guided=true | 约 1.3095 s | 约 1.2941 s | 0 |
+
+![5090D 上 Suck QwenPI V3 V2 的 fake-dry-run 与 GPU 监控](assets/fake_dry_run_5090d_qwenpi_v3_v2.png)
+
+截图右侧的 GPU 数值是采样瞬间状态，不代表整轮平均利用率。该结果证明模型包能完成两阶段推理和协议返回，不等价于真实相机、Topic、RTC 调度或真机任务成功率；这些链路需要继续按部署文档中的 dry-run 和真机测试分别验收。
