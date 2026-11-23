@@ -1,0 +1,15 @@
+ARG BASE_IMAGE=nvcr.io/nvidia/pytorch:26.05-py3@sha256:222d8b18e671be5c3ef91cb41727a2572a0b23f59ded6c39f373a96946f6f2ba
+FROM ${BASE_IMAGE}
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 WANDB_DISABLED=true \
+    TOKENIZERS_PARALLELISM=false XDG_CACHE_HOME=/tmp/starvla-cache HF_HOME=/tmp/starvla-hf-cache \
+    NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    PYTHONPATH=/opt/starvla-deps
+WORKDIR /app
+COPY context/deps_server/ /opt/starvla-deps/
+COPY dependencies-server.json /app/dependencies-server.json
+COPY context/server/ /app/server/
+COPY patch_diffusers_logger.py /tmp/patch_diffusers_logger.py
+RUN python /tmp/patch_diffusers_logger.py && rm /tmp/patch_diffusers_logger.py
+ENTRYPOINT ["python", "/app/server/launch_server_16.py"]
+CMD ["--profile", "qwenpi_v3_v2"]

@@ -1,0 +1,68 @@
+name: starvla-lt-16
+
+x-server: &server
+  image: starvla-lt-server:thor-20261120
+  build:
+    context: .
+    dockerfile: Dockerfile.server
+    network: host
+  profiles: [inference]
+  runtime: nvidia
+  gpus: all
+  network_mode: host
+  shm_size: 2gb
+  user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+  group_add: ["44", "993"]
+  init: true
+  restart: "no"
+  volumes:
+    - ../models:/app/models:ro
+    - ../server/server_16.yaml:/app/server/server_16.yaml:ro
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "3"
+
+services:
+  qwen-v2:
+    <<: *server
+    command: [--profile, qwenpi_v3_v2]
+  qwen-v3:
+    <<: *server
+    command: [--profile, qwenpi_v3_v3]
+  act:
+    <<: *server
+    command: [--profile, act_v2]
+  place-qwen-v2:
+    <<: *server
+    command: [--profile, place_qwenpi_v3_v2]
+  snap-act:
+    <<: *server
+    command: [--profile, snap_act_v2]
+  insert-act:
+    <<: *server
+    command: [--profile, insert_act_v2]
+  push-pull-qwen-v2:
+    <<: *server
+    command: [--profile, push_pull_qwenpi_v3_v2]
+  client:
+    image: starvla-lt-client:arm64-20261120
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+      network: host
+    profiles: [manual-client]
+    network_mode: host
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    init: true
+    restart: "no"
+    volumes:
+      - ../client/dualarm_lt_rtc_16.yaml:/app/client/dualarm_lt_rtc_16.yaml:ro
+      - ../logs:/home/test/Public/cs/starvla_lt/logs
+    command: [--profile, qwenpi_v3_v2, --dry-run]
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

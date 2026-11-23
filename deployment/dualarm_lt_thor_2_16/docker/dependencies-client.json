@@ -1,0 +1,9 @@
+{
+  "numpy": "2.2.6",
+  "pillow": "12.3.0",
+  "pyyaml": "6.0.3",
+  "opencv-python-headless": "4.13.0.92",
+  "protobuf": "6.33.6",
+  "pyzmq": "27.3.0",
+  "tb6r5-get-status": "1.0.0"
+}

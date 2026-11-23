@@ -1,0 +1,44 @@
+# Models and generated runtime data are intentionally not stored in Git.
+models/
+logs/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+
+# Generated Docker build context contains copied source and offline Python
+# dependency snapshots. Regenerate it with docker/refresh_context.py.
+docker/context/
+
+# Local environments, caches, diagnostics, and transfer artifacts.
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+*.tar
+*.tar.gz
+*.exitcode
+.transfer*/
+transfer.complete
+deployment_status.json
+verification.json
+models.sha256.json
+
+# Operational notes copied from the deployment host are not part of the
+# Docker source/report delivery. The formal report is kept at the package root.
+/DEPLOYMENT_STATUS_dualarm_lt.md
+/DOCKER_TEST_zh.md
+/MODEL_COLLECTION_DEPLOY_zh.md
+/OPERATIONS_zh.md
+/README.md
+/README_dualarm_lt.md
+/RT_TOPIC_TIMEOUT_DIAGNOSIS_zh.md
+
+# Repository-wide rules ignore nested Markdown and native modules. Keep the
+# formal Docker report, the short Docker entry point and required RPC modules.
+!/StarVLA_2.16_Docker部署说明.md
+!/docker/README.md
+!/client/rpc.so
+!/client/vendor/
+!/client/vendor/rpc.so

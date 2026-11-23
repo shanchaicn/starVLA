@@ -1,0 +1,107 @@
+# All relative paths are relative to this YAML file.
+paths:
+  models_root: ../models
+  source_root: runtime/source
+  eval_deps: runtime/eval_deps
+  vendor_act: 252_original/vendor_act
+  base_vlm: ../models/base/Qwen3-VL-4B-Instruct-Action
+
+runtime:
+  # Thor uses shared system/GPU memory. Include reclaimable system memory in
+  # the startup check rather than treating page cache as unavailable VRAM.
+  unified_memory: true
+  min_available_memory_gib: 18
+  cuda_visible_devices: "0"
+  omp_num_threads: 4
+
+profiles:
+  qwenpi_v3_v2:
+    script: dualarm_lt_rtc_server_16.py
+    model_dir: dualarm_lt_suck_qwenpi_v3_v2_h50
+    model_id: dualarm_lt_suck_qwenpi_v3_v2_h50-RTC-DEV
+    port: 10199
+    checkpoint_size: 10941594936
+    state_dim: 24
+    action_dim: 11
+    action_do_nums: [8, 9, 10, 11]
+    camera_order: [left_side, right_wrist, right_side]
+    arm: arm_0
+    instruction: "Use the suction cup on the robot's right arm to pick up the phone support plate."
+  qwenpi_v3_v3:
+    script: dualarm_lt_rtc_server_16.py
+    model_dir: dualarm_lt_suck_qwenpi_v3_v3_h50
+    model_id: dualarm_lt_suck_qwenpi_v3_v3_h50-RTC-DEV
+    port: 10200
+    checkpoint_size: 10941560120
+    state_dim: 7
+    action_dim: 11
+    action_do_nums: [8, 9, 10, 11]
+    camera_order: [left_side, right_wrist, right_side]
+    arm: arm_0
+    instruction: "Use the suction cup on the robot's right arm to pick up the phone support plate."
+  act_v2:
+    script: dualarm_lt_act_server_16.py
+    model_dir: dualarm_lt_suck_act_h50_v2
+    model_id: dualarm_lt_suck_act_h50_v2-RTC-FRESH-REPLAN-DEV
+    port: 10201
+    checkpoint_size: 103360178
+    state_dim: 24
+    action_dim: 11
+    action_do_nums: [8, 9, 10, 11]
+    camera_order: [left_side, left_wrist, right_wrist, right_side]
+    arm: arm_0
+    instruction: "Use the suction cup on the robot's right arm to pick up the phone support plate."
+  place_qwenpi_v3_v2:
+    script: dualarm_lt_rtc_server_16.py
+    model_dir: dualarm_lt_place_qwenpi_v3_v2_h50
+    modelscope_repo: chaishan/dualarm_lt_place_qwenpi_v3_v2_h50
+    model_id: dualarm_lt_place_qwenpi_v3_v2_h50-RTC-DEV
+    port: 10202
+    checkpoint_size: 10941594936
+    state_dim: 24
+    action_dim: 11
+    action_do_nums: [12, 13, 15, 16]
+    camera_order: [left_wrist, right_side]
+    arm: arm_1
+    # Actual training task confirmed by the operator; ModelScope README is incorrect.
+    instruction: "Use the robot's left arm to slowly push in the charger box drawer."
+  snap_act_v2:
+    script: dualarm_lt_act_server_16.py
+    model_dir: dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701
+    modelscope_repo: chaishan/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701
+    model_id: dualarm_lt_snap_act_h50_v2-RTC-FRESH-REPLAN-DEV
+    port: 10203
+    checkpoint_size: 103360178
+    state_dim: 24
+    action_dim: 11
+    action_do_nums: [12, 13, 15, 16]
+    camera_order: [left_wrist, right_side]
+    arm: arm_1
+    instruction: Snap
+  insert_act_v2:
+    script: dualarm_lt_act_server_16.py
+    model_dir: dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779
+    modelscope_repo: chaishan/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779
+    model_id: dualarm_lt_insert_act_h50_v2-RTC-FRESH-REPLAN-DEV
+    port: 10204
+    checkpoint_size: 103360178
+    state_dim: 24
+    action_dim: 11
+    action_do_nums: [12, 13, 15, 16]
+    camera_order: [left_wrist, right_side]
+    arm: arm_1
+    instruction: Insert
+  push_pull_qwenpi_v3_v2:
+    script: dualarm_lt_rtc_server_16.py
+    model_dir: dualarm_lt_push_pull_qwenpi_v3_v2_h50
+    modelscope_repo: chaishan/dualarm_lt_push_pull_qwenpi_v3_v2_h50
+    model_id: dualarm_lt_push_pull_qwenpi_v3_v2_h50-RTC-DEV
+    port: 10205
+    checkpoint_size: 10941586744
+    state_dim: 24
+    action_dim: 9
+    action_do_nums: [14, 17]
+    camera_order: [left_wrist, left_side]
+    arm: arm_1
+    instruction: "Use the robot's left arm to slowly pull out the charger box drawer."
+    alternative_instruction: "Use the robot's left arm to slowly push in the charger box drawer."

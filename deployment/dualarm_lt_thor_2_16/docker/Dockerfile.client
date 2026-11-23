@@ -1,0 +1,13 @@
+# Share the already cached ARM64 base with the server. No Docker Hub access or
+# host virtual environment is needed. The client process does not import torch.
+ARG BASE_IMAGE=nvcr.io/nvidia/pytorch:26.05-py3@sha256:222d8b18e671be5c3ef91cb41727a2572a0b23f59ded6c39f373a96946f6f2ba
+FROM ${BASE_IMAGE}
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    XDG_CACHE_HOME=/tmp/starvla-client-cache NVIDIA_VISIBLE_DEVICES=void \
+    PYTHONPATH=/opt/starvla-deps
+COPY context/deps_client/ /opt/starvla-deps/
+COPY dependencies-client.json /app/dependencies-client.json
+COPY context/client/ /app/client/
+WORKDIR /app/client
+ENTRYPOINT ["python", "/app/client/dualarm_lt_rtc_execute_16.py", "--config", "/app/client/dualarm_lt_rtc_16.yaml"]
+CMD ["--profile", "qwenpi_v3_v2", "--dry-run"]

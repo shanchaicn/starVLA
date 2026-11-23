@@ -1,0 +1,10 @@
+*
+!Dockerfile.server
+!Dockerfile.client
+!requirements-server.txt
+!requirements-client.txt
+!dependencies-server.json
+!dependencies-client.json
+!patch_diffusers_logger.py
+!context/
+!context/**
