@@ -1,7 +1,5 @@
 # CS 服务器 LT 五个动作训练说明
 
-> **新版入口（2026-11-25）**：[五模型训练手册与离线评估报告](TRAINING_HANDBOOK_LT.md)。新版已找到并核对 Suck 完整 20k 日志，确认双卡、每卡 BS4、总 BS8；补上五动作训练图、Push/Pull 总 40k 续训及离线评估脚本和结果。下文保留 2026-11-23 的历史说明，其中当时未找到 Suck 日志的条目以新版证据为准。
-
 核验日期：2026-11-23。依据是 CS 服务器上的启动脚本、完成训练时保存的 `config.full.yaml`、日志中的 `Command` / `PREFLIGHT_OK`、`summary.jsonl` 和最终权重。
 
 本文按 **Suck、Place、Snap、Insert、Push/Pull 五个动作／数据集**组织，不把同一动作的不同模型重复计数。**Place 使用 QwenPI v3 V2**。Suck 主示例使用 QwenPI v3 V2，同一动作已有的 ACT V2 和 QwenPI V3 作为版本附表列出；Snap、Insert 使用 ACT V2，Push/Pull 使用 QwenPI v3 V2。

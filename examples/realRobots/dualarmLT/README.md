@@ -1,7 +1,5 @@
 # dualarmLT ACT / QwenPI 训练说明
 
-> **2026-11-25 新版**：[五模型训练手册与离线评估报告](TRAINING_HANDBOOK_LT.md)。包含五个动作的实际训练参数、完整日志曲线、Push/Pull 40k 续训、多检查点离线评估脚本和结果；Suck 双卡 BS4 的原始日志已补齐。
-
 > **CS 五个 LT 动作训练说明**：见 [TRAINING_CS_LT.md](TRAINING_CS_LT.md)。包含 Suck、Place QwenPI、Snap ACT、Insert ACT、Push/Pull QwenPI 的实际参数、数据映射、启动命令、日志、权重与配置快照。
 
 ## V3：不使用 DI，保留 DO（V2 继续可用）
