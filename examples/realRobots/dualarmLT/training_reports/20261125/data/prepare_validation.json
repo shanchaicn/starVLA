@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "samples": 8,
+  "cache_and_raw_video_identical": true,
+  "checked_arrays": [
+    "image",
+    "state",
+    "action",
+    "raw_action",
+    "observed_pose"
+  ],
+  "source": "public prepare CLI; one episode per task; no GPU"
+}

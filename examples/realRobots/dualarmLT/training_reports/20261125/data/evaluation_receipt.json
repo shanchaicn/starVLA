@@ -1,0 +1,22 @@
+{
+  "status": "complete",
+  "checkpoints": [
+    20000,
+    25000,
+    30000,
+    35000,
+    40000
+  ],
+  "episodes": 32,
+  "observations": 128,
+  "noise_repeats": 2,
+  "total_predictions": 1280,
+  "held_out": false,
+  "report_sha256": "717795c2945c1f79067c76037d0810f9794000b788205c0e2498e90999fac77b",
+  "artifacts": {
+    "metrics.json": "f29ec8072ab217b89c9dbfadf8a7da95da48498b8e524611b0b77c0f57b38a4e",
+    "summary.csv": "531f495a4b88004c5a2dfd490c61e52a99b1d5840e4ba95d359445bcb293f27b",
+    "protocol.json": "890e68cfd5d573012c6cc87b9e198da93f407270661f5fd973327b6d0a607582",
+    "checkpoint_comparison.png": "708a455488a1d3c4aaa8bfe12ab723c95ba8759f1565bf7a99c3d85bb1c7b268"
+  }
+}

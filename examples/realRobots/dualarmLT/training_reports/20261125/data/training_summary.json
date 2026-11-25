@@ -1,0 +1,275 @@
+{
+  "checked_date": "2026-11-25",
+  "runs": [
+    {
+      "task": "place",
+      "run_id": "dualarm_lt_place_qwenpi_v3_v2_h50",
+      "role": "primary",
+      "output": "/root/data/outputs/starVLA/dualarm_lt_place_qwenpi_v3_v2_h50/dualarm_lt_place_qwenpi_v3_v2_h50",
+      "log": "/root/data/logs/starvla/place_lt_v2/qwenpi_20261120_120140.log",
+      "log_available": true,
+      "logged_points": 2000,
+      "summary": [
+        {
+          "steps": 5000
+        },
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 15000
+        },
+        {
+          "steps": 20000
+        }
+      ],
+      "target_steps": 20000,
+      "weight_bytes": 10941594936,
+      "num_processes": 2,
+      "batch_per_gpu": 8,
+      "effective_batch": 16,
+      "config_sha256": "ce4681c6cc20cafee3ede3007b91ebbaf7c513709bd508349252392db857ae0b",
+      "summary_sha256": "9f0b9b0b382fd646e36bab4a4484602ea98cdf58f952bbc81db00a774edfa0fa",
+      "source_log_sha256": "5c058adcca8b84cf30b25f398f88157689990a427c73eed0dbc3c57c70871f77",
+      "logged_num_processes": 2,
+      "first_logged_step": 10,
+      "last_logged_step": 20000,
+      "first_logged_loss": 1.7578119039535522,
+      "last_logged_loss": 0.009387576021254063,
+      "loss_key": "action_dit_loss",
+      "last_1000_steps_logged_mean": 0.009202805643435568,
+      "loop_elapsed": "6:13:48",
+      "training_complete_message": true,
+      "history_file": "place_history.csv"
+    },
+    {
+      "task": "snap",
+      "run_id": "dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701",
+      "role": "primary",
+      "output": "/root/data/outputs/starVLA/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701/dualarm_lt_snap_act_h50_v2_bs16_80k_20261122_065928_14701",
+      "log": "/root/data/logs/starvla/snap_lt_v2/act_20261122_065931.log",
+      "log_available": true,
+      "logged_points": 8000,
+      "summary": [
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 20000
+        },
+        {
+          "steps": 30000
+        },
+        {
+          "steps": 40000
+        },
+        {
+          "steps": 50000
+        },
+        {
+          "steps": 60000
+        },
+        {
+          "steps": 70000
+        },
+        {
+          "steps": 80000
+        }
+      ],
+      "target_steps": 80000,
+      "weight_bytes": 103360178,
+      "num_processes": 1,
+      "batch_per_gpu": 16,
+      "effective_batch": 16,
+      "config_sha256": "c59dfd32aaa0be4f4b6299ca747de8e5adff3013ba41a9e94c0f980fa18b010a",
+      "summary_sha256": "54b5b28e1b064343e247bc7bf6f6dea8f4ad477ccb0f871ef8a64605a2ab7643",
+      "source_log_sha256": "b5cad48b280f82002ff3bc0faff3a23c67e1d10ad523e914fd9ff447830e2a3c",
+      "logged_num_processes": 1,
+      "first_logged_step": 10,
+      "last_logged_step": 80000,
+      "first_logged_loss": 122.51741790771484,
+      "last_logged_loss": 0.0030200257897377014,
+      "loss_key": "action_dit_loss",
+      "last_1000_steps_logged_mean": 0.0154655820177868,
+      "loop_elapsed": "6:03:44",
+      "training_complete_message": true,
+      "history_file": "snap_history.csv"
+    },
+    {
+      "task": "insert",
+      "run_id": "dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779",
+      "role": "primary",
+      "output": "/root/data/outputs/starVLA/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779/dualarm_lt_insert_act_h50_v2_bs16_80k_20261122_065931_14779",
+      "log": "/root/data/logs/starvla/insert_lt_v2/act_20261122_065934.log",
+      "log_available": true,
+      "logged_points": 8000,
+      "summary": [
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 20000
+        },
+        {
+          "steps": 30000
+        },
+        {
+          "steps": 40000
+        },
+        {
+          "steps": 50000
+        },
+        {
+          "steps": 60000
+        },
+        {
+          "steps": 70000
+        },
+        {
+          "steps": 80000
+        }
+      ],
+      "target_steps": 80000,
+      "weight_bytes": 103360178,
+      "num_processes": 1,
+      "batch_per_gpu": 16,
+      "effective_batch": 16,
+      "config_sha256": "f77dc123ed128af83b0191a73ce5c1704cf4b2d2d22964ba297b6bce6882edfb",
+      "summary_sha256": "54b5b28e1b064343e247bc7bf6f6dea8f4ad477ccb0f871ef8a64605a2ab7643",
+      "source_log_sha256": "cb97054868e769649736432c48c6e8fd31c5d9d1f79743e6107922497c5cea19",
+      "logged_num_processes": 1,
+      "first_logged_step": 10,
+      "last_logged_step": 80000,
+      "first_logged_loss": 84.93490600585938,
+      "last_logged_loss": 0.01698799431324005,
+      "loss_key": "action_dit_loss",
+      "last_1000_steps_logged_mean": 0.02965892924927175,
+      "loop_elapsed": "6:05:16",
+      "training_complete_message": true,
+      "history_file": "insert_history.csv"
+    },
+    {
+      "task": "push_pull",
+      "run_id": "dualarm_lt_push_pull_qwenpi_v3_v2_h50",
+      "role": "primary",
+      "output": "/root/data/outputs/starVLA/dualarm_lt_push_pull_qwenpi_v3_v2_h50/dualarm_lt_push_pull_qwenpi_v3_v2_h50",
+      "log": "/root/data/logs/starvla/push_pull_lt_v2/qwenpi_20261122_144642.log",
+      "log_available": true,
+      "logged_points": 2000,
+      "summary": [
+        {
+          "steps": 5000
+        },
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 15000
+        },
+        {
+          "steps": 20000
+        }
+      ],
+      "target_steps": 20000,
+      "weight_bytes": 10941586744,
+      "num_processes": 2,
+      "batch_per_gpu": 8,
+      "effective_batch": 16,
+      "config_sha256": "2c96ab9360de43f0e7320e40ee55cb2f71d367f3b51e8d72b8662c993f8131ee",
+      "summary_sha256": "9f0b9b0b382fd646e36bab4a4484602ea98cdf58f952bbc81db00a774edfa0fa",
+      "source_log_sha256": "59d33096a55179d6055ccdfadd5e3e47d600448eac023d607026cb9276f5de78",
+      "logged_num_processes": 2,
+      "first_logged_step": 10,
+      "last_logged_step": 20000,
+      "first_logged_loss": 1.6457055807113647,
+      "last_logged_loss": 0.011500167660415173,
+      "loss_key": "action_dit_loss",
+      "last_1000_steps_logged_mean": 0.009791552806273102,
+      "loop_elapsed": "6:15:50",
+      "training_complete_message": true,
+      "history_file": "push_pull_history.csv"
+    },
+    {
+      "task": "suck",
+      "run_id": "dualarm_lt_suck_qwenpi_v3_v2_h50",
+      "role": "primary",
+      "output": "/root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v2_h50/dualarm_lt_suck_qwenpi_v3_v2_h50",
+      "log": "/root/data/outputs/starVLA/dualarm_lt_suck_qwenpi_v3_v2_h50/logs/qwenpi_v3_v2_h50_20261117_115323.log",
+      "log_available": true,
+      "logged_points": 2000,
+      "summary": [
+        {
+          "steps": 5000
+        },
+        {
+          "steps": 10000
+        },
+        {
+          "steps": 15000
+        },
+        {
+          "steps": 20000
+        }
+      ],
+      "target_steps": 20000,
+      "weight_bytes": 10941594936,
+      "num_processes": 2,
+      "batch_per_gpu": 4,
+      "effective_batch": 8,
+      "config_sha256": "58193e41f3da7d48cb16728e0752370b026f5e1b954fc6843bd3f5579acbfb42",
+      "summary_sha256": "9f0b9b0b382fd646e36bab4a4484602ea98cdf58f952bbc81db00a774edfa0fa",
+      "source_log_sha256": "34d0f68565749076c58b600ec7723b07a5de1b104f81690b2e838f1680257fa9",
+      "logged_num_processes": 2,
+      "first_logged_step": 10,
+      "last_logged_step": 20000,
+      "first_logged_loss": 1.3912482261657715,
+      "last_logged_loss": 0.028923399746418,
+      "loss_key": "action_dit_loss",
+      "last_1000_steps_logged_mean": 0.023623282227199525,
+      "loop_elapsed": "4:56:00",
+      "training_complete_message": true,
+      "history_file": "suck_history.csv"
+    },
+    {
+      "task": "push_pull",
+      "run_id": "dualarm_lt_push_pull_qwenpi_v3_v2_h50_resume40k_20261124_195355",
+      "role": "continuation",
+      "output": "/root/data/outputs/starVLA/dualarm_lt_push_pull_qwenpi_v3_v2_h50_resume40k_20261124_195355/dualarm_lt_push_pull_qwenpi_v3_v2_h50_resume40k_20261124_195355",
+      "log": "/root/data/logs/starvla/push_pull_lt_v2/qwenpi_resume40k_20261124_195355.log",
+      "log_available": true,
+      "logged_points": 2000,
+      "summary": [
+        {
+          "steps": 25000
+        },
+        {
+          "steps": 30000
+        },
+        {
+          "steps": 35000
+        },
+        {
+          "steps": 40000
+        }
+      ],
+      "target_steps": 40000,
+      "weight_bytes": 10941586744,
+      "num_processes": 2,
+      "batch_per_gpu": 8,
+      "effective_batch": 16,
+      "config_sha256": "7e19b4ff89e21cc9159fac3807ea5c6078a013a6ede63d6a86f8a185c83a8b29",
+      "summary_sha256": "13c88ff6e5e9ae647032f0b7b372febd552dbcd5d64055f48c0e2615a147c281",
+      "source_log_sha256": "8f6d90fedb5f5a01fa16784ea61f958a0bf5583fc4a288c8d4a278fa20be7605",
+      "logged_num_processes": 2,
+      "first_logged_step": 20010,
+      "last_logged_step": 40000,
+      "first_logged_loss": 0.011782758869230747,
+      "last_logged_loss": 0.008128139190375805,
+      "loss_key": "action_dit_loss",
+      "last_1000_steps_logged_mean": 0.006506546651944518,
+      "loop_elapsed": "6:19:27",
+      "training_complete_message": true,
+      "history_file": "push_pull_resume40k_history.csv"
+    }
+  ]
+}

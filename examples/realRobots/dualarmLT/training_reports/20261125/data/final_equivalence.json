@@ -1,0 +1,6 @@
+{
+  "checkpoint_step": 40000,
+  "final_model_tensors_identical": true,
+  "checked_tensors": 1386,
+  "checked_elements": 5470550563
+}

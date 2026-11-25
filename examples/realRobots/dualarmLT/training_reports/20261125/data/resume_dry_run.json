@@ -1,0 +1,25 @@
+{
+  "source_checkpoint": "/root/data/outputs/starVLA/dualarm_lt_push_pull_qwenpi_v3_v2_h50/dualarm_lt_push_pull_qwenpi_v3_v2_h50/checkpoints/steps_20000_pytorch_model.pt",
+  "completed_steps": 20000,
+  "target_total_steps": 40000,
+  "additional_steps": 20000,
+  "batch_per_gpu": 8,
+  "num_processes": 2,
+  "effective_batch": 16,
+  "optimizer_state_restored": false,
+  "random_init_action_model": false,
+  "output": "/root/data/outputs/starVLA/dualarm_lt_push_pull_resume40k_handbook_dryrun/dualarm_lt_push_pull_resume40k_handbook_dryrun",
+  "command": [
+    "/root/data/starVLA/.venv/bin/accelerate",
+    "launch",
+    "--config_file",
+    "/root/data/starVLA/starVLA/config/deepseeds/deepspeed_zero2.yaml",
+    "--num_processes",
+    "2",
+    "--main_process_port",
+    "29615",
+    "/root/data/starVLA/starVLA/training/train_starvla.py",
+    "--config_yaml",
+    "/root/data/outputs/starVLA/dualarm_lt_push_pull_resume40k_handbook_dryrun/dualarm_lt_push_pull_resume40k_handbook_dryrun/resume_config.yaml"
+  ]
+}
